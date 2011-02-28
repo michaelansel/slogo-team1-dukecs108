@@ -1,4 +1,4 @@
-package slogo.util.Trace;
+package slogo.util;
 
 import java.awt.BasicStroke;
 import java.awt.Point;

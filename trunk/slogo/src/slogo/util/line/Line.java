@@ -6,9 +6,11 @@ import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
-import slogo.model.turtle.qualities.positioning.IPosition;
-import slogo.util.Trace.Trace;
+import slogo.model.arena.turtle.qualities.positioning.IPosition;
+import slogo.util.Trace;
 
 
 
@@ -65,14 +67,6 @@ public class Line extends Line2D{
     }
 
 
-    public List<Line2D> split ()
-    {
-        //TODO write this
-        return null;
-    }
-
-
-
     public Point2D getP1 ()
     {
         return myP1;
@@ -98,10 +92,36 @@ public class Line extends Line2D{
         return myP1.distance(myP2);
     }
     
-    public void animate(int t){
-        for( int c = 0; c < this.length() ; c++){
-            
+    public double XDistance(){
+        return Math.abs(myP2.getX()-myP1.getX());
+    }
+    
+    public double YDistance(){
+        return Math.abs(myP2.getY()-myP1.getY());
+    }
+    
+//    public void animate(long t) throws InterruptedException{
+//        for (Line line: this.animatableSet()){
+//            line.draw();
+//            Thread.sleep(t);
+//        }
+//    }
+
+    public Collection<Line> animatableSet(){
+        
+        Collection<Line> lines = new ArrayList<Line>();
+        
+        for( double c = 1; c <= this.length() ; c++){
+            lines.add(new Line(myTrace, myP1, c, this.getAngle()));
         }
+        
+        return lines;
+    }
+    
+    private double getAngle ()
+    {
+        if (this.YDistance() >= 0) return Math.acos(this.XDistance()/this.length());
+        else return 180 + Math.acos(this.XDistance()/this.length()); 
     }
 
     public Line mirror ()
