@@ -23,7 +23,7 @@ import slogo.util.trace.Trace;
 
 public class Turtle implements IArtist, IMorphable
 {
-    private static final File DEFAULT_IMAGE = new File("");
+    private static final File DEFAULT_IMAGE = new File(""); //TODO: Write in default filepath
     private IBehavior myBehavior;
     private IMode myMode;
     private File myImage;
@@ -149,6 +149,10 @@ public class Turtle implements IArtist, IMorphable
         return myImage;
     }
 
+    
+    public String getImagePath(){
+        return myImage.getPath();
+    }
 
     @Override
     public IPosition getPosition ()
