@@ -24,6 +24,7 @@ import slogo.util.trace.Trace;
 public class Turtle implements IArtist, IMorphable
 {
     private static final File DEFAULT_IMAGE = new File(""); //TODO: Write in default filepath
+    private String myName;
     private IBehavior myBehavior;
     private IMode myMode;
     private File myImage;
@@ -33,37 +34,39 @@ public class Turtle implements IArtist, IMorphable
   
 
 //Constructors
-    public Turtle ()
+    public Turtle (String name)
     {
-        this(new Position());
+        this(name, new Position());
     }
 
-    public Turtle(File image){
+    public Turtle(String name, File image){
         
-       this(new Position(), new Trace(), image);
+       this(name, new Position(), new Trace(), image);
     }
     
-    public Turtle (IPosition position)
+    public Turtle (String name, IPosition position)
     {
-        this(position, new Trace());
+        this(name, position, new Trace());
     }
 
-    public Turtle (IPosition position, Trace trace)
+    public Turtle (String name, IPosition position, Trace trace)
     {
-        this(position, trace, DEFAULT_IMAGE);
+        this(name, position, trace, DEFAULT_IMAGE);
     }
 
-    public Turtle (IPosition position, Trace trace, File image)
+    public Turtle (String name, IPosition position, Trace trace, File image)
     {
-        this(position, trace, image, new DefaultBehavior());
+        this(name, position, trace, image, new DefaultBehavior());
     }
 
 
-    public Turtle (IPosition position,
+    public Turtle (String name,
+                   IPosition position,
                    Trace trace,
                    File image,
                    IBehavior behavior)
     {
+        rename(name);
         setPosition(position);
         setTrace(trace);
         setImage(image);
@@ -71,6 +74,16 @@ public class Turtle implements IArtist, IMorphable
         myBehavior = behavior;
         myLines = new ArrayList<Line>();
     }
+    private void rename (String name)
+    {
+        myName = name;
+        
+    }
+
+    private String getName(){
+        return myName;
+    }
+    
 //end Constructors
 
 
