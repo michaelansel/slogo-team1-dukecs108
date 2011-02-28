@@ -122,7 +122,7 @@ public class SlogoParser
                     @Override
                     public int evaluate (Arena arena)
                     {
-                        return 0;
+                        return Integer.parseInt((String) ((Token)result.getList().get(0)).value);
                     }
                 });
             }

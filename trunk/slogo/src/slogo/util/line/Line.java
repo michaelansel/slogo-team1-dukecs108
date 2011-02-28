@@ -34,7 +34,7 @@ public class Line extends Line2D{
 	    }
 	
 	public Line(Trace trace, Point2D point, double distance, double angle){
-        this(trace, point, new Point((int) (distance*Math.cos(angle)), (int)(distance*Math.sin(angle))));
+        this(trace, point, new Point2D.Double((distance*Math.cos(angle)), (distance*Math.sin(angle))));
         
     }
 	

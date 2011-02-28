@@ -32,7 +32,7 @@ public class Turtle implements IArtist, IMorphable
     private Trace myTrace;
     private List<Line> myLines;
     private boolean amVisible;
-  
+
 
 //Constructors
     public Turtle (String name)
@@ -40,20 +40,25 @@ public class Turtle implements IArtist, IMorphable
         this(name, new Position());
     }
 
-    public Turtle(String name, File image){
-        
-       this(name, new Position(), new Trace(), image);
+
+    public Turtle (String name, File image)
+    {
+
+        this(name, new Position(), new Trace(), image);
     }
-    
+
+
     public Turtle (String name, IPosition position)
     {
         this(name, position, new Trace());
     }
 
+
     public Turtle (String name, IPosition position, Trace trace)
     {
         this(name, position, trace, DEFAULT_IMAGE);
     }
+
 
     public Turtle (String name, IPosition position, Trace trace, File image)
     {
@@ -77,27 +82,29 @@ public class Turtle implements IArtist, IMorphable
         amVisible = true;
     }
 
-    
+
 //end Constructors
 
-
 //Artist
-    
+
     public void rename (String name)
     {
         myName = name;
-        
+
     }
 
-    public String getName(){
+
+    public String getName ()
+    {
         return myName;
     }
-    
+
+
     @Override
     public void addAllLines (List<Line> newLines)
     {
         myLines.addAll(newLines);
-        
+
     }
 
 
@@ -119,7 +126,7 @@ public class Turtle implements IArtist, IMorphable
     public void clearLines ()
     {
         myLines.clear();
-        
+
     }
 
 
@@ -127,7 +134,7 @@ public class Turtle implements IArtist, IMorphable
     public void revomeLine (Integer index)
     {
         myLines.remove(index);
-        
+
     }
 
 
@@ -135,7 +142,7 @@ public class Turtle implements IArtist, IMorphable
     public void removeLines (List<Line> lines)
     {
         myLines.removeAll(lines);
-        
+
     }
 
 
@@ -166,10 +173,12 @@ public class Turtle implements IArtist, IMorphable
         return myImage;
     }
 
-    
-    public String getImagePath(){
+
+    public String getImagePath ()
+    {
         return myImage.getPath();
     }
+
 
     @Override
     public IPosition getPosition ()
@@ -178,17 +187,15 @@ public class Turtle implements IArtist, IMorphable
     }
 
 
- 
-    
 //Morphable
-    
+
     @Override
     public int move (double distance)
     {
         myLines.add(myBehavior.applyBehavior(new Line( myTrace, myPosition, distance)));
         myPosition.setLocation(myLines.get(myLines.size()-1).getP2());
         myTrace.getPen().putDown();
-        return (int) myLines.get(myLines.size()-1).length();
+        return (int) Math.round(myLines.get(myLines.size()-1).length());
     }
 
 
@@ -198,8 +205,7 @@ public class Turtle implements IArtist, IMorphable
         myTrace.getPen().putUp();
         myPosition.changeAngle(target);
         return move(target.distance(myPosition.getLocation()));
-        
-        
+
     }
 
 
@@ -207,16 +213,17 @@ public class Turtle implements IArtist, IMorphable
     public int rotate (double dAngle)
     {
         myPosition.changeAngle(dAngle);
-        
+
         return (int) Math.abs(dAngle);
     }
 
-    public int setHeading(double heading){
-        
-        return this.rotate(heading-myPosition.getAngle());
+
+    public int setHeading (double heading)
+    {
+
+        return this.rotate(heading - myPosition.getAngle());
     }
-    
-    
+
 
     @Override
     public void addBehavior (BehaviorDecorator behavior)
@@ -239,23 +246,28 @@ public class Turtle implements IArtist, IMorphable
         myPosition = position;
     }
 
-    public boolean isVisible(){
+
+    public boolean isVisible ()
+    {
         return amVisible;
     }
 
-    public int resetTurtle(){
-        
+
+    public int resetTurtle ()
+    {
+
         this.moveTo(new Point());
         this.myPosition.setAngle(IPosition.DEFAULT_ANGLE);
-        int d = (int) myLines.get(myLines.size()-1).length();
+        int d = (int) myLines.get(myLines.size() - 1).length();
         myLines.clear();
         return d;
     }
 
+
     @Override
     public IMode getMode ()
     {
-        
+
         return myMode;
     }
 
@@ -265,15 +277,14 @@ public class Turtle implements IArtist, IMorphable
     {
         mode.setSubMode(myMode);
         myMode = mode;
-        
+
     }
 
 
-
     @Override
-    public Iterable<Line> linesToDraw(int start)
+    public Iterable<Line> linesToDraw (int start)
     {
-        return myMode.applyMode(myLines.subList(start, myLines.size()-1));
+        return myMode.applyMode(myLines.subList(start, myLines.size() - 1));
     }
 
 }

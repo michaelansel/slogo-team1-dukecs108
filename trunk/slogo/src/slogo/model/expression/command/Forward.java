@@ -21,9 +21,10 @@ public class Forward extends Command
     public Forward (ParserResult result)
     {
         super(result);
-        // fd,whitespace,expression
         System.out.println(result.getList().toString());
-        myDistanceExpression = null;
+        // fd,whitespace,expression
+        myDistanceExpression =
+            (Expression) ((Token) result.getList().get(2)).value;
     }
 
 
