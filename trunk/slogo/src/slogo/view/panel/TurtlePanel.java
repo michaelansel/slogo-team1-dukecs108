@@ -1,6 +1,7 @@
 package slogo.view.panel;
 
 import java.awt.Graphics;
+import java.io.File;
 import java.util.ArrayList;
 
 import javax.swing.JPanel;
@@ -18,6 +19,11 @@ public class TurtlePanel extends JPanel
 	public TurtlePanel()
 	{
 		super();
+	}
+	public void updateTurtle(int turtleId)
+	{
+		File imageFile = turtleList.get(turtleId).getImage();
+		
 	}
 	@Override
 	public void paintComponent(Graphics g)
