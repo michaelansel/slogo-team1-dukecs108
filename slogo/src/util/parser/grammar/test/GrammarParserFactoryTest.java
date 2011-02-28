@@ -7,42 +7,36 @@ import static org.junit.Assert.fail;
 import org.junit.Before;
 import org.junit.Test;
 
-
 /**
  * @author mra13
  */
-public class GrammarParserFactoryTest
-{
+public class GrammarParserFactoryTest {
 
-    /**
-     * @throws java.lang.Exception
-     */
-    @Before
-    public void setUp () throws Exception
-    {}
+	/**
+	 * @throws java.lang.Exception
+	 */
+	@Before
+	public void setUp() throws Exception {
+	}
 
+	/**
+	 * Test method for
+	 * {@link util.parser.grammar.GrammarParserFactory#create(util.parser.AbstractLexer)}
+	 * .
+	 */
+	@Test
+	public final void testCreate() {
+		fail("Not yet implemented"); // TODO
+	}
 
-    /**
-     * Test method for
-     * {@link util.parser.grammar.GrammarParserFactory#create(util.parser.AbstractLexer)}
-     * .
-     */
-    @Test
-    public final void testCreate ()
-    {
-        fail("Not yet implemented"); // TODO
-    }
-
-
-    /**
-     * Test method for
-     * {@link util.parser.grammar.GrammarParserFactory#GrammarParserFactory(java.util.ResourceBundle)}
-     * .
-     */
-    @Test
-    public final void testGrammarParserFactory ()
-    {
-        fail("Not yet implemented"); // TODO
-    }
+	/**
+	 * Test method for
+	 * {@link util.parser.grammar.GrammarParserFactory#GrammarParserFactory(java.util.ResourceBundle)}
+	 * .
+	 */
+	@Test
+	public final void testGrammarParserFactory() {
+		fail("Not yet implemented"); // TODO
+	}
 
 }
