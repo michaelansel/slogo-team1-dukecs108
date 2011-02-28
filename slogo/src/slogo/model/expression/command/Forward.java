@@ -21,18 +21,31 @@ public class Forward extends Command
     public Forward (ParserResult result)
     {
         super(result);
-        System.out.println(result.getList().toString());
+        System.out.println("Creating Forward Expression: " +
+                           result.getList().toString());
         // fd,whitespace,expression
-        myDistanceExpression =
+        if (result.getList().get(2) instanceof Token) myDistanceExpression =
             (Expression) ((Token) result.getList().get(2)).value;
+        else myDistanceExpression = (Expression) result.getList().get(2);
     }
 
 
     @Override
     public int evaluate (Arena arena)
     {
-        return arena.getCurrentTurtle()
-                    .move(myDistanceExpression.evaluate(arena));
+        System.out.println("Evaluating: " + this.toString());
+        int val = myDistanceExpression.evaluate(arena);
+        System.out.println("SubExpression: " + val);
+        int retval = arena.getCurrentTurtle().move(val);
+        System.out.println("Returning: " + retval);
+        return retval;
+    }
+
+
+    @Override
+    public String toString ()
+    {
+        return String.format("Forward(%s)", myDistanceExpression);
     }
 
 }
