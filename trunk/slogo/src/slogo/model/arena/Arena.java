@@ -7,18 +7,22 @@ import slogo.model.turtle.Turtle;
 
 public class Arena
 {
-	private TreeMap<Integer,String> commandHistory;
+	private static TreeMap<Integer,String> commandHistory;
 	
 	public Arena()
 	{
 		commandHistory = new TreeMap<Integer,String>();
+		
+		//testing purposes
+		commandHistory.put(0,"fd 50");
+		
 	}
 	
     public Turtle getCurrentTurtle ()
     {
         return null;
     }
-    public TreeMap<Integer,String> getHistory()
+    public static TreeMap<Integer,String> getHistory()
     {
     	return commandHistory;
     }
