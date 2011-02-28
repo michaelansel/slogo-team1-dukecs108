@@ -74,13 +74,13 @@ public class Turtle implements IArtist, IMorphable
         myBehavior = behavior;
         myLines = new ArrayList<Line>();
     }
-    private void rename (String name)
+    public void rename (String name)
     {
         myName = name;
         
     }
 
-    private String getName(){
+    public String getName(){
         return myName;
     }
     
