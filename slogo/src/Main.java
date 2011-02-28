@@ -1,4 +1,5 @@
 import slogo.model.parser.SlogoParser;
+import slogo.view.Frame;
 import util.parser.ParserException;
 import util.parser.ParserResult;
 
