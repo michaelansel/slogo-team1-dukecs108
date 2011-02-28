@@ -3,19 +3,18 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import slogo.model.arena.turtle.Turtle;
 
 public class Arena
 {
 
-    private List<Turtle> myTurtleList;
+    private static ArrayList<Turtle> myTurtleList;
     private Map<String, String> myVariables;
-    private Map<Integer, String> myHistory;
+    private static Map<Integer, String> myHistory;
     private Turtle currTurtle;
     private Graphics2D myGraphics;
-    
+
     public Arena(Graphics g){
         setTurtleList(new ArrayList<Turtle>());
         setVariables(new HashMap<String, String> ());
@@ -44,12 +43,12 @@ public class Arena
         return myTurtleList.get(index);
     }
 
-    public void setTurtleList (List<Turtle> myTurtles)
+    public void setTurtleList (ArrayList<Turtle> myTurtles)
     {
         this.myTurtleList = myTurtles;
     }
 
-    public List<Turtle> getTurtleList ()
+    public static ArrayList<Turtle> getTurtleList ()
     {
         return myTurtleList;
     }
@@ -69,7 +68,7 @@ public class Arena
         this.myHistory = myHistory;
     }
 
-    public Map<Integer, String> getHistory ()
+    public static Map<Integer, String> getHistory ()
     {
         return myHistory;
     }
