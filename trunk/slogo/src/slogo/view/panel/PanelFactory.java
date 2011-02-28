@@ -64,19 +64,19 @@ public class PanelFactory
 				return col;
 			} catch (IllegalArgumentException e)
 			{
-				showErrorMsg(Bad_Input+"1",Bad_Input);
+				showErrorMsg(Bad_Input,Bad_Input);
 				return null;
 			} catch (SecurityException e)
 			{
-				showErrorMsg(Bad_Input+"2",Bad_Input);
+				showErrorMsg(Bad_Input,Bad_Input);
 				return null;
 			} catch (IllegalAccessException e)
 			{
-				showErrorMsg(Bad_Input+"3",Bad_Input);
+				showErrorMsg(Bad_Input,Bad_Input);
 				return null;
 			} catch (NoSuchFieldException e)
 			{
-				showErrorMsg(Bad_Input+"4",Bad_Input);
+				showErrorMsg(Bad_Input,Bad_Input);
 				return null;
 			}
 	}
