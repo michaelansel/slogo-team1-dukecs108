@@ -6,11 +6,6 @@ import java.util.HashMap;
 import java.util.Map;
 import slogo.model.arena.turtle.Turtle;
 
-/**
- * The arena created in which turtles reside
- * @author Julian Genkins
- *
- */
 public class Arena
 {
 
@@ -26,7 +21,13 @@ public class Arena
         setHistory(new HashMap<Integer, String> ());
         setGraphics((Graphics2D) g);
     }
-
+    public Arena()
+    {
+    	myTurtleList = new ArrayList<Turtle>();
+        myVariables = new HashMap<String,String>();
+        myHistory = new HashMap<Integer,String>();
+        currTurtle = 0;
+    }
     public Arena (ArrayList<Turtle> turtlelist,
                   Map<String, String> variables,
                   Map<Integer, String> history,
@@ -49,7 +50,7 @@ public class Arena
         addTurtle(new Turtle("Turtle " + myTurtleList.size()));
     }
     
-    public void addTurtle (Turtle turtle)
+    public static void addTurtle (Turtle turtle)
     {
         myTurtleList.add(turtle);
         currTurtle = myTurtleList.size()-1;
