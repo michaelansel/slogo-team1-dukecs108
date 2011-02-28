@@ -1,14 +1,8 @@
 package slogo.util.trace;
 
-import java.awt.BasicStroke;
 import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Point;
 import java.awt.Stroke;
-import slogo.util.line.Line;
 import slogo.util.pen.Pen;
-import slogo.view.Pixmap;
 
 public class Trace implements ITrace
 {

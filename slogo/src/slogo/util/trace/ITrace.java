@@ -1,12 +1,8 @@
 package slogo.util.trace;
 
 import java.awt.BasicStroke;
-import java.awt.Point;
 import java.awt.Stroke;
-import slogo.deprecated.TraceColor;
-import slogo.util.line.Line;
 import slogo.util.pen.Pen;
-import slogo.view.Pixmap;
 
 
 
