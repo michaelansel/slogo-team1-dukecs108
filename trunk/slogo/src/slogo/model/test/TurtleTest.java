@@ -1,6 +1,5 @@
 package slogo.model.test;
 
-public class TurtleTest
-{
+public class TurtleTest {
 
 }

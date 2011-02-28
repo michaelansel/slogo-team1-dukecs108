@@ -6,62 +6,50 @@ import slogo.util.pen.Pen;
 
 /**
  * The class responsible for carrying the qualities of the turtle's path
+ * 
  * @author Julian Genkins
- *
+ * 
  */
-public class Trace implements ITrace
-{
+public class Trace implements ITrace {
 
-    private Stroke myStroke;
-    private Color myColor;
-    private Pen myPen;
-   
-    public Trace(){
-        this(LIGHT_STROKE, Color.BLACK);
-    }
-  
-    public Trace (Stroke stroke, Color color)
-    {
-        setStroke(stroke);
-        setColor(color);
-        myPen = new Pen();
-    }
+	private Stroke myStroke;
+	private Color myColor;
+	private Pen myPen;
 
+	public Trace() {
+		this(LIGHT_STROKE, Color.BLACK);
+	}
 
-    @Override
-    public Pen getPen ()
-    {
-        return myPen;
-    }
+	public Trace(Stroke stroke, Color color) {
+		setStroke(stroke);
+		setColor(color);
+		myPen = new Pen();
+	}
 
-    @Override
-    public void setPen (Pen pen)
-    {
-        myPen = pen;
-    }
+	@Override
+	public Pen getPen() {
+		return myPen;
+	}
 
-    public void setColor (Color myColor)
-    {
-        this.myColor = myColor;
-    }
+	@Override
+	public void setPen(Pen pen) {
+		myPen = pen;
+	}
 
-    public Color getColor ()
-    {
-        return myColor;
-    }
+	public void setColor(Color myColor) {
+		this.myColor = myColor;
+	}
 
-    public void setStroke (Stroke myStroke)
-    {
-        this.myStroke = myStroke;
-    }
+	public Color getColor() {
+		return myColor;
+	}
 
-    public Stroke getStroke ()
-    {
-        return myStroke;
-    }
+	public void setStroke(Stroke myStroke) {
+		this.myStroke = myStroke;
+	}
 
- 
+	public Stroke getStroke() {
+		return myStroke;
+	}
 
-    
-    
 }

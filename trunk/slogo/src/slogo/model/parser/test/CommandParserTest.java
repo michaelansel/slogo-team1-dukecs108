@@ -11,31 +11,26 @@ import util.parser.ParserException;
 import util.parser.ParserResult;
 import util.parser.grammar.GrammarParserFactory;
 
+public class CommandParserTest extends TestCase {
 
-public class CommandParserTest extends TestCase
-{
+	private GrammarParserFactory commandParserFactory;
 
-    private GrammarParserFactory commandParserFactory;
+	@Before
+	public void setUp() throws Exception {
+		commandParserFactory = new GrammarParserFactory(
+				ResourceBundle
+						.getBundle("slogo.model.parser.SlogoCommandGrammar"));
+	}
 
-
-    @Before
-    public void setUp () throws Exception
-    {
-        commandParserFactory =
-            new GrammarParserFactory(ResourceBundle.getBundle("slogo.model.parser.SlogoCommandGrammar"));
-    }
-
-
-    /**
-     * @throws ParserException
-     */
-    @Test
-    public void testParse () throws ParserException
-    {
-        ParserResult result = new ParserResult();
-        AbstractParser commandParser =
-            commandParserFactory.create(new CommandLexer(result.getList()));
-        System.out.println(commandParser.run());
-    }
+	/**
+	 * @throws ParserException
+	 */
+	@Test
+	public void testParse() throws ParserException {
+		ParserResult result = new ParserResult();
+		AbstractParser commandParser = commandParserFactory
+				.create(new CommandLexer(result.getList()));
+		System.out.println(commandParser.run());
+	}
 
 }

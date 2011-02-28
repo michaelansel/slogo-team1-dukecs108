@@ -14,31 +14,31 @@ import util.parser.ParserResult;
 
 /**
  * @author Michael Ansel
- *
+ * 
  */
-public class ForwardTest
-{
+public class ForwardTest {
 
-    /**
-     * @throws java.lang.Exception
-     */
-    @Before
-    public void setUp () throws Exception
-    {}
+	/**
+	 * @throws java.lang.Exception
+	 */
+	@Before
+	public void setUp() throws Exception {
+	}
 
-
-    /**
-     * Test method for {@link slogo.model.expression.command.Forward#evaluate(slogo.model.arena.Arena)}.
-     * @throws ParserException 
-     */
-    @Test
-    public final void testEvaluate () throws ParserException
-    {
-        ParserResult result = SlogoParser.parse("fd fd 50");
-        Expression expression = (Expression) result.getList().get(0);
-        Arena arena = new Arena(null);
-        arena.addTurtle();
-        assertEquals(50, expression.evaluate(arena));
-    }
+	/**
+	 * Test method for
+	 * {@link slogo.model.expression.command.Forward#evaluate(slogo.model.arena.Arena)}
+	 * .
+	 * 
+	 * @throws ParserException
+	 */
+	@Test
+	public final void testEvaluate() throws ParserException {
+		ParserResult result = SlogoParser.parse("fd fd 50");
+		Expression expression = (Expression) result.getList().get(0);
+		Arena arena = new Arena(null);
+		arena.addTurtle();
+		assertEquals(50, expression.evaluate(arena));
+	}
 
 }

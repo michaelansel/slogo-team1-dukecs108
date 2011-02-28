@@ -2,7 +2,6 @@ package slogo.model.arena.turtle.qualities.behavior;
 
 import slogo.util.line.Line;
 
-
 /**
  * Gives a scaffold for the various effects of a change in behavior to enable
  * different turtle personalities.
@@ -10,10 +9,8 @@ import slogo.util.line.Line;
  * @author Julian
  */
 
-public interface IBehavior
-{
+public interface IBehavior {
 
-
-    Line applyBehavior (Line line);
+	Line applyBehavior(Line line);
 
 }

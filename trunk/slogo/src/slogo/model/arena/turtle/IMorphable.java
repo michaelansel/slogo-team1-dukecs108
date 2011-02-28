@@ -10,59 +10,54 @@ import slogo.model.arena.turtle.qualities.positioning.IPosition;
 import slogo.util.trace.Trace;
 
 /**
- * interface for methods that control a turtles behavior, Appearance/Image, and Position, 
- * and update via a turtle morph.
+ * interface for methods that control a turtles behavior, Appearance/Image, and
+ * Position, and update via a turtle morph.
+ * 
  * @author Julian
- *
+ * 
  */
-public interface IMorphable
-{
+public interface IMorphable {
 
-    /**
-     * adds new behavior as first element in link list of behaviors
-     * @param myBehavior
-     */
-    void addBehavior (BehaviorDecorator behavior);
+	/**
+	 * adds new behavior as first element in link list of behaviors
+	 * 
+	 * @param myBehavior
+	 */
+	void addBehavior(BehaviorDecorator behavior);
 
-    public abstract IBehavior getBehavior ();
+	public abstract IBehavior getBehavior();
 
-    
-    /**
-     * adds new mode as first element in link list of modes
-     * @param mode
-     */
-    void addMode (DrawModeDecorator mode);
+	/**
+	 * adds new mode as first element in link list of modes
+	 * 
+	 * @param mode
+	 */
+	void addMode(DrawModeDecorator mode);
 
-    public abstract IMode getMode ();
-    
+	public abstract IMode getMode();
 
-    public abstract void setImage (File image);
+	public abstract void setImage(File image);
 
+	public abstract File getImage();
 
-    public abstract File getImage ();
+	public abstract void setPosition(IPosition position);
 
+	public abstract IPosition getPosition();
 
-    public abstract void setPosition (IPosition position);
+	// public abstract void update(TurtleMorph morph);
 
+	/**
+	 * takes a point and moves the turtle to that point. Does not draw line
+	 * between
+	 * 
+	 * @param target
+	 */
+	public int moveTo(Point target);
 
-    public abstract IPosition getPosition ();
+	public int move(double distance);
 
+	public int rotate(double dAngle);
 
-//    public abstract void update(TurtleMorph morph);
-    
-    /**
-     * takes a point and moves the turtle to that point. Does not draw line between
-     * @param target
-     */
-    public int moveTo(Point target);
-    
-    public int move (double distance);
-    
-    public int rotate (double dAngle);
+	void setTrace(Trace newTrace);
 
-    void setTrace (Trace newTrace);
-
-
-   
-        
 }
