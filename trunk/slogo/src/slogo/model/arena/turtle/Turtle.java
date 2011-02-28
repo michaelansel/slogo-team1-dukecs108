@@ -1,14 +1,9 @@
 package slogo.model.arena.turtle;
 
-import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.Point;
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
-import slogo.deprecated.SolidTrace;
-import slogo.deprecated.TurtleImage;
 import slogo.model.arena.turtle.qualities.behavior.BehaviorDecorator;
 import slogo.model.arena.turtle.qualities.behavior.DefaultBehavior;
 import slogo.model.arena.turtle.qualities.behavior.IBehavior;
@@ -31,6 +26,7 @@ public class Turtle implements IArtist, IMorphable
     private IPosition myPosition;
     private Trace myTrace;
     private List<Line> myLines;
+    private boolean amVisible;
   
 
 //Constructors
@@ -73,7 +69,15 @@ public class Turtle implements IArtist, IMorphable
         myTrace.setPen(new Pen());
         myBehavior = behavior;
         myLines = new ArrayList<Line>();
+        amVisible = true;
     }
+
+    
+//end Constructors
+
+
+//Artist
+    
     public void rename (String name)
     {
         myName = name;
@@ -83,11 +87,6 @@ public class Turtle implements IArtist, IMorphable
     public String getName(){
         return myName;
     }
-    
-//end Constructors
-
-
-//Artist
     
     @Override
     public void addAllLines (List<Line> newLines)
@@ -235,8 +234,18 @@ public class Turtle implements IArtist, IMorphable
         myPosition = position;
     }
 
+    public boolean isVisible(){
+        return amVisible;
+    }
 
-    
+    public int resetTurtle(){
+        
+        this.moveTo(new Point());
+        this.myPosition.setAngle(IPosition.DEFAULT_ANGLE);
+        int d = (int) myLines.get(myLines.size()-1).length();
+        myLines.clear();
+        return d;
+    }
 
     @Override
     public IMode getMode ()
