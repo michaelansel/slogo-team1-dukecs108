@@ -24,7 +24,7 @@ public class PanelFactory
 	{
 		try{
 			resources = ResourceManager.getInstance();
-			resources.addResourcesFromFile("panel");
+			resources.addResourcesFromFile("panel","slogo.view.resources");
 			Class className = Class.forName(resources.getString(classNameString));
 			JPanel obj= (JPanel) className.newInstance();
 			

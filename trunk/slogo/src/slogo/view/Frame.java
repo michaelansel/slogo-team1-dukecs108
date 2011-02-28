@@ -34,7 +34,7 @@ public class Frame extends JFrame
 	}
 	private void setUpFrame()
 	{
-        resources.addResourcesFromFile("view");
+        resources.addResourcesFromFile("view","slogo.view.resources");
         setTitle(resources.getString("title"));
         int[] size = resources.getIntegerArray("size", "x");
         setSize(size[0],size[1]);
