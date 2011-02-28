@@ -4,5 +4,8 @@ import javax.swing.JPanel;
 
 public class GoPanel extends JPanel
 {
-
+	public GoPanel()
+	{
+		super();
+	}
 }
