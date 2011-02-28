@@ -9,7 +9,7 @@ public class Main
     /**
      * @param args
      */
-    public static void main (String[] args)
+    /*public static void main (String[] args)
     {
         ParserResult result = null;
         try
@@ -22,6 +22,15 @@ public class Main
         }
         System.out.println(result);
         return;
-    }
+    }*/
+	public static void main(String[] args) {
+        //Schedule a job for the event-dispatching thread:
+        //creating and showing this application's GUI.
+        javax.swing.SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+                new Frame();
+            }
+        });
+	}
 
 }
