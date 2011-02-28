@@ -7,6 +7,7 @@ import java.util.HashMap;
 import javax.swing.*;  
 
 import slogo.view.panel.PanelFactory;
+import slogo.view.panel.TextPanel;
 import util.resources.ResourceManager;
 
 /**
