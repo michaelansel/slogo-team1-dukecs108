@@ -6,7 +6,9 @@ import java.util.HashMap;
 
 import javax.swing.*;  
 
+import slogo.view.panel.PanelFactory;
 import util.resources.ResourceManager;
+import util.reflection.Reflection;
 
 public class Frame extends JFrame
 {
@@ -15,7 +17,8 @@ public class Frame extends JFrame
 	 */
 	private final long serialVersionUID = 1L;
 	private HashMap<String,JPanel> myPanels;
-	JFrame myFrame;
+	PanelFactory panelFactory;
+	
 	
 	public Frame()
 	{
@@ -65,9 +68,8 @@ public class Frame extends JFrame
 	{
 		int[] size = panelResources.getIntegerArray(frameType+"Size", "x");
 		int[] location = panelResources.getIntegerArray(frameType+"Location");
-		String className = panelResources.getString(frameType);
 		
-		JPanel drawPanel = (JPanel)(className.newInstance());
+		JPanel drawPanel = PanelFactory.createPanel(panelResources.getString(frameType));
 		drawPanel.setBounds(location[0],location[1],size[0],size[1]);
 		drawPanel.setBorder(BorderFactory.createLineBorder(Color.black,panelResources.getInteger(frameType+"Border")));
 
@@ -86,5 +88,4 @@ public class Frame extends JFrame
 		modifiedPanel.paint(g);
 		getContentPane().add(modifiedPanel);
 	}
-
 }
