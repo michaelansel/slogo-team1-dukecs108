@@ -34,7 +34,8 @@ public class Line extends Line2D{
 	    }
 	
 	public Line(Trace trace, Point2D point, double distance, double angle){
-        this(trace, point, new Point2D.Double((distance*Math.cos(angle)), (distance*Math.sin(angle))));
+        this(trace, point, new Point2D.Double(point.getX()+(distance*Math.cos(angle)),
+                                              point.getY()+(distance*Math.sin(angle))));
         
     }
 	
@@ -173,6 +174,16 @@ public class Line extends Line2D{
     {
         //TODO Huh?
         return null;
+    }
+    
+    @Override
+    public String toString ()
+    {
+        return String.format("Line[(%f,%f),(%f,%f))",
+                             getX1(),
+                             getY1(),
+                             getX2(),
+                             getY2());
     }
     
 }
