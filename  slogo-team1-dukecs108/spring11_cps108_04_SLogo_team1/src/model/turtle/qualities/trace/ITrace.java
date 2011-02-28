@@ -20,16 +20,6 @@ public interface ITrace
     final public static Stroke VERYHEAVY_STROKE = new BasicStroke(11);
     
 
-    public abstract void setStrokeSize (int strokeSize);
-
-
-    public abstract int getThickness ();
-
-
-    public abstract void setStrokeColor (TraceColor color);
-
-
-    public abstract TraceColor getColor ();
     
     public void setPen (Pen myPen);
 

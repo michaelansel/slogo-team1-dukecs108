@@ -5,6 +5,7 @@ import java.awt.Rectangle;
 import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
+import java.awt.geom.Line2D.Double;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
@@ -23,18 +24,18 @@ import model.turtle.qualities.trace.Trace;
  * @author Julian
  *
  */
-public class Line implements Iterable<Point> {
+public class Line {
 
 	private Trace myTrace;
-	private List<Point> myPoints;
+	private Line2D myLine;
 	
 	 public Line (Trace trace, IPosition position, double distance)
 	    {
 	     this(trace, position.getLocation(), distance, position.getAngle());
 	    }
 	
-	public Line(Trace trace, Point start, double distance, double angle){
-        this(trace, start, new Point((int) (distance*Math.cos(angle)), (int)(distance*Math.sin(angle))));
+	public Line(Trace trace, Point2D point, double distance, double angle){
+        this(trace, point, new Point((int) (distance*Math.cos(angle)), (int)(distance*Math.sin(angle))));
         
     }
 	
@@ -43,16 +44,17 @@ public class Line implements Iterable<Point> {
 	    
 	}
 	
-	public Line(Trace trace, Point start, Point end){
-	    myTrace = trace;
-	    myPoints = createPointList(start, end);
+	public Line(Trace trace, Point2D start, Point2D end){
+	    this(trace, new Line2D.Double(start, end));
 	  
 	}
 	
-		
-	
-	
-   
+
+    public Line (Trace trace, Line2D line)
+    {
+        myTrace = trace;
+        myLine = line;
+    }
 
     public void setTrace (Trace myTrace)
     {
@@ -64,109 +66,40 @@ public class Line implements Iterable<Point> {
         return myTrace;
     }
 
-      
-    
-    /**
-     * iterates through all points in the line.
-     */
-    @Override
-    public Iterator<Point> iterator ()
+
+    public List<Line2D> split ()
     {
-        return myPoints.iterator();
+        //TODO write this
+        return null;
     }
 
 
-    public List<Point> createPointList (Point start, Point end)
-    {
-        
-        return createPointList(start, end.getX()-start.getX(), end.getY()-start.getY());
-    }
 
-    public List<Point> createPointList (Point start, double dx, double dy)
+    public Point2D getStartPoint ()
     {
-        
-        //TODO: Make this work
-        List<Point> points = new ArrayList<Point>();
-        points.add(start);
-        int xStart = (int) start.getX();
-        int yStart = (int) start.getY();
-        
-        if ((dx+dy) == 0){
-            //do nothing
-        }
-        else if( dx == 0){
-            for (int i = 0; i < dy; i++)
-                points.add(new Point(xStart, yStart+i));
-        }
-        else if(dy == 0){
-            for (int i = 0; i < dx; i++)
-                points.add(new Point(xStart+i, yStart));
-        }
-        else if (dx == dy)
-        {
-            for (int i = 0; i < dx; i++)
-                points.add(new Point(xStart+i, yStart+i));
-        }
-        else if (dx > dy){
-            
-            for (int i = 0; i < dy; i++)
-                points.addAll(createPointList(new Point((int) (xStart+(i*dx/dy)), yStart+i), (dx/dy)-1, 0));
-            
-        }
-        else if (dy < dx){
-            for (int i = 0; i < dy; i++)
-                points.addAll(createPointList(new Point( xStart+i, (int) (yStart+(i*dy/dx))), (dy/dx)-1, 0));
-        }
-        
-        return points;
-    }
-
-    public Point getStartPoint ()
-    {
-        return myPoints.get(0);
+        return myLine.getP1();
     }
     
     
-    public Point getEndPoint ()
+    public Point2D getEndPoint ()
     {
-        return myPoints.get(myPoints.size()-1);
+        return myLine.getP2();
     }
 
     public boolean intersects(Line l){
-        return !this.pointsOfIntersection(l).isEmpty();
+        return myLine.intersectsLine(l.getLine());
         
     }
     
     public boolean containsPoint(Point p){
-        return myPoints.contains(p);
+        return myLine.contains(p);
     }
     
-    public Collection<Point> pointsOfIntersection(Line l){
-        Collection<Point> points = new ArrayList<Point>();
-        points.addAll(myPoints);
-        points.retainAll(l.getPoints());
-        return points;
-    }
-    
-    
-    
-    
-    public Collection<Point> getPoints ()
+    public Line2D getLine ()
     {
-        return myPoints;
+        return myLine;
     }
 
-    public Line createMirror () throws CloneNotSupportedException
-    {
-     
-        Line temp = (Line) this.clone();
-        for (Point p: temp){
-            p.setLocation(-p.getX(), -p.getY());
-        }
-        return temp;
-    
-        
-    }
 
     public double endDistance ()
     {
@@ -174,5 +107,16 @@ public class Line implements Iterable<Point> {
     }
 
 
+    public void draw(){
+        myTrace.getGraphics().draw(myLine);
+    }
+
+    public Line mirror ()
+    {
+        return new Line(myTrace, new Line2D.Double( -myLine.getX1(), 
+                                 -myLine.getY1(), 
+                                 -myLine.getX2(), 
+                                 -myLine.getY2()));
+    }
 
 }

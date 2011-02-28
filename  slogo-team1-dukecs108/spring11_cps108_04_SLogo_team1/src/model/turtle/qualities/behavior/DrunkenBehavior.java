@@ -14,12 +14,12 @@ public class DrunkenBehavior extends BehaviorDecorator {
     public Line applyBehavior (Line line)
     {
         
-        inebriate(line.getStartPoint(),line.getPoints().size());
+        inebriate(line);
         
         return myDecoratedBehavior.applyBehavior(line);
     }
 
-    private void inebriate (Point point, int numPoints)
+    private void inebriate (Line line)
     {
         Random randomGenerator = new Random();
         

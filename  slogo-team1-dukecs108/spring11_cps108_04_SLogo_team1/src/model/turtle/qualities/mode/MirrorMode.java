@@ -15,8 +15,13 @@ public class MirrorMode extends DrawModeDecorator
     @Override
     public List<Line> applyMode (Collection<Line> lines)
     {
-        // TODO Auto-generated method stub
-        return null;
+        List<Line> mirrored = new ArrayList<Line>();
+        for(Line line: lines){
+            mirrored.add(line);
+            mirrored.add(line.mirror());
+        }
+        
+        return (List<Line>) myDecoratedMode.applyMode(mirrored);
     }
 
     

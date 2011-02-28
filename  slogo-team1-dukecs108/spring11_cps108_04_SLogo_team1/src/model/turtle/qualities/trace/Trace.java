@@ -11,7 +11,7 @@ import model.line.Line;
 import model.turtle.qualities.trace.pen.IPen;
 import model.turtle.qualities.trace.pen.Pen;
 
-public abstract class Trace implements ITrace
+public class Trace implements ITrace
 {
 
     private Graphics2D myGraphics;
@@ -40,5 +40,12 @@ public abstract class Trace implements ITrace
         myPen = pen;
     }
 
+    public Graphics2D getGraphics ()
+    {
+        
+        return myGraphics;
+    }
+
+    
     
 }

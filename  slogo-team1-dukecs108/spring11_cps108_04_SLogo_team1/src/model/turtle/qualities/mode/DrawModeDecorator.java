@@ -3,24 +3,24 @@ package model.turtle.qualities.mode;
 
 public abstract class DrawModeDecorator implements IMode
 {
-    public IMode myDecoratedBehavior;
+    public IMode myDecoratedMode;
 
     public DrawModeDecorator()
     {
-        myDecoratedBehavior = new DefaultDrawMode();
+        myDecoratedMode = new DefaultDrawMode();
     }
 
 
     public DrawModeDecorator(IMode mode)
     {
-        myDecoratedBehavior = mode;
+        myDecoratedMode = mode;
     }
 
 
 
    public void setSubMode (IMode mode)
    {
-       myDecoratedBehavior = mode;
+       myDecoratedMode = mode;
        
    }
 }

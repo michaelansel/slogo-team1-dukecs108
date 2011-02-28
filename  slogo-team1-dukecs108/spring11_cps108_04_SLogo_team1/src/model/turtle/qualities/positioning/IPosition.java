@@ -1,6 +1,7 @@
 package model.turtle.qualities.positioning;
 
 import java.awt.Point;
+import java.awt.geom.Point2D;
 
 public interface IPosition
 {
@@ -12,9 +13,9 @@ public interface IPosition
     public final static double WEST = 180.0;
     public final static double DEFAULT_ANGLE = NORTH;
     
-    public abstract void setLocation (Point loc);
+    public abstract void setLocation (Point2D point);
 
-    public abstract Point getLocation ();
+    public abstract Point2D getLocation ();
 
     public abstract double getX ();
 

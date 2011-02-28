@@ -23,13 +23,13 @@ import model.turtle.qualities.trace.pen.Pen;
 
 public class Turtle implements IArtist, IMorphable
 {
+    private static final File DEFAULT_IMAGE = new File("");
     private IBehavior myBehavior;
     private IMode myMode;
     private File myImage;
     private IPosition myPosition;
     private Trace myTrace;
     private List<Line> myLines;
-    private Graphics2D g;
   
 
 //Constructors
@@ -41,14 +41,13 @@ public class Turtle implements IArtist, IMorphable
 
     public Turtle (IPosition position)
     {
-        this(position, new SolidTrace());
+        this(position, new Trace());
     }
 
     public Turtle (IPosition position, Trace trace)
     {
-        this(position, trace, TurtleImage.DEFAULT);
+        this(position, trace, DEFAULT_IMAGE);
     }
-
 
     public Turtle (IPosition position, Trace trace, File image)
     {
@@ -85,7 +84,6 @@ public class Turtle implements IArtist, IMorphable
     public void addLine (Line newLine)
     {
         myLines.add(newLine);
-        
     }
 
 
@@ -162,8 +160,6 @@ public class Turtle implements IArtist, IMorphable
     @Override
     public void move (double distance)
     {
-        Collection<Line> temp = new ArrayList<Line>();
-        temp.add(new Line( myTrace, myPosition, distance));
         myLines.add(myBehavior.applyBehavior(new Line( myTrace, myPosition, distance)));
         myPosition.setLocation(myLines.get(myLines.size()-1).getEndPoint());
     }
@@ -229,24 +225,11 @@ public class Turtle implements IArtist, IMorphable
     }
 
 
-    
-
 
     @Override
     public Iterable<Line> linesToDraw(int start)
     {
         return myMode.applyMode(myLines.subList(start, myLines.size()-1));
     }
-   
-
-
-  
-    
-    
-    
-
-
-
-   
 
 }
