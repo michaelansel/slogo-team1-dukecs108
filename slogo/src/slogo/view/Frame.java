@@ -1,10 +1,6 @@
 package slogo.view;
-import java.awt.Canvas;
 import java.awt.Color;
-import java.awt.Font;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Insets;
 import java.awt.event.KeyEvent;
 import java.util.HashMap;
 
@@ -19,43 +15,44 @@ public class Frame extends JFrame
 	 */
 	private final long serialVersionUID = 1L;
 	private HashMap<String,JPanel> myPanels;
-	ResourceManager resources;
 	JFrame myFrame;
 	
 	public Frame()
 	{
-        resources = ResourceManager.getInstance();
+        ResourceManager resources = ResourceManager.getInstance();
         resources.addResourcesFromFile("view");
-		myPanels = new HashMap<String,JPanel>();
+
+        //panelResources.addResourcesFromFile("panel");
         
+		myPanels = new HashMap<String,JPanel>();
         //set up basic characteristics
         setTitle(resources.getString("title"));
-        int[] size = resources.getIntegerArray("totalSize", "x");
+        int[] size = resources.getIntegerArray("size", "x");
         setSize(size[0],size[1]);
 		setLayout(null);
-		
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        
+        //Create File menu from view.properties
+		createFileMenu(resources);
 		
-		createFileMenu();
-		
-		String[] panelsToAdd = {"draw","select","history","text","go"};
-		
-		for(String toAdd : panelsToAdd)
+		//moving onto panel resource package now that frame is built
+        resources.addResourcesFromFile("panel");		
+		for(String toAdd : new String[] {"turtle","select","history","text","go"} )
 		{
-			createPanel(toAdd);
+			createPanel(toAdd, resources);
 		}
 
 		setVisible(true);
 	    updatePanel("history");
 	    //repaint();
 	}
-	private void createFileMenu()
+	private void createFileMenu(ResourceManager frameResources)
 	{
 		JMenuBar fileMenuBar = new JMenuBar();
-		JMenu fileMenu = new JMenu(resources.getString("menuTitle"));
+		JMenu fileMenu = new JMenu(frameResources.getString("menuTitle"));
 		fileMenu.setMnemonic(KeyEvent.VK_F);
 		
-		String[] menuOptions = resources.getStringArray("menuOptions");
+		String[] menuOptions = frameResources.getStringArray("menuOptions");
 		for(String option : menuOptions)
 		{
 			fileMenu.add(new JMenuItem(option));
@@ -64,14 +61,15 @@ public class Frame extends JFrame
 		fileMenuBar.add(fileMenu);
 		this.setJMenuBar(fileMenuBar);
 	}
-	private void createPanel(String frameType)
+	private void createPanel(String frameType, ResourceManager panelResources)
 	{
-		int[] size = resources.getIntegerArray(frameType+"Size", "x");
-		int[] location = resources.getIntegerArray(frameType+"Location");
+		int[] size = panelResources.getIntegerArray(frameType+"Size", "x");
+		int[] location = panelResources.getIntegerArray(frameType+"Location");
+		String className = panelResources.getString(frameType);
 		
-		JPanel drawPanel = new JPanel();
+		JPanel drawPanel = (JPanel)(className.newInstance());
 		drawPanel.setBounds(location[0],location[1],size[0],size[1]);
-		drawPanel.setBorder(BorderFactory.createLineBorder(Color.black,resources.getInteger(frameType+"Border")));
+		drawPanel.setBorder(BorderFactory.createLineBorder(Color.black,panelResources.getInteger(frameType+"Border")));
 
 		drawPanel.setBackground(Color.white);
 		myPanels.put(frameType,drawPanel);
