@@ -11,6 +11,8 @@ public class AllTests
     {
         TestSuite suite = new TestSuite("Test for util.parser.grammar.test");
         //$JUnit-BEGIN$
+        suite.addTestSuite(GrammarParseTreeNodeTest.class);
+        suite.addTestSuite(GrammarParserTest.class);
         suite.addTestSuite(GrammarLexerTest.class);
         //$JUnit-END$
         return suite;

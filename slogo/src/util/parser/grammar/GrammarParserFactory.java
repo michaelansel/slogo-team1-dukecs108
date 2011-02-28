@@ -19,24 +19,22 @@ import util.parser.ParserResult;
 public class GrammarParserFactory
 {
 
-    private Map<String, AnonymousRule> myAnonymousRules;
-    private Map<String, GrammarParseTreeNode> myParseTrees;
+    private Map<String, ParseTreeNode> myParseTrees;
     private ResourceBundle mySyntax;
 
 
     public GrammarParserFactory (ResourceBundle syntax) throws ParserException
     {
         mySyntax = syntax;
-        myAnonymousRules = new HashMap<String, AnonymousRule>();
-        myParseTrees = buildParseTrees(syntax);
+        myParseTrees = buildParseTrees(mySyntax);
     }
 
 
-    private Map<String, GrammarParseTreeNode> buildParseTrees (ResourceBundle syntax)
+    private Map<String, ParseTreeNode> buildParseTrees (ResourceBundle syntax)
         throws ParserException
     {
-        Map<String, GrammarParseTreeNode> parseTrees =
-            new HashMap<String, GrammarParseTreeNode>();
+        Map<String, ParseTreeNode> parseTrees =
+            new HashMap<String, ParseTreeNode>();
         for (String ruleName : syntax.keySet())
         {
             GrammarParser parser =
@@ -44,14 +42,10 @@ public class GrammarParserFactory
             ParserResult parsedGrammar = parser.run();
             if (parsedGrammar.getList().size() != 1) throw new ParserException("Improper ParserResult: " +
                                                                                parsedGrammar.toString());
-            if (parsedGrammar.getList().get(0) instanceof AnonymousRule) myAnonymousRules.put(ruleName,
-                                                                                              (AnonymousRule) parsedGrammar.getList()
-                                                                                                                           .get(0));
-            else if (parsedGrammar.getList().get(0) instanceof GrammarParseTreeNode)
+            if (parsedGrammar.getList().get(0) instanceof ParseTreeNode)
             {
                 parseTrees.put(ruleName,
-                               (GrammarParseTreeNode) parsedGrammar.getList()
-                                                                   .get(0));
+                               (ParseTreeNode) parsedGrammar.getList().get(0));
             }
             else throw new RuntimeException("Invalid result: " +
                                             parsedGrammar.getList()
@@ -62,7 +56,7 @@ public class GrammarParserFactory
     }
 
 
-    public AbstractParser create (AbstractLexer lexer)
+    public AbstractParser create (AbstractLexer lexer) throws ParserException
     {
         final AbstractParserRule rootRule = new AbstractParserRule()
         {};
@@ -81,19 +75,21 @@ public class GrammarParserFactory
         };
 
         Map<String, AbstractParserRule> rules =
-            new HashMap<String, AbstractParserRule>(myAnonymousRules);
-        for (AnonymousRule rule : myAnonymousRules.values())
-            rule.setRules(rules);
-        for (Map.Entry<String, GrammarParseTreeNode> entry : myParseTrees.entrySet())
+            new HashMap<String, AbstractParserRule>();
+        for (Map.Entry<String, ParseTreeNode> entry : myParseTrees.entrySet())
         {
             String ruleName = entry.getKey();
-            GrammarParseTreeNode node = entry.getValue();
-            node.setRules(rules);
-            AbstractParserRule rule = node.toParserRule(parser);
+            ParseTreeNode node = entry.getValue().clone();
+            AbstractParserRule rule = node.toParserRule(parser, rules);
             rule.setRuleName(ruleName);
             rules.put(ruleName, rule);
             parser.addRule(ruleName, rule);
         }
+        for (int i = 0; i < 10; i++)
+            System.out.println();
+        System.out.println("Done parsing syntax. Initializing parsed rules.");
+        for (int i = 0; i < 10; i++)
+            System.out.println();
         for (AbstractParserRule rule : rules.values())
             rule.initializeRule();
 

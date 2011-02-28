@@ -15,7 +15,7 @@ public class GrammarLexer extends StringLexer
 {
     public static final class Token
     {
-        public static ITokenRule Anonymous;
+//        public static ITokenRule Anonymous;
         public static ITokenRule BeginGroup;
         public static ITokenRule BeginToken;
         public static ITokenRule Constant;

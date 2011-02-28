@@ -14,7 +14,7 @@ import util.parser.AbstractParser;
 import util.parser.AbstractParserRule;
 import util.parser.ParserException;
 import util.parser.grammar.GrammarLexer;
-import util.parser.grammar.GrammarParseTreeNode;
+import util.parser.grammar.ParseTreeNode;
 
 
 /**
@@ -32,39 +32,24 @@ public class GrammarParseTreeNodeTest extends TestCase
 
 
     /**
-     * Test method for
-     * {@link util.parser.grammar.GrammarParseTreeNode#setRules(java.util.Map)}.
-     */
-    @Test
-    public final void testSetRules ()
-    {
-        fail("Not yet implemented"); // TODO
-    }
-
-
-    /**
-     * Test method for
-     * {@link util.parser.grammar.GrammarParseTreeNode#toParserRule()}.
+     * Test method for {@link util.parser.grammar.ParseTreeNode#toParserRule()}.
      * 
      * @throws ParserException
      */
     @Test
     public final void testToParserRule () throws ParserException
     {
-        GrammarParseTreeNode exactlyOne1 =
-            new GrammarParseTreeNode("ExactlyOne", "Constant");
-        GrammarParseTreeNode exactlyOne2 =
-            new GrammarParseTreeNode("SomeWhitespace");
-        GrammarParseTreeNode someWhitespace =
-            new GrammarParseTreeNode("ExactlyOne", "Whitespace");
+        ParseTreeNode exactlyOne1 = new ParseTreeNode("ExactlyOne", "Constant");
+        ParseTreeNode exactlyOne2 = new ParseTreeNode("SomeWhitespace");
+        ParseTreeNode someWhitespace =
+            new ParseTreeNode("ExactlyOne", "Whitespace");
 
-        GrammarParseTreeNode firstOf =
-            new GrammarParseTreeNode("FirstOf",
-                                     Arrays.asList(new GrammarParseTreeNode[] {
-                                             exactlyOne1,
-                                             exactlyOne2 }));
-        List<GrammarParseTreeNode> nodes =
-            Arrays.asList(new GrammarParseTreeNode[] {
+        ParseTreeNode firstOf =
+            new ParseTreeNode("FirstOf", Arrays.asList(new ParseTreeNode[] {
+                    exactlyOne1,
+                    exactlyOne2 }));
+        List<ParseTreeNode> nodes =
+            Arrays.asList(new ParseTreeNode[] {
                     exactlyOne1,
                     exactlyOne2,
                     someWhitespace,
@@ -75,10 +60,9 @@ public class GrammarParseTreeNodeTest extends TestCase
         AbstractParser parser = new AbstractParser(new GrammarLexer("hello"))
         {};
 
-        for (GrammarParseTreeNode node : nodes)
+        for (ParseTreeNode node : nodes)
         {
-            node.setRules(rules);
-            AbstractParserRule rule = node.toParserRule(parser);
+            AbstractParserRule rule = node.toParserRule(parser, rules);
             if (node.equals(someWhitespace))
             {
                 rule.setRuleName("SomeWhitespace");
@@ -89,10 +73,10 @@ public class GrammarParseTreeNodeTest extends TestCase
 
         for (AbstractParserRule rule : rules.values())
             rule.initializeRule();
-        for (GrammarParseTreeNode node : nodes)
-            node.toParserRule(parser).initializeRule();
+        for (ParseTreeNode node : nodes)
+            node.toParserRule(parser, rules).initializeRule();
 
-        System.out.println(firstOf.toParserRule(parser).evaluate());
+        System.out.println(firstOf.toParserRule(parser, rules).evaluate());
     }
 
 }

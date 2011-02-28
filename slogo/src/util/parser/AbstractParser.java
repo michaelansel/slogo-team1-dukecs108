@@ -5,6 +5,7 @@ package util.parser;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -70,15 +71,18 @@ public abstract class AbstractParser
                 public ParserResult evaluate () throws ParserException
                 {
                     ParserResult result = new ParserResult();
+                    Token nextToken = null;
                     if (hasNextToken() &&
-                        peekNextToken().tokenRule == myTokenRule)
+                        (nextToken = peekNextToken()).tokenRule == myTokenRule)
                     {
                         result.add(consumeNextToken());
                         System.out.println("ExactlyOne returning: " +
                                            result.toString());
                         return result;
                     }
-                    parseError();
+                    parseError(String.format("Token Mismatch! Expected: %s Got: %s",
+                                             myTokenRule,
+                                             nextToken));
                     return null;
                 }
 
@@ -136,12 +140,12 @@ public abstract class AbstractParser
                     }
                     catch (ParserException e)
                     {
-                        System.out.println("--Caught! Restoring from checkpoint...");
+                        System.out.println("--Caught! Restoring from checkpoint... ("+e.toString().replaceAll("\n", " | ")+")");
                         restoreCheckpoint(checkpoint);
                         System.out.println("Tokens: " + myTokens.toString());
                     }
                 }
-                parseError();
+                parseError("FirstOf never matched!");
                 return null;
             }
 
@@ -292,8 +296,16 @@ public abstract class AbstractParser
 
     protected void parseError () throws ParserException
     {
+        parseError("");
+    }
+
+
+    protected void parseError (String message) throws ParserException
+    {
         // TODO Externalize strings, ParserException, print debug info
-        throw new ParserException("Remaining Tokens: " + myTokens.toString());
+        if (!message.isEmpty()) message += "\n";
+        throw new ParserException(message + "Remaining Tokens: " +
+                                  myTokens.toString());
     }
 
 
@@ -416,5 +428,11 @@ public abstract class AbstractParser
                 return "ZeroOrMoreRule";
             }
         };
+    }
+
+
+    public Collection<String> getRuleNames ()
+    {
+        return myRules.keySet();
     }
 }
