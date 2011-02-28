@@ -80,7 +80,7 @@ public class ResourceManager implements Iterable<String>
      */
     public String getString (String key)
     {
-        return myResources.getString(key);
+    	return myResources.getString(key);
     }
 
 
@@ -254,8 +254,8 @@ public class ResourceManager implements Iterable<String>
     {
         return root.getClass().getResource(path);
     }
-
-
+    
+    
     /**
      * Returns the name of the class to use in determining which resource 
      * file to use.
