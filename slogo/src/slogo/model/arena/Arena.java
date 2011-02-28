@@ -12,7 +12,7 @@ public class Arena
     private static ArrayList<Turtle> myTurtleList;
     private Map<String, String> myVariables;
     private static Map<Integer, String> myHistory;
-    private Integer currTurtle;
+    private static int currTurtle;
     private Graphics2D myGraphics;
 
     public Arena(Graphics g){
@@ -66,7 +66,7 @@ public class Arena
         this.myTurtleList = myTurtles;
     }
 
-    public ArrayList<Turtle> getTurtleList ()
+    public static ArrayList<Turtle> getTurtleList ()
     {
         return myTurtleList;
     }
@@ -86,7 +86,7 @@ public class Arena
         this.myHistory = myHistory;
     }
 
-    public Map<Integer, String> getHistory ()
+    public static Map<Integer, String> getHistory ()
     {
         return myHistory;
     }
@@ -95,7 +95,10 @@ public class Arena
     {
         this.currTurtle = currTurtle;
     }
-
+    public static int getCurrentIndex ()
+    {
+    	return currTurtle;
+    }
     public Turtle getCurrentTurtle ()
     {
         return myTurtleList.get(currTurtle);
