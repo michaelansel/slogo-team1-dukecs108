@@ -3,6 +3,11 @@ package slogo.model.arena.turtle.qualities.behavior;
 import slogo.util.line.Line;
 
 
+/**
+ * applies the default (no) behavior to line
+ * @author Julian Genkins
+ *
+ */
 public class DefaultBehavior implements IBehavior {
 
     @Override

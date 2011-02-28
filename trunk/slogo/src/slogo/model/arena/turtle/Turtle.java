@@ -15,7 +15,12 @@ import slogo.util.line.Line;
 import slogo.util.pen.Pen;
 import slogo.util.trace.Trace;
 
-
+/**
+ * The "turtle" which serves as the model for responding to the user's commands
+ * Overloaded with a lot of useful informations
+ * @author Julian Genkins
+ *
+ */
 public class Turtle implements IArtist, IMorphable
 {
     private static final File DEFAULT_IMAGE = new File(""); //TODO: Write in default filepath

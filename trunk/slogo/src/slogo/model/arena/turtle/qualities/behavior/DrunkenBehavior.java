@@ -4,6 +4,11 @@ import java.util.Random;
 import slogo.util.line.Line;
 
 
+/**
+ * uses a random walk to generate a "drunken" path in place of the line
+ * @author Julian Genkins
+ *
+ */
 public class DrunkenBehavior extends BehaviorDecorator {
 
     @Override

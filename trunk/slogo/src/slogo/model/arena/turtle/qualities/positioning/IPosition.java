@@ -3,6 +3,12 @@ package slogo.model.arena.turtle.qualities.positioning;
 import java.awt.Point;
 import java.awt.geom.Point2D;
 
+
+/**
+ * An interface to make an object positionable on a cartesian coordinate plane
+ * @author Julian Genkins
+ *
+ */
 public interface IPosition
 {
   

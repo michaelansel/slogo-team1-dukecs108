@@ -6,6 +6,11 @@ import java.util.List;
 import slogo.util.line.Line;
 
 
+/**
+ * Mirrors turtle path around origin
+ * @author Julian Genkins
+ *
+ */
 public class MirrorMode extends DrawModeDecorator
 {
 
