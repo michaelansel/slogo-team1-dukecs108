@@ -2,10 +2,14 @@ package slogo.view;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
+import java.io.File;
 import java.util.HashMap;
 
 import javax.swing.*;  
 
+import slogo.model.arena.Arena;
+import slogo.model.arena.turtle.Turtle;
+import slogo.model.arena.turtle.qualities.positioning.Position;
 import slogo.view.panel.PanelFactory;
 import slogo.view.panel.TextPanel;
 import util.resources.ResourceManager;
@@ -28,9 +32,17 @@ public class Frame extends JFrame
 		
 		setUpFrame();        
         setUpPanels();
-       
+       /*	For testing purposes only:*/
+        
+        new Arena();
+        Turtle jim = new Turtle("Turtle Jim");
+        File pic = new File("src/image/Turtle.jpg");
+        jim.setImage(pic);
+        jim.setPosition(new Position(50,50));
+		slogo.model.arena.Arena.addTurtle(jim);
+		
+        /**/
 		setVisible(true);
-	    //repaint();
 	}
 	private void setUpFrame()
 	{
