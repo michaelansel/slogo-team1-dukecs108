@@ -15,6 +15,8 @@ public abstract class AbstractParserRule
 
     public ParserResult evaluate () throws ParserException
     {
+        if (!initialized()) throw new RuntimeException("Uninitialized Rule: " +
+                                                       toString());
         return processResult(myRule.evaluate());
     }
 

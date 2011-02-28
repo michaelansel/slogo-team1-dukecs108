@@ -4,6 +4,7 @@
 package slogo.model.parser;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -63,7 +64,6 @@ public class CommandLexer extends AbstractLexer
         List<Token> tokens = new ArrayList<Token>();
         for (Object o : getInput())
             if (o instanceof Token) tokens.add(translateToken((Token) o));
-            // TODO Uncomment when Expressions are implemented
             else if (o instanceof Expression) tokens.add(getTokenRuleByName("Expression").makeToken(o));
             else throw new RuntimeException("Unrecognizable input: " +
                                             o.toString());
@@ -73,29 +73,13 @@ public class CommandLexer extends AbstractLexer
 
     private Token translateToken (final Token token)
     {
-        // TODO Translate Slogo tokens to SlogoCommand tokens
-        if (token.tokenRule == slogo.model.parser.SlogoLexer.Token.Constant) return getTokenRuleByName("Expression").makeToken(new Expression()
+        StringLexer lexer = new StringLexer((String) token.value)
         {
-            @Override
-            public String toString ()
             {
-                return "FakeConstantExpression(" + ((String) token.value) + ")";
+                setTokenRules(CommandLexer.stringRules);
             }
-        });
-        if (token.tokenRule == SlogoLexer.Token.Command)
-        {
-            StringLexer lexer = new StringLexer((String) token.value)
-            {
-                @Override
-                public Collection<ITokenRule> getTokenRules ()
-                {
-                    return CommandLexer.stringRules;
-                }
-            };
-            return lexer.tokenize().get(0);
-        }
-
-        return token;
+        };
+        return lexer.tokenize().get(0);
     }
 
 }

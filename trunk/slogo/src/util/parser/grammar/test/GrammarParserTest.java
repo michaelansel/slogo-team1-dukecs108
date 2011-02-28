@@ -13,7 +13,7 @@ import util.parser.AbstractParserRule;
 import util.parser.ParserException;
 import util.parser.ParserResult;
 import util.parser.grammar.GrammarLexer;
-import util.parser.grammar.GrammarParseTreeNode;
+import util.parser.grammar.ParseTreeNode;
 import util.parser.grammar.GrammarParser;
 
 
@@ -39,7 +39,7 @@ public class GrammarParserTest extends TestCase
     @Test
     public final void testGrammarParser ()
     {
-        String input = "@(a,b) a(b(e,f,g),c(d))";
+        String input = "a(b(e,f,g),c(d))";
         AbstractParser parser = new GrammarParser(new GrammarLexer(input));
     }
 
@@ -56,15 +56,14 @@ public class GrammarParserTest extends TestCase
         AbstractParser parser = new GrammarParser(new GrammarLexer(input));
         ParserResult result = parser.run();
         System.out.println(result);
-        GrammarParseTreeNode node =
-            ((GrammarParseTreeNode) (result.getList().get(0)));
+        ParseTreeNode node =
+            ((ParseTreeNode) (result.getList().get(0)));
         Map<String, AbstractParserRule> rules =
             new HashMap<String, AbstractParserRule>();
         AbstractParser newParser =
             new AbstractParser(new GrammarLexer(",,,,,,,"))
             {};
-        node.setRules(rules);
-        AbstractParserRule rule = node.toParserRule(newParser);
+        AbstractParserRule rule = node.toParserRule(newParser, rules);
         rule.initializeRule();
         ParserResult newResult = rule.evaluate();
         assertEquals(7, newResult.getList().size());

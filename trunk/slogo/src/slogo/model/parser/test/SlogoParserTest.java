@@ -36,6 +36,8 @@ public class SlogoParserTest extends TestCase
     {
         ParserResult result = SlogoParser.parse("fd 50");
         System.out.println(result);
+        result = SlogoParser.parse("fd 50");
+        System.out.println(result);
     }
 
 }

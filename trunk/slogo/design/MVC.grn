@@ -1,0 +1,25 @@
+<uml>
+   <greenVersion="30500"/>
+   <type>
+      <name="=slogo/src<slogo.controller{IController.java[IController"/>
+      <height="-1"/>
+      <width="-1"/>
+      <x="349"/>
+      <y="75"/>
+   </type>
+   <type>
+      <name="=slogo/src<slogo.model{IModel.java[IModel"/>
+      <height="-1"/>
+      <width="-1"/>
+      <x="108"/>
+      <y="222"/>
+   </type>
+   <type>
+      <name="=slogo/src<slogo.view{IView.java[IView"/>
+      <height="-1"/>
+      <width="-1"/>
+      <x="592"/>
+      <y="209"/>
+   </type>
+</uml>
+
