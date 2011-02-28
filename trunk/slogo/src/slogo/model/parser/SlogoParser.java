@@ -122,7 +122,25 @@ public class SlogoParser
                     @Override
                     public int evaluate (Arena arena)
                     {
-                        return Integer.parseInt((String) ((Token)result.getList().get(0)).value);
+                        System.out.println("Evaluating: " + this.toString());
+                        if (((Token) result.getList().get(0)).value instanceof String)
+                        {
+                            int retval =
+                                Integer.parseInt((String) ((Token) result.getList()
+                                                                         .get(0)).value);
+                            System.out.println("Returning: " + retval);
+                            return retval;
+                        }
+                        else if (((Token) result.getList().get(0)).value instanceof Expression)
+                        {
+                            int retval =
+                                ((Expression) ((Token) result.getList().get(0)).value).evaluate(arena);
+                            System.out.println("Returning: " + retval);
+                            return retval;
+                        }
+                        else throw new RuntimeException("Can't get a number out of that... " +
+                                                        ((Token) result.getList()
+                                                                       .get(0)).value.toString());
                     }
                 });
             }
