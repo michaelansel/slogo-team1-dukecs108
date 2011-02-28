@@ -6,6 +6,11 @@ import java.util.HashMap;
 import java.util.Map;
 import slogo.model.arena.turtle.Turtle;
 
+/**
+ * The arena created in which turtles reside
+ * @author Julian Genkins
+ *
+ */
 public class Arena
 {
 
