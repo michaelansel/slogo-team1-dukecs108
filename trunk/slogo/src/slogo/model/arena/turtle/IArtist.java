@@ -1,8 +1,5 @@
 package slogo.model.arena.turtle;
 
-import java.awt.Color;
-import java.awt.Point;
-import java.util.Collection;
 import java.util.List;
 import slogo.util.line.Line;
 import slogo.util.trace.Trace;
