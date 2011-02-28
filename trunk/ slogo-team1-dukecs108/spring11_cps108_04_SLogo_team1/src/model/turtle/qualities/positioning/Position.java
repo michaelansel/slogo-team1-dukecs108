@@ -1,10 +1,11 @@
 package model.turtle.qualities.positioning;
 
 import java.awt.Point;
+import java.awt.geom.Point2D;
 
 public class Position implements IPosition
 {
-    private Point myLocation;
+    private Point2D myLocation;
     private double myAngle;
 
 //Constructors
@@ -39,7 +40,7 @@ public class Position implements IPosition
     /* (non-Javadoc)
      * @see model.turtle.positioning.IPosition#setLocation(java.awt.Point)
      */
-    public void setLocation(Point loc)
+    public void setLocation(Point2D loc)
     {
         myLocation = loc;
     }
@@ -47,7 +48,7 @@ public class Position implements IPosition
     /* (non-Javadoc)
      * @see model.turtle.positioning.IPosition#getLocation()
      */
-    public Point getLocation()
+    public Point2D getLocation()
     {
         return myLocation;
     }
@@ -58,7 +59,7 @@ public class Position implements IPosition
      */
     public double getX ()
     {
-        return myLocation.x;
+        return myLocation.getX();
     }
     
     /* (non-Javadoc)
@@ -66,7 +67,7 @@ public class Position implements IPosition
      */
     public double getY ()
     {
-        return myLocation.y;
+        return myLocation.getY();
     }
 
 
