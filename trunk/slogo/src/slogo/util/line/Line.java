@@ -19,7 +19,7 @@ import slogo.util.trace.Trace;
 /**
  * Stores the line drawn by a given function execution. Takes advantage
  * of the line2D methods.
- * @author Julian
+ * @author Julian Genkins
  *
  */
 public class Line extends Line2D{

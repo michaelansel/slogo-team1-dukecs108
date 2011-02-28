@@ -1,5 +1,10 @@
 package slogo.util.pen;
 
+/**
+ * Two states for pen, up and down. Controls whether or not a line will be drawn
+ * @author Julian
+ *
+ */
 public class Pen implements IPen
 {
 
