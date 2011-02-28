@@ -29,7 +29,6 @@ public class Frame extends JFrame
         setUpPanels();
        
 		setVisible(true);
-	    updatePanel("history");
 	    //repaint();
 	}
 	private void setUpFrame()
@@ -43,8 +42,7 @@ public class Frame extends JFrame
 		createFileMenu();
 	}
 	private void setUpPanels()
-	{
-		resources.addResourcesFromFile("panel");		
+	{		
 		for(String panelType : new String[] {"turtle","select","history","text","go"} )
 		{
 			createPanel(panelType);
@@ -66,29 +64,15 @@ public class Frame extends JFrame
 		this.setJMenuBar(fileMenuBar);
 	}
 	private void createPanel(String panelType)
-	{
-		
-		
+	{	
 		JPanel drawPanel = PanelFactory.createPanel(panelType);
-		
-		/*int[] size = resources.getIntegerArray(frameType+"Size", "x");
-		int[] location = resources.getIntegerArray(frameType+"Location");
-		drawPanel.setBounds(location[0],location[1],size[0],size[1]);
-		drawPanel.setBorder(BorderFactory.createLineBorder(Color.black,resources.getInteger(frameType+"Border")));
-
-		drawPanel.setBackground(Color.white);*/
 		myPanels.put(panelType,drawPanel);
-		
 		getContentPane().add(drawPanel);
 	}
 	private void updatePanel(String toUpdate)
 	{
 		JPanel modifiedPanel = myPanels.get(toUpdate);
-		Graphics g = modifiedPanel.getGraphics();
-		g.setColor(Color.blue);
-		g.fillOval(1,1,100,100);
-		g.drawString("hello",1,1);
-		modifiedPanel.paint(g);
+
 		getContentPane().add(modifiedPanel);
 	}
 }
