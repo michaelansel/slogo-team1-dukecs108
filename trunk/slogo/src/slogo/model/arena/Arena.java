@@ -12,7 +12,7 @@ public class Arena
     private static ArrayList<Turtle> myTurtleList;
     private Map<String, String> myVariables;
     private static Map<Integer, String> myHistory;
-    private Turtle currTurtle;
+    private Integer currTurtle;
     private Graphics2D myGraphics;
 
     public Arena(Graphics g){
@@ -22,23 +22,41 @@ public class Arena
         setGraphics((Graphics2D) g);
     }
 
+    public Arena (ArrayList<Turtle> turtlelist,
+                  Map<String, String> variables,
+                  Map<Integer, String> history,
+                  int currturtle,
+                  Graphics2D graphics)
+    {
+        myTurtleList = turtlelist;
+        myVariables = variables;
+        myHistory = history;
+        currTurtle = currturtle;
+        myGraphics = graphics;
+    }
+
+    public Arena clone(){
+        return new Arena(myTurtleList, myVariables, myHistory, currTurtle, myGraphics);
+    }
+    
+    
     public void addTurtle(){
-        addTurtle(new Turtle());
+        addTurtle(new Turtle("Turtle " + myTurtleList.size()));
     }
     
     private void addTurtle (Turtle turtle)
     {
         myTurtleList.add(turtle);
-        currTurtle = getLastTurtle();
+        currTurtle = myTurtleList.size()-1;
         
     }
 
-    private Turtle getLastTurtle ()
+    public Turtle getLastTurtle()
     {
         return getTurtle(myTurtleList.size()-1);
     }
 
-    private Turtle getTurtle (int index)
+    public Turtle getTurtle (int index)
     {
         return myTurtleList.get(index);
     }
@@ -48,7 +66,7 @@ public class Arena
         this.myTurtleList = myTurtles;
     }
 
-    public static ArrayList<Turtle> getTurtleList ()
+    public ArrayList<Turtle> getTurtleList ()
     {
         return myTurtleList;
     }
@@ -68,19 +86,19 @@ public class Arena
         this.myHistory = myHistory;
     }
 
-    public static Map<Integer, String> getHistory ()
+    public Map<Integer, String> getHistory ()
     {
         return myHistory;
     }
 
-    public void setCurrentTurtle (Turtle currTurtle)
+    public void setCurrentTurtle (Integer currTurtle)
     {
         this.currTurtle = currTurtle;
     }
 
     public Turtle getCurrentTurtle ()
     {
-        return currTurtle;
+        return myTurtleList.get(currTurtle);
     }
 
     public void setGraphics (Graphics2D myGraphics)
