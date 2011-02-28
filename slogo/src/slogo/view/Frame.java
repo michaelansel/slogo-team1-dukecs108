@@ -4,6 +4,8 @@ import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 import javax.swing.*;  
 
@@ -21,8 +23,7 @@ import util.resources.ResourceManager;
 public class Frame extends JFrame
 {
 	private static final long serialVersionUID = 1L;
-	
-	private HashMap<String,JPanel> myPanels;
+	private static HashMap<String,JPanel> myPanels;
 	private ResourceManager resources;
 	
 	public Frame()
@@ -32,13 +33,13 @@ public class Frame extends JFrame
 		
 		setUpFrame();        
         setUpPanels();
-       /*	For testing purposes only:*/
+       /*	Adds a single turtle for demonstration purposes:*/
         
         new Arena();
         Turtle jim = new Turtle("Turtle Jim");
         File pic = new File("src/image/Turtle.jpg");
         jim.setImage(pic);
-        jim.setPosition(new Position(50,50));
+        jim.setPosition(new Position(180, 165));
 		slogo.model.arena.Arena.addTurtle(jim);
 		
         /**/
@@ -77,15 +78,24 @@ public class Frame extends JFrame
 		this.setJMenuBar(fileMenuBar);
 	}
 	private void createPanel(String panelType)
-	{	
+	{
 		JPanel drawPanel = PanelFactory.createPanel(panelType);
 		myPanels.put(panelType,drawPanel);
 		getContentPane().add(drawPanel);
 	}
-	private void updatePanel(String toUpdate)
+	public void updatePanel(String toUpdate)
 	{
 		JPanel modifiedPanel = myPanels.get(toUpdate);
-
 		getContentPane().add(modifiedPanel);
+	}
+	
+	public void updatePanels()
+	{
+	    Iterator it = myPanels.entrySet().iterator();
+	    while (it.hasNext()) {
+	        Map.Entry pairs = (Map.Entry)it.next();
+	        JPanel p = myPanels.get(pairs.getKey());
+	        getContentPane().add(p);
+	    }
 	}
 }
