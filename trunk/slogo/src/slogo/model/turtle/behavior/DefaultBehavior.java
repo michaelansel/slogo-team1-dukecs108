@@ -1,7 +1,7 @@
 package slogo.model.turtle.behavior;
 
-import slogo.model.turtle.Morph;
-import slogo.util.Line;
+import slogo.deprecated.Line;
+import slogo.deprecated.Morph;
 
 
 public class DefaultBehavior implements IBehavior

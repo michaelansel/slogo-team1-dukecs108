@@ -1,6 +1,6 @@
 package slogo.model.turtle.behavior;
 
-import slogo.model.turtle.Morph;
+import slogo.deprecated.Morph;
 
 
 /**
