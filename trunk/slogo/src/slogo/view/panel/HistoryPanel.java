@@ -45,7 +45,6 @@ public class HistoryPanel extends JPanel
 			listIndex++;
 		}
 		listBox.setListData(toList);
-		
 		listBox.setFixedCellHeight((getHeight()-(BORDER_WIDTH*2))/10);
 		listBox.setFixedCellWidth(getWidth()-(BORDER_WIDTH*2));
 		
