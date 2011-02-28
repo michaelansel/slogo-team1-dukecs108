@@ -1,9 +1,6 @@
 package slogo.model.arena.turtle.qualities.behavior;
 
-import java.awt.Point;
-import java.util.Collection;
 import java.util.Random;
-import slogo.model.arena.turtle.qualities.positioning.IPosition;
 import slogo.util.line.Line;
 
 

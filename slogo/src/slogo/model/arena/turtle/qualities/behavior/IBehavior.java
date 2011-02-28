@@ -1,8 +1,5 @@
 package slogo.model.arena.turtle.qualities.behavior;
 
-import java.util.Collection;
-import slogo.deprecated.TurtleMorph;
-import slogo.model.arena.turtle.qualities.positioning.IPosition;
 import slogo.util.line.Line;
 
 

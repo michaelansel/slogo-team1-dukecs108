@@ -1,9 +1,5 @@
 package slogo.model.arena.turtle.qualities.behavior;
 
-import java.awt.Point;
-import java.util.ArrayList;
-import java.util.Collection;
-import slogo.util.line.Line;
 
 
 

@@ -44,7 +44,7 @@ public class Arena
         addTurtle(new Turtle("Turtle " + myTurtleList.size()));
     }
     
-    private void addTurtle (Turtle turtle)
+    public void addTurtle (Turtle turtle)
     {
         myTurtleList.add(turtle);
         currTurtle = myTurtleList.size()-1;
