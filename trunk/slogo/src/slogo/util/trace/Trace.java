@@ -1,4 +1,4 @@
-package slogo.util;
+package slogo.util.trace;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
@@ -13,20 +13,21 @@ import slogo.view.Pixmap;
 public class Trace implements ITrace
 {
 
-    private Graphics2D myGraphics;
+    private Stroke myStroke;
+    private Color myColor;
     private Pen myPen;
    
-    public Trace(Graphics g){
-        this(g, LIGHT_STROKE, Color.BLACK);
+    public Trace(){
+        this(LIGHT_STROKE, Color.BLACK);
     }
   
-    public Trace (Graphics g, Stroke stroke, Color color)
+    public Trace (Stroke stroke, Color color)
     {
-        myGraphics = (Graphics2D) g;
-        myGraphics.setStroke(stroke);
-        myGraphics.setColor(color);
+        setStroke(stroke);
+        setColor(color);
         myPen = new Pen();
     }
+
 
     @Override
     public Pen getPen ()
@@ -40,11 +41,27 @@ public class Trace implements ITrace
         myPen = pen;
     }
 
-    public Graphics2D getGraphics ()
+    public void setColor (Color myColor)
     {
-        
-        return myGraphics;
+        this.myColor = myColor;
     }
+
+    public Color getColor ()
+    {
+        return myColor;
+    }
+
+    public void setStroke (Stroke myStroke)
+    {
+        this.myStroke = myStroke;
+    }
+
+    public Stroke getStroke ()
+    {
+        return myStroke;
+    }
+
+ 
 
     
     

@@ -1,5 +1,7 @@
 package slogo.util.line;
 
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Point;
 
 import java.awt.geom.Line2D;
@@ -10,7 +12,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import slogo.model.arena.turtle.qualities.positioning.IPosition;
-import slogo.util.Trace;
+import slogo.util.trace.Trace;
 
 
 
@@ -84,8 +86,10 @@ public class Line extends Line2D{
     }
 
 
-    public void draw(){
-        myTrace.getGraphics().draw(this);
+    public void draw(Graphics2D g){
+        g.setStroke(myTrace.getStroke());
+        g.setColor(myTrace.getColor());
+        g.draw(this);
     }
     
     public double length(){
