@@ -6,6 +6,11 @@ import slogo.util.pen.Pen;
 
 
 
+/**
+ * An interface to access much of the functionality of the the trace class
+ * @author Julian Genkins
+ *
+ */
 public interface ITrace
 {
     //TODO ADD MORE STROKES

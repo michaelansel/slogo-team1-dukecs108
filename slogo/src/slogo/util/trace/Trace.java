@@ -4,6 +4,11 @@ import java.awt.Color;
 import java.awt.Stroke;
 import slogo.util.pen.Pen;
 
+/**
+ * The class responsible for carrying the qualities of the turtle's path
+ * @author Julian Genkins
+ *
+ */
 public class Trace implements ITrace
 {
 

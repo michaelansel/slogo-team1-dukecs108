@@ -1,6 +1,10 @@
 package slogo.util.pen;
 
 
+/**
+ * @author Julian Genkins
+ *
+ */
 public interface IPen
 {
 
