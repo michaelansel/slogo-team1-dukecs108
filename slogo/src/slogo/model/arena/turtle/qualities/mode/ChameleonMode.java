@@ -5,6 +5,10 @@ import java.util.List;
 import slogo.util.line.Line;
 
 
+/**
+ * @author Julian Genkins
+ *
+ */
 public class ChameleonMode extends DrawModeDecorator
 {
 

@@ -1,6 +1,13 @@
 package slogo.model.arena.turtle.qualities.mode;
 
 
+
+
+/**
+ * A mode to be applied to the way that a turtle is drawn
+ * @author Julian Genkins
+ *
+ */
 public abstract class DrawModeDecorator implements IMode
 {
     public IMode myDecoratedMode;
