@@ -29,16 +29,18 @@ public class Pen implements IPen
     }
 
     @Override
-    public void putDown ()
+    public boolean putDown ()
     {
         myState = DOWN;
         
+        return true;
     }
 
     @Override
-    public void putUp ()
+    public boolean putUp ()
     {
         myState = UP;
+        return false;
         
     }
    
