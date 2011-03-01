@@ -1,16 +1,16 @@
-package slogo;
-import slogo.model.arena.Arena;
-import slogo.model.parser.SlogoParser;
-import slogo.view.Frame;
-import util.parser.AbstractParser;
-import util.parser.ParserException;
-import util.parser.ParserResult;
+//package slogo;
+//import slogo.model.arena.Arena;
+//import slogo.model.parser.SlogoParser;
+//import slogo.view.Frame;
+//import util.parser.AbstractParser;
+//import util.parser.ParserException;
+//import util.parser.ParserResult;
 
 
-public class Main
-{
+//public class Main
+//{
 
-	public static Frame myFrame;
+//	public static Frame myFrame;
     /**
      * @param args
      */
@@ -28,14 +28,14 @@ public class Main
         System.out.println(result);
         return;
     }*/
-	public static void main(String[] args) {
+//	public static void main(String[] args) {
         //Schedule a job for the event-dispatching thread:
         //creating and showing this application's GUI.
-		javax.swing.SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-                myFrame = new Frame();
-            }
-        });
-	}
+//		javax.swing.SwingUtilities.invokeLater(new Runnable() {
+  //          public void run() {
+ //               myFrame = new Frame();
+ //           }
+ //       });
+//	}
 
-}
+//}
