@@ -1,122 +1,201 @@
 package slogo.model.arena;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-
-import javax.swing.JPanel;
-
-import slogo.model.arena.draw.ArenaDraw;
 import slogo.model.arena.turtle.Turtle;
 
-public class Arena
+
+public class Arena implements Cloneable
 {
-	public static int ID_NUMBER;
-	
-    private static ArrayList<Turtle> myTurtleList;
+    private Map<Integer, Turtle> myTurtles;
+    private int myCurrentTurtleID;
     private Map<String, String> myVariables;
-    private static Map<Integer, String> myHistory;
-    private static int currTurtle;
-    ArenaDraw myDraw = new ArenaDraw(myTurtleList);
-    
-    public Arena(int ID_NUM)
+    private List<String> myHistory;
+    /**
+     * Create a new Arena with a default Turtle (Jim)
+     */
+    public Arena ()
     {
-    	ID_NUMBER=ID_NUM;
-    	myTurtleList = new ArrayList<Turtle>();
-        myVariables = new HashMap<String,String>();
-        myHistory = new HashMap<Integer,String>();
-        currTurtle = 0;
-    }
-    
-    public Arena (int ID_NUM, ArrayList<Turtle> turtlelist,
-                  Map<String, String> variables,
-                  Map<Integer, String> history,
-                  int currturtle)
-    {
-    	ID_NUMBER=ID_NUM;
-        myTurtleList = turtlelist;
-        myVariables = variables;
-        myHistory = history;
-        currTurtle = currturtle;
+        this(new Turtle("Turtle Jim"));
     }
 
-    public Arena clone(){
-        return new Arena(ID_NUMBER, myTurtleList, myVariables, myHistory, currTurtle);
-    }
-    
-    
-    public void addTurtle(){
-        addTurtle(new Turtle("Turtle " + myTurtleList.size()));
-    }
-    
-    public void addTurtle (Turtle turtle)
+
+    /**
+     * Create a new Arena with the given Turtle
+     * 
+     * @param turtle First Turtle in the new Arena
+     */
+    public Arena (Turtle turtle)
     {
-        myTurtleList.add(turtle);
-        currTurtle = myTurtleList.size()-1;
+        myTurtles = new HashMap<Integer, Turtle>();
+        myVariables = new HashMap<String, String>();
+        myHistory = new ArrayList<String>();
+        myCurrentTurtleID = addTurtle(turtle);
     }
 
-    public Turtle getLastTurtle()
+
+    /**
+     * Create a deep clone of the current Arena
+     */
+    public Arena clone ()
     {
-        return getTurtle(myTurtleList.size()-1);
+        Arena newArena;
+        try
+        {
+            newArena = (Arena) super.clone();
+        }
+        catch (CloneNotSupportedException e)
+        {
+            e.printStackTrace();
+            return null;
+        }
+
+        for (Map.Entry<Integer, Turtle> entry : myTurtles.entrySet())
+        {
+            int turtleID = entry.getKey();
+            Turtle turtle = entry.getValue();
+            newArena.myTurtles.put(turtleID, turtle.clone());
+        }
+        newArena.myVariables.putAll(myVariables);
+        newArena.myHistory.addAll(myHistory);
+        newArena.myCurrentTurtleID = myCurrentTurtleID;
+
+        return newArena;
     }
 
-    public Turtle getTurtle (int index)
+
+    /**
+     * @see #addTurtle(Turtle)
+     */
+    public int addTurtle ()
     {
-        return myTurtleList.get(index);
+        return addTurtle(new Turtle("Turtle " + myTurtles.size()));
     }
 
-    public void setTurtleList (ArrayList<Turtle> myTurtles)
+
+    /**
+     * Add a Turtle to the Arena and return its ID.
+     * 
+     * @param turtle Turtle to add to Arena
+     * @return ID of Turtle
+     */
+    public int addTurtle (Turtle turtle)
     {
-        myTurtleList = myTurtles;
+        if (turtle == null) throw new IllegalArgumentException("Cannot add a null Turtle!");
+
+        // Get next unused turtle ID
+        List<Integer> turtleIDs = new ArrayList<Integer>(myTurtles.keySet());
+        Collections.sort(turtleIDs);
+        int nextID = turtleIDs.get(myTurtles.size() - 1) + 1;
+
+        setTurtle(nextID, turtle);
+        return nextID;
     }
 
-    public static ArrayList<Turtle> getTurtleList ()
+
+    /**
+     * Add Turtle with ID turtleID to the Arena.
+     * 
+     * @param turtleID
+     * @param turtle
+     */
+    private void setTurtle (int turtleID, Turtle turtle)
     {
-        return myTurtleList;
+        myTurtles.put(turtleID, turtle);
     }
 
-    public void setVariables (Map<String, String> variables)
+
+    /**
+     * Retrieve a Turtle from the Arena using the given ID
+     * 
+     * @param turtleID ID of Turtle in this Arena
+     * @return Turtle with given ID, null if not found
+     */
+    public Turtle getTurtle (int turtleID)
     {
-        myVariables = variables;
+        return myTurtles.get(turtleID);
     }
 
-    public Map<String, String> getVariables ()
+
+    /**
+     * Change the current Turtle
+     * 
+     * @param turtleID
+     */
+    public void setCurrentTurtleID (Integer turtleID)
     {
-        return myVariables;
+        if (getTurtle(turtleID) == null) throw new IllegalArgumentException("Turtle with ID not found! ID=" +
+                                                                            turtleID);
+        myCurrentTurtleID = turtleID;
     }
 
-    public void setHistory (Map<Integer, String> history)
+
+    /**
+     * @return ID of this Arena's currently selected Turtle
+     */
+    public int getCurrentTurtleID ()
     {
-        myHistory = history;
+        return myCurrentTurtleID;
     }
 
-    public static Map<Integer, String> getHistory ()
-    {
-        return myHistory;
-    }
 
-    public void setCurrentTurtle (Integer cTurtle)
-    {
-        currTurtle = cTurtle;
-    }
-    public static int getCurrentIndex ()
-    {
-    	return currTurtle;
-    }
+    /**
+     * @return This Arena's currently selected Turtle
+     */
     public Turtle getCurrentTurtle ()
     {
-        return myTurtleList.get(currTurtle);
+        return myTurtles.get(myCurrentTurtleID);
     }
 
-	public int getID() {
-		return ID_NUMBER;
-	}
 
-	public void updatePanel(){
-		myDraw.drawSpace(myTurtleList);
-	}
-	public JPanel getPanel(){
-		return new ArenaDraw(myTurtleList);
-	}
-	
+    /**
+     * Let the named variable contain the given value.
+     * 
+     * @param variableName Name of variable
+     * @param variableValue Value to be stored in the named variable
+     */
+    public void setVariable (String variableName, String variableValue)
+    {
+        myVariables.put(variableName, variableValue);
+    }
+
+
+    /**
+     * Retrieve the named variable's value
+     * 
+     * @param variableName Name of the variable to retrieve
+     * @return Value of the variable (null if not found)
+     */
+    public String getVariable (String variableName)
+    {
+        return myVariables.get(variableName);
+    }
+
+
+    /**
+     * Add the given expression to the expression history
+     * 
+     * @param historyEntry Entry to add to the history
+     * @return Index of added history entry
+     */
+    public int addHistoryEntry (String historyEntry)
+    {
+        myHistory.add(historyEntry);
+        return myHistory.size() - 1;
+    }
+
+
+    /**
+     * Retrieve the history entry at the given index
+     * 
+     * @param index
+     * @return History entry at given index
+     */
+    public String getHistoryEntry (int index)
+    {
+        return myHistory.get(index);
+    }
 }
