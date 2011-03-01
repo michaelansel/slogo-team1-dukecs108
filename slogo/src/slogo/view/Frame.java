@@ -25,6 +25,7 @@ public class Frame extends JFrame
 	private static final long serialVersionUID = 1L;
 	private static HashMap<String,JPanel> myPanels;
 	private ResourceManager resources;
+	public Arena myArena;
 	
 	public Frame()
 	{
@@ -35,12 +36,13 @@ public class Frame extends JFrame
         setUpPanels();
        /*	Adds a single turtle for demonstration purposes:*/
         
-        new Arena();
+        myArena=new Arena();
+        
         Turtle jim = new Turtle("Turtle Jim");
         File pic = new File("src/image/Turtle.jpg");
         jim.setImage(pic);
         jim.setPosition(new Position(180, 165));
-		slogo.model.arena.Arena.addTurtle(jim);
+		myArena.addTurtle(jim);
 		
         /**/
 		setVisible(true);
