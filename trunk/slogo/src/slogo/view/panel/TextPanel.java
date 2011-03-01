@@ -1,10 +1,12 @@
 package slogo.view.panel;
 
+import static org.junit.Assert.assertEquals; 
 import slogo.Main; 
 
 import slogo.controller.*;
 import slogo.view.Frame;
-import slogo.model.*;
+import slogo.model.arena.*;
+import slogo.model.expression.Expression;
 import slogo.model.parser.CommandLexer;
 import slogo.model.parser.SlogoLexer;
 import slogo.model.parser.SlogoParser;
@@ -56,18 +58,22 @@ public class TextPanel extends JPanel
 	public void evaluateInput() {
 		String stri = textbox.getText();
 		try {
-			ParserResult result = SlogoParser.parse(stri);
-	        commandParserFactory =
-	            new GrammarParserFactory(ResourceBundle.getBundle("slogo.model.parser.SlogoCommandGrammar"));
-	        AbstractParser commandParser =
-	            commandParserFactory.create(new CommandLexer(result.getList()));
-	        commandParser.run();
-		} catch (ParserException e) {
+			ParserResult result = SlogoParser.parse(stri);		
+	        Expression expression = (Expression) result.getList().get(0);
+	        int back = slogo.model.arena.Arena.evaluateNode(expression);
+	        assertEquals(50, back);
+		} catch (ParserException e1) {
 			System.out.println("Parser error!");
-			e.printStackTrace();
+			e1.printStackTrace();
 		}
+
+		
 		System.out.println("Should be updating panels...");
 		Main.myFrame.updatePanel("turtle");
+		Main.myFrame.updatePanel("select");
+		Main.myFrame.updatePanel("history");
+		Main.myFrame.updatePanel("text");
+		Main.myFrame.updatePanel("go");
 	}
 	
 	
