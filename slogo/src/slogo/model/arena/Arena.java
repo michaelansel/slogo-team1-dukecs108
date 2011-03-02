@@ -14,6 +14,8 @@ public class Arena implements Cloneable
     private int myCurrentTurtleID;
     private Map<String, String> myVariables;
     private List<String> myHistory;
+
+
     /**
      * Create a new Arena with a default Turtle (Jim)
      */
@@ -87,9 +89,18 @@ public class Arena implements Cloneable
         if (turtle == null) throw new IllegalArgumentException("Cannot add a null Turtle!");
 
         // Get next unused turtle ID
-        List<Integer> turtleIDs = new ArrayList<Integer>(myTurtles.keySet());
-        Collections.sort(turtleIDs);
-        int nextID = turtleIDs.get(myTurtles.size() - 1) + 1;
+        int nextID;
+        if (myTurtles.isEmpty())
+        {
+            nextID = 0;
+        }
+        else
+        {
+            List<Integer> turtleIDs =
+                new ArrayList<Integer>(myTurtles.keySet());
+            Collections.sort(turtleIDs);
+            nextID = turtleIDs.get(myTurtles.size() - 1) + 1;
+        }
 
         setTurtle(nextID, turtle);
         return nextID;
