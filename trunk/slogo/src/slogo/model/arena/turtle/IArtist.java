@@ -1,8 +1,8 @@
 package slogo.model.arena.turtle;
 
 import java.util.List;
-import slogo.util.line.Line;
-import slogo.util.trace.Trace;
+import slogo.util.Line;
+import slogo.util.Pen;
 
 /**
  * iterface to deal with the turtle's artistic qualities including: line, trace,
@@ -19,14 +19,14 @@ public interface IArtist {
 	 * 
 	 * @param newColor
 	 */
-	public abstract void setTrace(Trace newTrace);
+	public abstract void setTrace(Pen newTrace);
 
 	/**
 	 * Sets the Trace of the pen to the passed in trace
 	 * 
 	 * @param newColor
 	 */
-	public abstract Trace getTrace();
+	public abstract Pen getTrace();
 
 	/**
 	 * return's the turtle's list of lines

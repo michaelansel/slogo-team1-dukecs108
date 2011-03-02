@@ -3,7 +3,7 @@ package slogo.model.arena.turtle.qualities.mode;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import slogo.util.line.Line;
+import slogo.util.Line;
 
 /**
  * Mirrors turtle path around origin

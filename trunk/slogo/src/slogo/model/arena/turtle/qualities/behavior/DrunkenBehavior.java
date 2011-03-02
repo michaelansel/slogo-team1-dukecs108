@@ -1,7 +1,7 @@
 package slogo.model.arena.turtle.qualities.behavior;
 
 import java.util.Random;
-import slogo.util.line.Line;
+import slogo.util.Line;
 
 /**
  * uses a random walk to generate a "drunken" path in place of the line

@@ -1,6 +1,6 @@
 package slogo.model.arena.turtle.qualities.behavior;
 
-import slogo.util.line.Line;
+import slogo.util.Line;
 
 /**
  * Gives a scaffold for the various effects of a change in behavior to enable
