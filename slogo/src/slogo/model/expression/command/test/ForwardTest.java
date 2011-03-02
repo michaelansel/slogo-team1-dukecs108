@@ -34,11 +34,18 @@ public class ForwardTest {
 	 */
 	@Test
 	public final void testEvaluate() throws ParserException {
-		ParserResult result = SlogoParser.parse("fd fd 50");
-		Expression expression = (Expression) result.getList().get(0);
-		Arena arena = new Arena(null);
-		arena.addTurtle();
+	    ParserResult result;
+        Expression expression;
+	    Arena arena = new Arena();
+        arena.setCurrentTurtleID(arena.addTurtle());
+        
+		result = SlogoParser.parse("fd fd 50");
+		expression = (Expression) result.getList().get(0);
 		assertEquals(50, expression.evaluate(arena));
+		
+		result = SlogoParser.parse("fd -50");
+        expression = (Expression) result.getList().get(0);
+        assertEquals(50, expression.evaluate(arena));
 	}
 
 }
