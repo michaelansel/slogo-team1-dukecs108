@@ -7,21 +7,21 @@ import java.awt.geom.Point2D;
  * @author Julian Genkins
  * 
  */
-public class Position implements IPosition {
+public class Position implements Positionable {
 	private Point2D myLocation;
 	private double myHeading;
 
 	// Constructors
 	public Position() {
-		this(new Point(), DEFAULT_ANGLE);
+		this(new Point(), DEFAULT_HEADING);
 	}
 
 	public Position(int x, int y) {
-		this(new Point(x, y), DEFAULT_ANGLE);
+		this(new Point(x, y), DEFAULT_HEADING);
 	}
 
 	public Position(Point p) {
-		this(p, DEFAULT_ANGLE);
+		this(p, DEFAULT_HEADING);
 	}
 
 	public Position(double angle) {
@@ -35,78 +35,57 @@ public class Position implements IPosition {
 
 	// end Constructors
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see model.turtle.positioning.IPosition#setLocation(java.awt.Point)
-	 */
+	
 	public void setLocation(Point2D loc) {
 		myLocation = loc;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see model.turtle.positioning.IPosition#getLocation()
-	 */
+	
 	public Point2D getLocation() {
 		return myLocation;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see model.turtle.positioning.IPosition#getX()
-	 */
 	public double getX() {
 		return myLocation.getX();
 	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see model.turtle.positioning.IPosition#getY()
-	 */
+	
+	
 	public double getY() {
 		return myLocation.getY();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see model.turtle.positioning.IPosition#getBearing()
-	 */
-	public double getAngle() {
-		return myHeading;
-	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see model.turtle.positioning.IPosition#setBearing(double)
-	 */
-	public void setAngle(double angle) {
+	@Override
+	public void setHeadingTo(double angle) {
 		this.myHeading = angle;
 	}
 
 	@Override
-	public void changeAngle(double dAngle) {
-		setAngle(((myHeading + dAngle) % 360 + 360) % 360);
+	public void changeHeadingBy(double dAngle) {
+		changeHeadingBy(((myHeading + dAngle) % 360 + 360) % 360);
 
 	}
 
 	@Override
-	public void changeAngle(Point target) {
+	public void setHeadingTo(Point2D target) {
 		double dx = target.getX() - myLocation.getX();
 		double dy = target.getY() - myLocation.getY();
 
 		if (dx == 0 && dy > 0)
-			setAngle(NORTH);
+			changeHeadingBy(NORTH);
 		else if (dx == 0 && dy < 0)
-			setAngle(SOUTH);
+			changeHeadingBy(SOUTH);
 		else if (dx > 0)
-			setAngle(Math.atan(dy / dx));
+			changeHeadingBy(Math.atan(dy / dx));
 		else if (dx > 0)
-			setAngle(Math.atan(dy / dx) + 180.0);
+			changeHeadingBy(Math.atan(dy / dx) + 180.0);
 	}
+
+    
+    @Override
+    public double getHeading ()
+    {
+        return myHeading;
+    }
+
 }

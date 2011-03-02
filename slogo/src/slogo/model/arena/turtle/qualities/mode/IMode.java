@@ -1,7 +1,7 @@
 package slogo.model.arena.turtle.qualities.mode;
 
 import java.util.Collection;
-import slogo.util.line.Line;
+import slogo.util.Line;
 
 /**
  * An additional set of algorithms designed to not effect the trail of the

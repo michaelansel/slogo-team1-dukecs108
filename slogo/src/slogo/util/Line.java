@@ -1,5 +1,6 @@
-package slogo.util.line;
+package slogo.util;
 
+import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
 
@@ -9,8 +10,7 @@ import java.awt.geom.Rectangle2D;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import slogo.model.arena.turtle.qualities.positioning.IPosition;
-import slogo.util.trace.Trace;
+import slogo.model.arena.turtle.qualities.positioning.Positionable;
 
 
 
@@ -22,47 +22,47 @@ import slogo.util.trace.Trace;
  * @author Julian Genkins
  *
  */
-public class Line extends Line2D implements Comparable{
+public class Line extends Line2D implements Comparable, Drawable{
 
-	private Trace myTrace;
+	private Pen myTrace;
 	private Point2D myP1;
 	private Point2D myP2;
 	
-	 public Line (Trace trace, IPosition position, double distance)
+	 public Line (Pen trace, Positionable position, double distance)
 	    {
-	     this(trace, position.getLocation(), distance, position.getAngle());
+	     this(trace, position.getLocation(), distance, position.getHeading());
 	    }
 	
-	public Line(Trace trace, Point2D point, double distance, double angle){
+	public Line(Pen trace, Point2D point, double distance, double angle){
         this(trace, point, new Point2D.Double(point.getX()+(distance*Math.cos(angle)),
                                               point.getY()+(distance*Math.sin(angle))));
         
     }
 	
-	public Line(Trace trace, Point start){
+	public Line(Pen trace, Point start){
 	    this(trace, start, start);
 	    
 	}
 	
-	public Line(Trace trace, Point2D start, Point2D end){
+	public Line(Pen trace, Point2D start, Point2D end){
 	    this(trace, new Line2D.Double(start, end));
 	  
 	}
 	
 
-    public Line (Trace trace, Line2D line)
+    public Line (Pen trace, Line2D line)
     {
         myTrace = trace;
         myP1 = line.getP1();
         myP2 = line.getP2();
     }
 
-    public void setTrace (Trace myTrace)
+    public void setTrace (Pen myTrace)
     {
         this.myTrace = myTrace;
     }
     
-    public Trace getTrace ()
+    public Pen getTrace ()
     {
         return myTrace;
     }
@@ -84,7 +84,12 @@ public class Line extends Line2D implements Comparable{
         return this.getP2().distance(this.getP1());
     }
 
-
+    @Override
+    public void draw(Graphics g){
+        this.draw((Graphics2D) g);
+    }
+    
+    @Override
     public void draw(Graphics2D g){
         g.setStroke(myTrace.getStroke());
         g.setColor(myTrace.getColor());

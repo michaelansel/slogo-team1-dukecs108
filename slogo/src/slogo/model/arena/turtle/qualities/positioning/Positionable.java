@@ -9,13 +9,13 @@ import java.awt.geom.Point2D;
  * @author Julian Genkins
  * 
  */
-public interface IPosition {
+public interface Positionable {
 
 	public final static double NORTH = 90.0;
 	public final static double SOUTH = 270.0;
 	public final static double EAST = 0.0;
 	public final static double WEST = 180.0;
-	public final static double DEFAULT_ANGLE = NORTH;
+	public final static double DEFAULT_HEADING = NORTH;
 
 	public abstract void setLocation(Point2D point);
 
@@ -25,17 +25,13 @@ public interface IPosition {
 
 	public abstract double getY();
 
-	public abstract double getAngle();
+	public abstract double getHeading();
 
-	public abstract void setAngle(double angle);
+	public abstract void setHeadingTo(double heading);
+	
+	public abstract void setHeadingTo(Point2D target);
 
-	public abstract void changeAngle(double dAngle);
+	public abstract void changeHeadingBy(double dHeading);
 
-	/**
-	 * points turtle toward the target point
-	 * 
-	 * @param target
-	 */
-	public abstract void changeAngle(Point target);
-
+	
 }

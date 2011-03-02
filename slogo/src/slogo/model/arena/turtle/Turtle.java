@@ -8,13 +8,13 @@ import java.util.List;
 import slogo.model.arena.turtle.qualities.behavior.BehaviorDecorator;
 import slogo.model.arena.turtle.qualities.behavior.DefaultBehavior;
 import slogo.model.arena.turtle.qualities.behavior.IBehavior;
+import slogo.model.arena.turtle.qualities.mode.DefaultDrawMode;
 import slogo.model.arena.turtle.qualities.mode.DrawModeDecorator;
 import slogo.model.arena.turtle.qualities.mode.IMode;
-import slogo.model.arena.turtle.qualities.positioning.IPosition;
+import slogo.model.arena.turtle.qualities.positioning.Positionable;
 import slogo.model.arena.turtle.qualities.positioning.Position;
-import slogo.util.line.Line;
-import slogo.util.pen.Pen;
-import slogo.util.trace.Trace;
+import slogo.util.Line;
+import slogo.util.Pen;
 
 /**
  * The "turtle" which serves as the model for responding to the user's commands
@@ -29,8 +29,8 @@ public class Turtle implements IArtist, IMorphable
     private IBehavior myBehavior;
     private IMode myMode;
     private File myImage;
-    private IPosition myPosition;
-    private Trace myTrace;
+    private Positionable myPosition;
+    private Pen myPen;
     private List<Line> myLines;
     private boolean amVisible;
 
@@ -45,42 +45,44 @@ public class Turtle implements IArtist, IMorphable
     public Turtle (String name, File image)
     {
 
-        this(name, new Position(), new Trace(), image);
+        this(name, new Position(), new Pen(), image);
     }
 
 
-    public Turtle (String name, IPosition position)
+    public Turtle (String name, Positionable position)
     {
-        this(name, position, new Trace());
+        this(name, position, new Pen());
     }
 
 
-    public Turtle (String name, IPosition position, Trace trace)
+    public Turtle (String name, Positionable position, Pen trace)
     {
         this(name, position, trace, DEFAULT_IMAGE);
     }
 
 
-    public Turtle (String name, IPosition position, Trace trace, File image)
+    public Turtle (String name, Positionable position, Pen trace, File image)
     {
-        this(name, position, trace, image, new DefaultBehavior());
+        this(name, position, trace, image, new DefaultBehavior(), new DefaultDrawMode());
     }
 
 
     public Turtle (String name,
-                   IPosition position,
-                   Trace trace,
+                   Positionable position,
+                   Pen trace,
                    File image,
-                   IBehavior behavior)
+                   IBehavior behavior, 
+                   IMode mode)
     {
         rename(name);
         setPosition(position);
         setTrace(trace);
         setImage(image);
-        myTrace.setPen(new Pen());
+        myPen.putDown();
         myBehavior = behavior;
         myLines = new ArrayList<Line>();
         amVisible = true;
+        myMode = mode;
     }
 
 
@@ -148,16 +150,16 @@ public class Turtle implements IArtist, IMorphable
 
 
     @Override
-    public Trace getTrace ()
+    public Pen getTrace ()
     {
-        return myTrace;
+        return myPen;
     }
 
 
     @Override
-    public void setTrace (Trace newTrace)
+    public void setTrace (Pen newTrace)
     {
-        myTrace = newTrace;
+        myPen = newTrace;
     }
 
 
@@ -183,7 +185,7 @@ public class Turtle implements IArtist, IMorphable
 
 
     @Override
-    public IPosition getPosition ()
+    public Positionable getPosition ()
     {
         return myPosition;
     }
@@ -194,9 +196,9 @@ public class Turtle implements IArtist, IMorphable
     @Override
     public int move (double distance)
     {
-        myLines.add(myBehavior.applyBehavior(new Line( myTrace, myPosition, distance)));
+        myLines.add(myBehavior.applyBehavior(new Line( myPen, myPosition, distance)));
         myPosition.setLocation(myLines.get(myLines.size()-1).getP2());
-        myTrace.getPen().putDown();
+        myPen.putDown();
         return (int) Math.round(myLines.get(myLines.size()-1).length());
     }
 
@@ -204,8 +206,8 @@ public class Turtle implements IArtist, IMorphable
     @Override
     public int moveTo (Point target)
     {
-        myTrace.getPen().putUp();
-        myPosition.changeAngle(target);
+        myPen.putUp();
+        myPosition.setHeadingTo(target);
         return move(target.distance(myPosition.getLocation()));
 
     }
@@ -214,7 +216,7 @@ public class Turtle implements IArtist, IMorphable
     @Override
     public int rotate (double dAngle)
     {
-        myPosition.changeAngle(dAngle);
+        myPosition.changeHeadingBy(dAngle);
 
         return (int) Math.abs(dAngle);
     }
@@ -223,7 +225,7 @@ public class Turtle implements IArtist, IMorphable
     public int setHeading (double heading)
     {
 
-        return this.rotate(heading - myPosition.getAngle());
+        return this.rotate(heading - myPosition.getHeading());
     }
 
 
@@ -243,7 +245,7 @@ public class Turtle implements IArtist, IMorphable
 
 
     @Override
-    public void setPosition (IPosition position)
+    public void setPosition (Positionable position)
     {
         myPosition = position;
     }
@@ -258,7 +260,7 @@ public class Turtle implements IArtist, IMorphable
     public int resetTurtle ()
     {
         this.moveTo(new Point());
-        this.myPosition.setAngle(IPosition.DEFAULT_ANGLE);
+        this.myPosition.changeHeadingBy(Positionable.DEFAULT_HEADING);
         int d = (int) myLines.get(myLines.size() - 1).length();
         myLines.clear();
         return d;
@@ -288,4 +290,12 @@ public class Turtle implements IArtist, IMorphable
         return myMode.applyMode(myLines.subList(start, myLines.size() - 1));
     }
 
+    public Turtle clone(){
+        
+        
+        
+        return new Turtle(myName, myPosition, myPen, myImage, myBehavior, myMode);
+        
+    }
+    
 }
