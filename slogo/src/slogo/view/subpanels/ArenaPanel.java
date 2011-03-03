@@ -1,4 +1,4 @@
-package slogo.view;
+package slogo.view.subpanels;
 
 
 import slogo.*;
@@ -54,7 +54,7 @@ public class ArenaPanel extends JPanel{
 	 * 
 	 * @param aID the ID Number of the Arena you want to display.
 	 */
-	ArenaPanel(int aID){
+	public ArenaPanel(int aID){
 		ArenaID=aID;
 		draw();
 	}
@@ -62,7 +62,7 @@ public class ArenaPanel extends JPanel{
 	/**
 	 * Updates the Panel to match the current state of the Arena.
 	 */
-	void draw(){
+	public void draw(){
 		BasePanel = makeNewPanel();
 		BasePanel.add(drawArenaPanel(), BorderLayout.CENTER);
 		BasePanel.add(makeList(), BorderLayout.LINE_END);

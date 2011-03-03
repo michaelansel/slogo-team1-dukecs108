@@ -1,12 +1,11 @@
 package slogo.controller;
 
-import java.io.File;
+import java.io.File; 
 import java.util.ArrayList;
 
 import javax.swing.JPanel;
 
-import slogo.model.arena.Arena;
-import slogo.model.arena.draw.ArenaDraw;
+import slogo.model.arena.IDArena;
 import slogo.model.arena.turtle.Turtle;
 import slogo.model.arena.turtle.qualities.positioning.Position;
 import slogo.model.expression.Expression;
@@ -23,8 +22,8 @@ import util.parser.ParserResult;
  *
  */
 public class Controller {	
-	static ArrayList<Arena> myArenas=new ArrayList<Arena>();
-	ArrayList<TurtleGUI> myTurtleGUIs=new ArrayList<TurtleGUI>();
+	private ArrayList<IDArena> myArenas=new ArrayList<IDArena>();
+	private ArrayList<TurtleGUI> myTurtleGUIs=new ArrayList<TurtleGUI>();
 	public int ARENA_COUNT=0;
 	public int GUI_COUNT=0;
 	
@@ -32,14 +31,12 @@ public class Controller {
 	 * constructor method
 	 */
 	public Controller(){
-		Arena a=new Arena(ARENA_COUNT);
 
         Turtle jim = new Turtle("Turtle Jim");
         File pic = new File("src/image/turtlecloud.png");
         jim.setImage(pic);
         jim.setPosition(new Position(180, 165));
-		a.addTurtle(jim);
-		myArenas.add(a);
+		IDArena a = new IDArena(this, ARENA_COUNT, jim);
 		
 		
 		ARENA_COUNT++;
@@ -60,11 +57,11 @@ public class Controller {
      * @throws ParserException 
      */
     public void evaluateExpression (String expression, int ArenaID) throws ParserException{
-    	Arena target = null;
+    	IDArena target = null;
         ParserResult result = SlogoParser.parse(expression);
         Expression exp = (Expression) result.getList().get(0);
         
-    	for (Arena a: myArenas){
+    	for (IDArena a: myArenas){
     		if (a.getID()==ArenaID){
     			target=a;
     		}
@@ -82,8 +79,8 @@ public class Controller {
      * grabs the graphic representation of the model as drawn by "ArenaDraw"
      * @param ArenaID the ID of the arena you want
      */
-    public static JPanel getDrawnPanel(int ArenaID){
-    	for (Arena a: myArenas){
+    public JPanel getDrawnPanel(int ArenaID){
+    	for (IDArena a: myArenas){
     		if (a.getID()==ArenaID){
     			return a.getPanel();
     		}
@@ -97,9 +94,9 @@ public class Controller {
      * returns a list of Turtle Objects from the specified Arena
      * @param ArenaID the ID of the arena you want to grab the turtleList of
      */
-    public static ArrayList<Turtle> getTurtleList(int ArenaID){
+    public ArrayList<Turtle> getTurtleList(int ArenaID){
     	ArrayList<Turtle> t = new ArrayList<Turtle>();
-    	for (Arena a: myArenas){
+    	for (IDArena a: myArenas){
     		if (a.getID()==ArenaID){
     			return a.getTurtleList();
     		}
