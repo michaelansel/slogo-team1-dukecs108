@@ -8,7 +8,6 @@ import org.junit.Test;
 import slogo.model.arena.Arena;
 import slogo.model.expression.Constant;
 import slogo.model.expression.Expression;
-import slogo.model.expression.binary.Add;
 import slogo.model.expression.binary.Subtract;
 import slogo.model.parser.SlogoLexer;
 import util.parser.ParserException;

@@ -8,7 +8,6 @@ import slogo.model.arena.Arena;
 import util.parser.IResultHandler;
 import util.parser.ParserException;
 import util.parser.ParserResult;
-import util.parser.Token;
 
 
 /**

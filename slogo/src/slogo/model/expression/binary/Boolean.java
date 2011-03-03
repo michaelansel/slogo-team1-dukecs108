@@ -3,7 +3,6 @@
  */
 package slogo.model.expression.binary;
 
-import slogo.model.arena.Arena;
 import slogo.model.expression.Expression;
 
 
