@@ -5,11 +5,9 @@ package slogo.model.expression.command;
 
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.List;
 import slogo.model.arena.Arena;
 import slogo.model.expression.Expression;
 import util.parser.ParserResult;
-import util.parser.Token;
 
 
 /**

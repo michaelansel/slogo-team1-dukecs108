@@ -4,8 +4,6 @@
 package slogo.model.parser;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 import java.util.ResourceBundle;
 import slogo.model.expression.Expression;

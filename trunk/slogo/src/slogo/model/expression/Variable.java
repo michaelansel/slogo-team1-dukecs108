@@ -6,7 +6,6 @@ package slogo.model.expression;
 import java.util.Arrays;
 import java.util.Collection;
 import slogo.model.arena.Arena;
-import slogo.model.parser.SlogoParser;
 import util.parser.IResultHandler;
 import util.parser.ParserException;
 import util.parser.ParserResult;
