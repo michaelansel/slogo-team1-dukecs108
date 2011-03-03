@@ -7,7 +7,7 @@ import slogo.util.Line;
  * @author Julian Genkins
  * 
  */
-public class DefaultDrawMode extends DrawModeDecorator implements IMode {
+public class DefaultDrawMode implements IMode {
 
 	@Override
 	public Collection<Line> applyMode(Collection<Line> lines) {
