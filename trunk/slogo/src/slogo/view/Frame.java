@@ -36,7 +36,7 @@ public class Frame extends JFrame
         setUpPanels();
        /*	Adds a single turtle for demonstration purposes:*/
         
-        myArena=new Arena();
+        myArena=new Arena(0);
         
         Turtle jim = new Turtle("Turtle Jim");
         File pic = new File("src/image/Turtle.jpg");

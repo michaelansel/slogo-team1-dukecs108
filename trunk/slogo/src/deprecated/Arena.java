@@ -1,41 +1,27 @@
-package slogo.model.arena;
+package deprecated;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Set;
-
 import slogo.model.arena.turtle.Turtle;
 import slogo.model.expression.Expression;
 
-/**Default Arena object, will work for most applications. Supports
-* creation of "Default" Arenas and Turtles so that a user does not
-* have to fiddle with every option if it is not necessary and View
-* does not start gaining instance variables
-* 
-* @author Julian Genkins
-*/
-
-public class Arena implements Cloneable
+/**
+ * Absolutely barebones Arena- supports the necessities of
+ * an Arena, but in practice will not be of much use other
+ * than as a resource for more practical Arena object classes
+ * @author Julian Genkins
+ * @comments David Crowe
+ *
+ */
+public class Arena2 implements Cloneable
 {
 	protected Map<Integer, Turtle> myTurtles;
     protected int myCurrentTurtleID;
     protected Map<String, Expression> myVariables;
     protected List<String> myHistory;
-
-
-    /**
-     * Create a new Arena with a default Turtle (named Jim)
-     */
-    public Arena ()
-    {
-        this(new Turtle("Turtle Jim"));
-    }
-
 
     /**
      * Create a new Arena with the given Turtle
@@ -78,15 +64,6 @@ public class Arena implements Cloneable
         newArena.myCurrentTurtleID = myCurrentTurtleID;
 
         return newArena;
-    }
-
-
-    /**
-     * @see #addTurtle(Turtle)
-     */
-    public int addTurtle ()
-    {
-        return addTurtle(new Turtle("Turtle " + myTurtles.size()));
     }
 
 
@@ -220,23 +197,5 @@ public class Arena implements Cloneable
     public String getHistoryEntry (int index)
     {
         return myHistory.get(index);
-    }
-    
-    /**
-     * Method stub to return the list of necessary components to
-     * controller so our view has items to display.
-     * @return imagePathStrokeObject the imaginary object
-     * that will return a perfect solution.
-     */
-    //TODO: Write this method, remove the one below that is
-    //      in case of testing/demonstration
-   // public List<imagePathStrokeObject> getTurtleDisplayList()
-   // {
-    	
-   // 	return new List<imagePathStrokeObject>();
-   // }
-    
-    public Set<Entry<Integer, Turtle>> getTurtleIterator(){
-    	return myTurtles.entrySet();
     }
 }

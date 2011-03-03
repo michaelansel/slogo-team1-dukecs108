@@ -38,6 +38,7 @@ import slogo.model.arena.turtle.qualities.positioning.Position;
 import slogo.model.expression.Expression;
 import slogo.model.parser.SlogoParser;
 import slogo.view.resources.ImageListCellRenderer;
+import slogo.view.subpanels.ArenaPanel;
 import util.parser.ParserException;
 import util.parser.ParserResult;
 

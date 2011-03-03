@@ -1,37 +1,30 @@
-package slogo.model.arena;
+package deprecated;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Set;
-
 import slogo.model.arena.turtle.Turtle;
 import slogo.model.expression.Expression;
 
-/**Default Arena object, will work for most applications. Supports
-* creation of "Default" Arenas and Turtles so that a user does not
-* have to fiddle with every option if it is not necessary and View
-* does not start gaining instance variables
-* 
-* @author Julian Genkins
-*/
 
-public class Arena implements Cloneable
+/**
+ * Default Arena object, will work for most applications. Supports
+ * creation of "Default" Arenas and Turtles so that a user does not
+ * have to fiddle with every option if it is not necessary and View
+ * does not start gaining instance variables
+ * 
+ * @author Julian Genkins
+ * @comments David Crowe
+ */
+public class DefaultArena extends Arena implements Cloneable
 {
-	protected Map<Integer, Turtle> myTurtles;
-    protected int myCurrentTurtleID;
-    protected Map<String, Expression> myVariables;
-    protected List<String> myHistory;
-
 
     /**
-     * Create a new Arena with a default Turtle (named Jim)
+     * Create a new Arena with a default Turtle (Jim)
      */
-    public Arena ()
+    public DefaultArena ()
     {
         this(new Turtle("Turtle Jim"));
     }
@@ -42,41 +35,18 @@ public class Arena implements Cloneable
      * 
      * @param turtle First Turtle in the new Arena
      */
-    public Arena (Turtle turtle)
+    public DefaultArena (Turtle turtle)
     {
-        myTurtles = new HashMap<Integer, Turtle>();
-        myVariables = new HashMap<String, Expression>();
-        myHistory = new ArrayList<String>();
-        myCurrentTurtleID = addTurtle(turtle);
+        super(turtle);
     }
 
 
     /**
      * Create a deep clone of the current Arena
      */
-    public Arena clone ()
+    public DefaultArena clone ()
     {
-        Arena newArena;
-        try
-        {
-            newArena = (Arena) super.clone();
-        }
-        catch (CloneNotSupportedException e)
-        {
-            e.printStackTrace();
-            return null;
-        }
-
-        for (Map.Entry<Integer, Turtle> entry : myTurtles.entrySet())
-        {
-            int turtleID = entry.getKey();
-            Turtle turtle = entry.getValue();
-            newArena.myTurtles.put(turtleID, turtle.clone());
-        }
-        newArena.myVariables.putAll(myVariables);
-        newArena.myHistory.addAll(myHistory);
-        newArena.myCurrentTurtleID = myCurrentTurtleID;
-
+    	DefaultArena newArena = (DefaultArena) super.clone();
         return newArena;
     }
 
@@ -220,23 +190,5 @@ public class Arena implements Cloneable
     public String getHistoryEntry (int index)
     {
         return myHistory.get(index);
-    }
-    
-    /**
-     * Method stub to return the list of necessary components to
-     * controller so our view has items to display.
-     * @return imagePathStrokeObject the imaginary object
-     * that will return a perfect solution.
-     */
-    //TODO: Write this method, remove the one below that is
-    //      in case of testing/demonstration
-   // public List<imagePathStrokeObject> getTurtleDisplayList()
-   // {
-    	
-   // 	return new List<imagePathStrokeObject>();
-   // }
-    
-    public Set<Entry<Integer, Turtle>> getTurtleIterator(){
-    	return myTurtles.entrySet();
     }
 }
