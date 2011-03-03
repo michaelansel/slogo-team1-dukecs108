@@ -19,18 +19,18 @@ public class Forward extends Command
     private Expression myDistanceExpression;
 
 
-    public Forward (ParserResult result)
-    {
-        // <fd>,<whitespace>,expression
-        this((Expression) result.getList().get(2));
-    }
-
-
     public Forward (Expression distanceExpression)
     {
         System.out.println("Creating Forward Expression: " +
                            distanceExpression.toString());
         myDistanceExpression = distanceExpression;
+    }
+
+
+    public Forward (ParserResult result)
+    {
+        // <fd>,<whitespace>,expression
+        this((Expression) result.getList().get(2));
     }
 
 

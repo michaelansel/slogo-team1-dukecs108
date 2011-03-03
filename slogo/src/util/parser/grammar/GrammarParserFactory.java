@@ -20,9 +20,9 @@ import util.parser.ParserResult;
 public class GrammarParserFactory
 {
 
+    private Map<String, IResultHandler> myHandlers;
     private Map<String, ParseTreeNode> myParseTrees;
     private ResourceBundle mySyntax;
-    private Map<String, IResultHandler> myHandlers;
 
 
     public GrammarParserFactory (ResourceBundle syntax) throws ParserException

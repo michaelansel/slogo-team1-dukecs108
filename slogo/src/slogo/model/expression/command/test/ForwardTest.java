@@ -31,9 +31,9 @@ public class ForwardTest extends TestCase
 
 
     @Test
-    public final void testConstantDistance () throws ParserException
+    public final void testCommandAsParameter () throws ParserException
     {
-        ParserResult result = SlogoParser.parse("fd 50");
+        ParserResult result = SlogoParser.parse("fd fd 50");
         Expression expression = (Expression) result.getList().get(0);
         assertEquals(50, expression.evaluate(arena));
     }
@@ -49,9 +49,9 @@ public class ForwardTest extends TestCase
 
 
     @Test
-    public final void testCommandAsParameter () throws ParserException
+    public final void testConstantDistance () throws ParserException
     {
-        ParserResult result = SlogoParser.parse("fd fd 50");
+        ParserResult result = SlogoParser.parse("fd 50");
         Expression expression = (Expression) result.getList().get(0);
         assertEquals(50, expression.evaluate(arena));
     }

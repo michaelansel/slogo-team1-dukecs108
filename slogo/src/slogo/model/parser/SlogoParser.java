@@ -20,9 +20,9 @@ import util.parser.grammar.GrammarParserFactory;
  */
 public class SlogoParser
 {
+    protected static GrammarParserFactory parserFactory;
     protected static final ResourceBundle SlogoSyntax =
         ResourceBundle.getBundle("slogo.model.parser.SlogoGrammar");
-    protected static GrammarParserFactory parserFactory;
 
     static
     {

@@ -69,6 +69,15 @@ public class StringTokenRule implements ITokenRule
 
 
     @Override
+    public boolean matches (Object value)
+    {
+        if (value instanceof CharSequence) return myPattern.matcher((CharSequence) value)
+                                                           .matches();
+        return false; // Only matches Strings
+    }
+
+
+    @Override
     public String toString ()
     {
         return String.format("StringTokenRule<%s>(%s)",
@@ -76,15 +85,6 @@ public class StringTokenRule implements ITokenRule
                              (myRegex.length() > 1) ? myRegex
                                                    : String.format("[%s]",
                                                                    myRegex));
-    }
-
-
-    @Override
-    public boolean matches (Object value)
-    {
-        if (value instanceof CharSequence) return myPattern.matcher((CharSequence) value)
-                                                           .matches();
-        return false; // Only matches Strings
     }
 
 }

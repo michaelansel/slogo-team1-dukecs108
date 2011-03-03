@@ -200,6 +200,12 @@ public abstract class AbstractParser
     }
 
 
+    public Collection<String> getRuleNames ()
+    {
+        return myRules.keySet();
+    }
+
+
     protected boolean hasNextToken ()
     {
         return (myTokens.size() > 0);
@@ -430,11 +436,5 @@ public abstract class AbstractParser
                 return "ZeroOrMoreRule";
             }
         };
-    }
-
-
-    public Collection<String> getRuleNames ()
-    {
-        return myRules.keySet();
     }
 }
