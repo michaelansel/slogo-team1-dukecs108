@@ -6,13 +6,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import slogo.model.arena.turtle.Turtle;
+import slogo.model.expression.Expression;
 
 
 public class Arena implements Cloneable
 {
     private Map<Integer, Turtle> myTurtles;
     private int myCurrentTurtleID;
-    private Map<String, String> myVariables;
+    private Map<String, Expression> myVariables;
     private List<String> myHistory;
 
 
@@ -33,7 +34,7 @@ public class Arena implements Cloneable
     public Arena (Turtle turtle)
     {
         myTurtles = new HashMap<Integer, Turtle>();
-        myVariables = new HashMap<String, String>();
+        myVariables = new HashMap<String, Expression>();
         myHistory = new ArrayList<String>();
         myCurrentTurtleID = addTurtle(turtle);
     }
@@ -168,7 +169,7 @@ public class Arena implements Cloneable
      * @param variableName Name of variable
      * @param variableValue Value to be stored in the named variable
      */
-    public void setVariable (String variableName, String variableValue)
+    public void setVariable (String variableName, Expression variableValue)
     {
         myVariables.put(variableName, variableValue);
     }
@@ -180,7 +181,7 @@ public class Arena implements Cloneable
      * @param variableName Name of the variable to retrieve
      * @return Value of the variable (null if not found)
      */
-    public String getVariable (String variableName)
+    public Expression getVariable (String variableName)
     {
         return myVariables.get(variableName);
     }
