@@ -75,9 +75,9 @@ public class Variable extends Expression
         return myParseResultHandlerInstance;
     }
 
+    private boolean assignment;
     private String myName;
     private Expression myValue;
-    private boolean assignment;
 
 
     public Variable (String name)

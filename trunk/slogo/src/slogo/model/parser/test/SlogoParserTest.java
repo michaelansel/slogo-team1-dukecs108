@@ -19,9 +19,9 @@ import util.parser.ParserResult;
  */
 public class SlogoParserTest extends TestCase
 {
-    private ParserResult result;
-    private Expression expected;
     private Expression actual;
+    private Expression expected;
+    private ParserResult result;
 
 
     @Before
@@ -41,10 +41,10 @@ public class SlogoParserTest extends TestCase
 
 
     @Test
-    public final void testParseSimpleCommand () throws ParserException
+    public final void testParseNestedCommand () throws ParserException
     {
-        result = SlogoParser.parse("fd 50");
-        expected = new Forward(new Constant(50));
+        result = SlogoParser.parse("fd fd 50");
+        expected = new Forward(new Forward(new Constant(50)));
         actual = (Expression) result.getList().get(0);
         System.out.println(result);
         assertEquals(expected.toString(), actual.toString());
@@ -52,10 +52,10 @@ public class SlogoParserTest extends TestCase
 
 
     @Test
-    public final void testParseNestedCommand () throws ParserException
+    public final void testParseSimpleCommand () throws ParserException
     {
-        result = SlogoParser.parse("fd fd 50");
-        expected = new Forward(new Forward(new Constant(50)));
+        result = SlogoParser.parse("fd 50");
+        expected = new Forward(new Constant(50));
         actual = (Expression) result.getList().get(0);
         System.out.println(result);
         assertEquals(expected.toString(), actual.toString());

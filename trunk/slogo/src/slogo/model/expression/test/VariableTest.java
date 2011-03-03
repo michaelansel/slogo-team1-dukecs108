@@ -28,6 +28,19 @@ public class VariableTest extends TestCase
     }
 
 
+    private void testCreate (List<Object> tokens, Expression expected)
+        throws ParserException
+    {
+        ParserResult result =
+            Variable.getParserResultHandler()
+                    .handleResult(new ParserResult(tokens));
+        assertTrue(result.getList().toString(),
+                   result.getList().get(0) instanceof Expression);
+        Expression actual = (Expression) result.getList().get(0);
+        assertEquals(expected.toString(), actual.toString());
+    }
+
+
     @Test
     public final void testCreateAssignment () throws ParserException
     {
@@ -68,19 +81,6 @@ public class VariableTest extends TestCase
         Expression expression = new Variable(":myvar");
         arena.setVariable(":myvar", new Constant(15));
         assertEquals(15, expression.evaluate(arena));
-    }
-
-
-    private void testCreate (List<Object> tokens, Expression expected)
-        throws ParserException
-    {
-        ParserResult result =
-            Variable.getParserResultHandler()
-                    .handleResult(new ParserResult(tokens));
-        assertTrue(result.getList().toString(),
-                   result.getList().get(0) instanceof Expression);
-        Expression actual = (Expression) result.getList().get(0);
-        assertEquals(expected.toString(), actual.toString());
     }
 
 }

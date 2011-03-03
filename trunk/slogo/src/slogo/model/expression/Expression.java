@@ -34,24 +34,6 @@ public abstract class Expression
 
 
     /**
-     * Recursively evaluate this Expression and all of its child Expressions.
-     * Children are evaluated first, followed by the parent.
-     * 
-     * @param arena Arena in which to evaluate the Expression
-     * @return numeric result of Expression evaluation (see language definition
-     *         for specifics)
-     */
-    public abstract int evaluate (Arena arena);
-
-
-    /**
-     * @return Collection of Expression objects that are combined by this
-     *         Expression
-     */
-    protected abstract Collection<Expression> getExpressions ();
-
-
-    /**
      * Return the singleton for processing ParserResults into Expression trees
      * 
      * @return IParseResultHandler singleton
@@ -105,4 +87,22 @@ public abstract class Expression
         }
         return result;
     }
+
+
+    /**
+     * Recursively evaluate this Expression and all of its child Expressions.
+     * Children are evaluated first, followed by the parent.
+     * 
+     * @param arena Arena in which to evaluate the Expression
+     * @return numeric result of Expression evaluation (see language definition
+     *         for specifics)
+     */
+    public abstract int evaluate (Arena arena);
+
+
+    /**
+     * @return Collection of Expression objects that are combined by this
+     *         Expression
+     */
+    protected abstract Collection<Expression> getExpressions ();
 }

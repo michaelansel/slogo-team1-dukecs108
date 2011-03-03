@@ -3,40 +3,58 @@ package util.parser;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ParserResult {
-	private List<Object> myObjects;
 
-	public ParserResult() {
-		myObjects = new ArrayList<Object>();
-	}
+public class ParserResult
+{
+    private List<Object> myObjects;
 
-	public ParserResult(List<Object> objects) {
-		myObjects = objects;
-	}
 
-	public ParserResult(Object object) {
-		this();
-		add(object);
-	}
+    public ParserResult ()
+    {
+        myObjects = new ArrayList<Object>();
+    }
 
-	public void add(Object token) {
-		myObjects.add(token);
-	}
 
-	protected void clearList() {
-		myObjects.clear();
-	}
+    public ParserResult (List<Object> objects)
+    {
+        myObjects = objects;
+    }
 
-	public List<Object> getList() {
-		return new ArrayList<Object>(myObjects);
-	}
 
-	public void merge(ParserResult result) {
-		myObjects.addAll(result.getList());
-	}
+    public ParserResult (Object object)
+    {
+        this();
+        add(object);
+    }
 
-	@Override
-	public String toString() {
-		return String.format("ParserResult(%s)", myObjects.toString());
-	}
+
+    public void add (Object token)
+    {
+        myObjects.add(token);
+    }
+
+
+    protected void clearList ()
+    {
+        myObjects.clear();
+    }
+
+
+    public List<Object> getList ()
+    {
+        return new ArrayList<Object>(myObjects);
+    }
+
+
+    public void merge (ParserResult result)
+    {
+        myObjects.addAll(result.getList());
+    }
+
+
+    @Override
+    public String toString ()
+    {
+        return String.format("ParserResult(%s)", myObjects.toString());
+    }
 }
