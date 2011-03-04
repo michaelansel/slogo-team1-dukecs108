@@ -46,17 +46,31 @@ public class TurtleFrameTest
     {
         Turtle turtle = new Turtle("1");
         
+        basicSunMove(turtle, 100, new Point(250,250));
         
-        basicCubeMove(turtle,100, 50);
-        turtle.rotate(70);
-        basicCubeMove(turtle,100, 50);
-        turtle.rotate(70);
-        basicCubeMove(turtle,100, 50);
-        turtle.rotate(70);
-//            turtle.move(new Point2D.Double(turtle.getPosition().getX()+20, turtle.getPosition().getY()+20));
-//            basicSquareMove(turtle,100);
-            
         return turtle;
+    }
+
+    private static void basicArcMove (Turtle turtle, int r)
+    {
+        for (int i = 0; i < r/3; i++  ){
+            turtle.move(r/75);
+            turtle.rotate(-360/r);
+        }
+        
+    }
+
+    private static void basicCircleMove (Turtle turtle, int r)
+    {
+        turtle.getPen().putUp();
+        turtle.moveInvisible(new Point((int) turtle.getPosition().getX() - r, (int) turtle.getPosition().getY()));
+        turtle.getPen().putDown();
+
+        for (int i = 0; i < r*2; i++  ){
+            turtle.move(r/30);
+            turtle.rotate(-360/r);
+        }
+        
     }
 
     private static void basicSquareMove (Turtle turtle, double d)
@@ -87,7 +101,7 @@ public class TurtleFrameTest
         moveAndReturn(turtle, e, e);
         turtle.rotate(90);
         turtle.move(d);
-        turtle.move(new Point2D.Double(turtle.getPosition().getX()+e, turtle.getPosition().getY()+e));
+        turtle.moveInvisible(new Point2D.Double(turtle.getPosition().getX()+e, turtle.getPosition().getY()+e));
         basicSquareMove ( turtle,  d);
     }
     
@@ -125,4 +139,31 @@ public class TurtleFrameTest
         System.out.println(turtle.getPosition().getLocation());
     }
 
+    private static void basicSunMove (Turtle turtle, int r, Point center)
+    {
+        turtle.getPen().putUp();
+        turtle.moveInvisible(new Point((int) center.getX() - r, (int) center.getY()));
+        turtle.getPen().putDown();
+
+        for (int i = 0; i < r*2; i++  ){
+            turtle.move(r/30);
+            
+            turtle.rotate(90);
+            turtle.move(r/3);
+//            basicSquareMove(turtle, 500);
+            turtle.rotate(-180);
+            turtle.move(r/3);
+            turtle.rotate(90);
+            turtle.rotate(-360/r);
+        }
+        
+        turtle.moveInvisible(new Point((int)center.getX()-r/3, (int)center.getY()-r/3));
+        basicCircleMove(turtle, r/10);
+        turtle.moveInvisible(new Point((int)center.getX()+r/3, (int)center.getY()-r/3));
+        basicCircleMove(turtle, r/10);
+        turtle.moveInvisible(new Point((int)center.getX()-r/3, (int)center.getY()+r/3));    
+        turtle.setHeading(45);
+        basicArcMove(turtle, r);
+        
+    }
 }

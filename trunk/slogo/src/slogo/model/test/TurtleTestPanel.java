@@ -41,6 +41,8 @@ public class TurtleTestPanel extends JPanel
         
         myImage = new BufferedImage(this.getPreferredSize().width, 
                                     this.getPreferredSize().width, BufferedImage.TYPE_INT_RGB);
+        myImage.getGraphics().setColor(Color.white);
+        myImage.getGraphics().fillRect(0, 0, (int)this.getPreferredSize().getWidth(), (int)this.getPreferredSize().getHeight());
         for (Turtle turtle: myArena.getTurtleMap().values()){
             drawLines(turtle.getLinesToDraw(0)); //for now draws all lines each time
             try
