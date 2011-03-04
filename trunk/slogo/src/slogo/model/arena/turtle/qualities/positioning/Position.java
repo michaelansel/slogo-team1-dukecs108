@@ -8,12 +8,13 @@ import java.awt.geom.Point2D;
  * 
  */
 public class Position implements Positionable {
-	private Point2D myLocation;
+	private static final Point ORIGIN = new Point(250,250);
+    private Point2D myLocation;
 	private double myHeading;
 
 	// Constructors
 	public Position() {
-		this(new Point(), DEFAULT_HEADING);
+		this(ORIGIN, DEFAULT_HEADING);
 	}
 
 	public Position(int x, int y) {
@@ -37,7 +38,7 @@ public class Position implements Positionable {
 
 	
 	public void setLocation(Point2D loc) {
-		myLocation = loc;
+		myLocation = (Point2D) loc.clone();
 	}
 
 	
@@ -62,7 +63,7 @@ public class Position implements Positionable {
 
 	@Override
 	public void changeHeadingBy(double dAngle) {
-		changeHeadingBy(((myHeading + dAngle) % 360 + 360) % 360);
+	    setHeadingTo(((myHeading + dAngle % 360) + 360) % 360);
 
 	}
 
@@ -72,13 +73,13 @@ public class Position implements Positionable {
 		double dy = target.getY() - myLocation.getY();
 
 		if (dx == 0 && dy > 0)
-			changeHeadingBy(NORTH);
+			setHeadingTo(NORTH);
 		else if (dx == 0 && dy < 0)
-			changeHeadingBy(SOUTH);
+			setHeadingTo(SOUTH);
 		else if (dx > 0)
-			changeHeadingBy(Math.atan(dy / dx));
+		    setHeadingTo(Math.toDegrees(Math.atan(dy / dx)));
 		else if (dx > 0)
-			changeHeadingBy(Math.atan(dy / dx) + 180.0);
+		    setHeadingTo(Math.toDegrees(Math.atan(dy / dx)) + 180.0);
 	}
 
     
