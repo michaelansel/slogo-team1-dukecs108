@@ -19,14 +19,14 @@ public interface IArtist {
 	 * 
 	 * @param newColor
 	 */
-	public abstract void setTrace(Pen newTrace);
+	public abstract void setPen(Pen newPen);
 
 	/**
 	 * Sets the Trace of the pen to the passed in trace
 	 * 
 	 * @param newColor
 	 */
-	public abstract Pen getTrace();
+	public abstract Pen getPen();
 
 	/**
 	 * return's the turtle's list of lines

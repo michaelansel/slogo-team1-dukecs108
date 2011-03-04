@@ -1,6 +1,7 @@
 package slogo.model.arena.turtle;
 
 import java.awt.Point; 
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -48,35 +49,40 @@ public class Turtle implements IArtist, IMorphable
         this(name, new Position(), new Pen(), image);
     }
 
-
+    public Turtle (String name, Position position, File file)
+    {
+        this(name, position, new Pen(), file);
+    }
+    
+    
     public Turtle (String name, Positionable position)
     {
         this(name, position, new Pen());
     }
 
 
-    public Turtle (String name, Positionable position, Pen trace)
+    public Turtle (String name, Positionable position, Pen pen)
     {
-        this(name, position, trace, DEFAULT_IMAGE);
+        this(name, position, pen, DEFAULT_IMAGE);
     }
 
 
-    public Turtle (String name, Positionable position, Pen trace, File image)
+    public Turtle (String name, Positionable position, Pen pen, File image)
     {
-        this(name, position, trace, image, new DefaultBehavior(), new DefaultDrawMode());
+        this(name, position, pen, image, new DefaultBehavior(), new DefaultDrawMode());
     }
 
 
     public Turtle (String name,
                    Positionable position,
-                   Pen trace,
+                   Pen pen,
                    File image,
                    IBehavior behavior, 
                    IMode mode)
     {
         rename(name);
         setPosition(position);
-        setTrace(trace);
+        setPen(pen);
         setImage(image);
         myPen.putDown();
         myBehavior = behavior;
@@ -89,6 +95,9 @@ public class Turtle implements IArtist, IMorphable
 //end Constructors
 
 //Artist
+
+    
+
 
     public void rename (String name)
     {
@@ -148,18 +157,16 @@ public class Turtle implements IArtist, IMorphable
 
     }
 
-
     @Override
-    public Pen getTrace ()
+    public Pen getPen ()
     {
         return myPen;
     }
 
-
     @Override
-    public void setTrace (Pen newTrace)
+    public void setPen (Pen newPen)
     {
-        myPen = newTrace;
+        myPen = newPen;
     }
 
 
@@ -295,6 +302,21 @@ public class Turtle implements IArtist, IMorphable
         
         
         return new Turtle(myName, myPosition, myPen, myImage, myBehavior, myMode);
+        
+    }
+
+
+    public void drawMyLines (BufferedImage buf)
+    {
+        this.drawMyLines(buf, 0);
+        
+    }
+    
+    public void drawMyLines (BufferedImage buf, int startIndex)
+    {
+        for (Line line: this.getLines().subList(startIndex, this.getLines().size()-1)){
+            line.draw(buf);
+        }
         
     }
     
