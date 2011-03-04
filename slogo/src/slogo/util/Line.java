@@ -1,5 +1,6 @@
 package slogo.util;
 
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
@@ -7,6 +8,7 @@ import java.awt.Point;
 import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
+import java.awt.image.BufferedImage;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -24,9 +26,17 @@ import slogo.model.arena.turtle.qualities.positioning.Positionable;
  */
 public class Line extends Line2D implements Comparable, Drawable{
 
-	private Pen myTrace;
+	private Pen myPen;
 	private Point2D myP1;
 	private Point2D myP2;
+	
+	public Line (Point point){
+	    this(new Pen(), point);
+	}
+	
+	public Line (Point2D start, Point2D end){
+        this(new Pen(), start, end);
+    }
 	
 	 public Line (Pen trace, Positionable position, double distance)
 	    {
@@ -34,37 +44,37 @@ public class Line extends Line2D implements Comparable, Drawable{
 	    }
 	
 	public Line(Pen trace, Point2D point, double distance, double angle){
-        this(trace, point, new Point2D.Double(point.getX()+(distance*Math.cos(angle)),
-                                              point.getY()+(distance*Math.sin(angle))));
+        this(trace, point, new Point2D.Double(point.getX()+(distance*Math.cos(Math.toRadians(angle))),
+                                              point.getY()+(distance*Math.sin(Math.toRadians(angle)))));
         
     }
 	
-	public Line(Pen trace, Point start){
-	    this(trace, start, start);
+	public Line(Pen pen, Point start){
+	    this(pen, start, start);
 	    
 	}
 	
-	public Line(Pen trace, Point2D start, Point2D end){
-	    this(trace, new Line2D.Double(start, end));
+	public Line(Pen pen, Point2D start, Point2D end){
+	    this(pen, new Line2D.Double(start, end));
 	  
 	}
 	
 
     public Line (Pen trace, Line2D line)
     {
-        myTrace = trace;
+        myPen = trace;
         myP1 = line.getP1();
         myP2 = line.getP2();
     }
 
-    public void setTrace (Pen myTrace)
+    public void setPen (Pen pen)
     {
-        this.myTrace = myTrace;
+        this.myPen = pen;
     }
     
-    public Pen getTrace ()
+    public Pen getPen ()
     {
-        return myTrace;
+        return myPen;
     }
 
 
@@ -85,16 +95,17 @@ public class Line extends Line2D implements Comparable, Drawable{
     }
 
     @Override
-    public void draw(Graphics g){
-        this.draw((Graphics2D) g);
+    public Graphics2D draw(Graphics2D g2d, Dimension dimension){
+        
+        if (myPen.isDown()){
+            g2d.setStroke(myPen.getStroke());
+            g2d.setColor(myPen.getColor());
+            g2d.draw(this);
+        }
+        return g2d;
     }
     
-    @Override
-    public void draw(Graphics2D g){
-        g.setStroke(myTrace.getStroke());
-        g.setColor(myTrace.getColor());
-        g.draw(this);
-    }
+   
     
     public double length(){
         return myP1.distance(myP2);
@@ -120,7 +131,7 @@ public class Line extends Line2D implements Comparable, Drawable{
         Collection<Line> lines = new ArrayList<Line>();
         
         for( double c = 1; c <= this.length() ; c++){
-            lines.add(new Line(myTrace, myP1, c, this.getAngle()));
+            lines.add(new Line(myPen, myP1, c, this.getAngle()));
         }
         
         return lines;
@@ -134,7 +145,7 @@ public class Line extends Line2D implements Comparable, Drawable{
 
     public Line mirror ()
     {
-        return new Line(myTrace, new Line2D.Double( -this.getX1(), 
+        return new Line(myPen, new Line2D.Double( -this.getX1(), 
                                  -this.getY1(), 
                                  -this.getX2(), 
                                  -this.getY2()));
@@ -203,7 +214,38 @@ public class Line extends Line2D implements Comparable, Drawable{
         if (!(this.getY2()==((Line2D) otherLine).getY2()))
         	return (int) (this.getY2()-((Line2D) otherLine).getY2());
         
-        return myTrace.compareTo(((Line) otherLine).getTrace());
+        return myPen.compareTo(((Line) otherLine).getPen());
       }
+
+    public void shiftXY(double both){
+        shiftXY(both, both);
+    }
+    
+    public void shiftXY(double x, double y){
+        shiftX(x);
+        shiftY(y);
+        
+    }
+    
+    
+    public void shiftX (double x)
+    {
+        myP1.setLocation(myP1.getX()+x, myP1.getY());
+        myP2.setLocation(myP2.getX()+x, myP2.getY());
+        
+    }
+    
+    public void shiftY (double y)
+    {
+        myP1.setLocation(myP1.getX(), myP1.getY()+y);
+        myP2.setLocation(myP2.getX(), myP2.getY()+y);
+        
+    }
+
+    public ArrayList<Line> wrap ()
+    {
+        // TODO Auto-generated method stub
+        return null;
+    }
     
 }

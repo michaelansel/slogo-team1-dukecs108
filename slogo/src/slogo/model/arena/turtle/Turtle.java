@@ -1,11 +1,22 @@
 package slogo.model.arena.turtle;
 
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.Point; 
+import java.awt.geom.AffineTransform;
+import java.awt.geom.Point2D;
+import java.awt.geom.Point2D.Double;
 import java.awt.image.BufferedImage;
+import java.awt.image.ImageObserver;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import javax.imageio.ImageIO;
+import slogo.model.arena.TurtleException;
 import slogo.model.arena.turtle.qualities.behavior.BehaviorDecorator;
 import slogo.model.arena.turtle.qualities.behavior.DefaultBehavior;
 import slogo.model.arena.turtle.qualities.behavior.IBehavior;
@@ -25,7 +36,9 @@ import slogo.util.Pen;
  */
 public class Turtle implements IArtist, IMorphable
 {
-    private static final File DEFAULT_IMAGE = new File("src/image/default.jpg"); //TODO: Write in default filepath
+    private static final File DEFAULT_IMAGE = new File("src/images/turtlecloud.png"); //TODO: Write in default filepath
+    private static final int ICON_HEIGHT = 20;
+    private static final int ICON_WIDTH = 20;
     private String myName;
     private IBehavior myBehavior;
     private IMode myMode;
@@ -203,21 +216,26 @@ public class Turtle implements IArtist, IMorphable
     @Override
     public int move (double distance)
     {
-        myLines.add(myBehavior.applyBehavior(new Line( myPen, myPosition, distance)));
+        return move (new Line( myPen.clone(), myPosition, distance));
+        
+    }
+
+    public int move (Point2D target)
+    {
+        myPen.putUp();
+//        myPosition.setHeadingTo(target);
+        return move (new Line(myPosition.getLocation(), target));
+
+    }
+    
+    public int move (Line line){
+        myLines.add(myBehavior.applyBehavior(line));
         myPosition.setLocation(myLines.get(myLines.size()-1).getP2());
         myPen.putDown();
         return (int) Math.round(myLines.get(myLines.size()-1).length());
     }
 
-
-    @Override
-    public int moveTo (Point target)
-    {
-        myPen.putUp();
-        myPosition.setHeadingTo(target);
-        return move(target.distance(myPosition.getLocation()));
-
-    }
+    
 
 
     @Override
@@ -266,7 +284,7 @@ public class Turtle implements IArtist, IMorphable
 
     public int resetTurtle ()
     {
-        this.moveTo(new Point());
+        this.move(new Point());
         this.myPosition.changeHeadingBy(Positionable.DEFAULT_HEADING);
         int d = (int) myLines.get(myLines.size() - 1).length();
         myLines.clear();
@@ -291,10 +309,12 @@ public class Turtle implements IArtist, IMorphable
     }
 
 
-    @Override
-    public Iterable<Line> linesToDraw (int start)
+    public List<Line> getLinesToDraw (int start) //throws TurtleException
     {
-        return myMode.applyMode(myLines.subList(start, myLines.size() - 1));
+//        if (myLines.size()<= start){
+//            throw new TurtleException("Nothing to draw");
+//        }
+            return myMode.applyMode(myLines.subList(start, myLines.size()));
     }
 
     public Turtle clone(){
@@ -306,18 +326,41 @@ public class Turtle implements IArtist, IMorphable
     }
 
 
-    public void drawMyLines (BufferedImage buf)
-    {
-        this.drawMyLines(buf, 0);
-        
-    }
+//    public BufferedImage drawMyLines (Graphics2D g2d)
+//    {
+//        return this.drawMyLines(g2d, 0);
+//        
+//    }
     
-    public void drawMyLines (BufferedImage buf, int startIndex)
-    {
-        for (Line line: this.getLines().subList(startIndex, this.getLines().size()-1)){
-            line.draw(buf);
-        }
-        
+//    public BufferedImage drawMyLines (Graphics2D g2d, int startIndex)
+//    {
+//        for (Line line: this.getLines().subList(startIndex, this.getLines().size()-1)){
+//            ArrayList<Line> wrappedLines = line.wrap();
+//            for (Line wrap: wrappedLines){
+//                myMode.applyMode(wrap, g2d);
+//            }
+//            line.draw(g2d);
+//        }
+//        return lines;
+//    }
+    
+    public void draw (Graphics2D g) throws IOException{
+        drawAtPoint(g, myPosition.getLocation());
+    }
+
+    public void drawAtPoint (Graphics2D g, Point2D point) throws IOException{
+//      AffineTransform xform = AffineTransform.getRotateInstance(Math.toRadians(myPosition.getHeading()));
+//      
+//      
+//      g.transform(xform);
+      
+      g.drawImage(ImageIO.read(myImage),
+                  (int) point.getX()-ICON_HEIGHT/2,
+                  (int) point.getY()-ICON_WIDTH/2, 
+                  ICON_HEIGHT, 
+                  ICON_WIDTH, 
+                  null);
+
     }
     
 }

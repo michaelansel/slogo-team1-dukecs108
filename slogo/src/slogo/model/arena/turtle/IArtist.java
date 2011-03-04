@@ -70,13 +70,6 @@ public interface IArtist {
 	 */
 	public abstract void removeLines(List<Line> lines);
 
-	/**
-	 * returns a set of lines to draw, may not be the same as the set of lines
-	 * held by the turtle
-	 * 
-	 * @param start
-	 * @return
-	 */
-	Iterable<Line> linesToDraw(int start);
+
 
 }

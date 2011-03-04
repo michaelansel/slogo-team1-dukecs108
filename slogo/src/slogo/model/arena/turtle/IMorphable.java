@@ -1,6 +1,7 @@
 package slogo.model.arena.turtle;
 
 import java.awt.Point;
+import java.awt.geom.Point2D;
 import java.io.File;
 import slogo.model.arena.turtle.qualities.behavior.BehaviorDecorator;
 import slogo.model.arena.turtle.qualities.behavior.IBehavior;
@@ -52,7 +53,7 @@ public interface IMorphable {
 	 * 
 	 * @param target
 	 */
-	public int moveTo(Point target);
+	public int move(Point2D target);
 
 	public int move(double distance);
 

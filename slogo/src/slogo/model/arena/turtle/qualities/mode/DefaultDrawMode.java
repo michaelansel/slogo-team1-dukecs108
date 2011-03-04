@@ -1,6 +1,8 @@
 package slogo.model.arena.turtle.qualities.mode;
 
+import java.awt.Graphics2D;
 import java.util.Collection;
+import java.util.List;
 import slogo.util.Line;
 
 /**
@@ -9,9 +11,12 @@ import slogo.util.Line;
  */
 public class DefaultDrawMode implements IMode {
 
-	@Override
-	public Collection<Line> applyMode(Collection<Line> lines) {
-		return lines;
-	}
+
+    @Override
+    public List<Line> applyMode (List<Line> subList)
+    {
+        return subList;
+    }
+
 
 }

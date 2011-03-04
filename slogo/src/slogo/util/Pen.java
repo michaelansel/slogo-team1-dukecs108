@@ -17,7 +17,7 @@ public class Pen
     private boolean amDown;
    
     public Pen(){
-        this(new BasicStroke(1), Color.BLACK);
+        this(new BasicStroke(1), Color.WHITE);
     }
   
     public Pen (Stroke stroke, Color color)
@@ -27,6 +27,13 @@ public class Pen
         amDown = true;
     }
 
+
+    public Pen (Stroke stroke, Color color, boolean state)
+    {
+        setStroke(stroke);
+        setColor(color);
+        amDown = state;
+    }
 
     public boolean isUp ()
     {
@@ -76,7 +83,10 @@ public class Pen
 		return 1;
 	}
 
- 
+	public Pen clone(){
+        return new Pen(myStroke, myColor, amDown);
+	    
+	}
 
     
     
