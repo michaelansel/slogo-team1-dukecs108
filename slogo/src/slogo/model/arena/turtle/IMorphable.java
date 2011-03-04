@@ -58,6 +58,5 @@ public interface IMorphable {
 
 	public int rotate(double dAngle);
 
-	void setTrace(Pen newTrace);
 
 }
