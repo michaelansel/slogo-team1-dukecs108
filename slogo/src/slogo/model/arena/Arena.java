@@ -3,33 +3,23 @@ package slogo.model.arena;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Set;
-
 import slogo.model.arena.turtle.Turtle;
 import slogo.model.expression.Expression;
 
-/**Default Arena object, will work for most applications. Supports
-* creation of "Default" Arenas and Turtles so that a user does not
-* have to fiddle with every option if it is not necessary and View
-* does not start gaining instance variables
-* 
-* @author Julian Genkins
-*/
 
 public class Arena implements Cloneable
 {
-	protected Map<Integer, Turtle> myTurtles;
-    protected int myCurrentTurtleID;
-    protected Map<String, Expression> myVariables;
-    protected List<String> myHistory;
+    private Map<Integer, Turtle> myTurtles;
+    private int myCurrentTurtleID;
+    private Map<String, Expression> myVariables;
+    private List<String> myHistory;
 
 
     /**
-     * Create a new Arena with a default Turtle (named Jim)
+     * Create a new Arena with a default Turtle (Jim)
      */
     public Arena ()
     {
@@ -222,21 +212,51 @@ public class Arena implements Cloneable
         return myHistory.get(index);
     }
     
-    /**
-     * Method stub to return the list of necessary components to
-     * controller so our view has items to display.
-     * @return imagePathStrokeObject the imaginary object
-     * that will return a perfect solution.
-     */
-    //TODO: Write this method, remove the one below that is
-    //      in case of testing/demonstration
-   // public List<imagePathStrokeObject> getTurtleDisplayList()
-   // {
-    	
-   // 	return new List<imagePathStrokeObject>();
-   // }
     
-    public Set<Entry<Integer, Turtle>> getTurtleIterator(){
-    	return myTurtles.entrySet();
+    /**
+     * set the current turtle in the arena by entering the desired turtle's name
+     * primarily for command line funtionality
+     * @param name
+     * @throws TurtleException
+     */
+    public void setCurrTurtleByName(String name) throws TurtleException{
+        if (!this.containsTurtleByName(name))
+            throw new TurtleException("No turtle with that name exists");
+        for (Entry<Integer, Turtle> entry: myTurtles.entrySet()){
+            if (entry.getValue().getName().equals(name))
+                this.setCurrentTurtleID(entry.getKey());
+        }
+        
     }
+    
+    
+    /**
+     * Retrieve a turtle in this arena by name
+     * @param name
+     * @return
+     * @throws TurtleException
+     */
+    public Turtle getTurtleByName(String name) throws TurtleException{
+        
+           
+        for (Entry<Integer, Turtle> entry: myTurtles.entrySet()){
+            if (entry.getValue().getName().equals(name))
+                return entry.getValue();
+        }
+        throw new TurtleException("No turtle with that name exists");
+    }
+    
+    
+    
+    
+
+
+    private boolean containsTurtleByName (String name)
+    {
+        for (Turtle t: myTurtles.values()){
+            if (t.getName().equals(name)) return true;
+        }
+        return false;
+    }
+    
 }
