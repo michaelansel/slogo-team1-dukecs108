@@ -132,7 +132,18 @@ public class Arena implements Cloneable
         return myTurtles.get(turtleID);
     }
 
-
+    /**
+     * Retrieve the entire turtle map from the arena
+     * 
+     * 
+     * @return Turtle map
+     */
+    public Map<Integer, Turtle> getTurtleMap ()
+    {
+        return myTurtles;
+    }
+    
+    
     /**
      * Change the current Turtle
      * 
