@@ -9,12 +9,13 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
 
 
 /**
  * @author Michael Ansel
  */
-public abstract class AbstractParser
+public abstract class AbstractParser implements Cloneable
 {
     protected class ParserCheckpoint
     {
@@ -27,6 +28,8 @@ public abstract class AbstractParser
         }
     }
 
+    protected static final Logger logger = Logger.getLogger(AbstractParser.class.getName());
+
     private AbstractLexer myLexer;
     private AbstractParserRule myRootRule;
     private Map<String, AbstractParserRule> myRules;
@@ -38,6 +41,24 @@ public abstract class AbstractParser
         myLexer = lexer;
         myTokens = new ArrayList<Token>(lexer.tokenize());
         myRules = new HashMap<String, AbstractParserRule>();
+    }
+    
+    @Override
+    public AbstractParser clone()
+    {
+        AbstractParser parser = null;
+        try
+        {
+            parser = (AbstractParser) super.clone();
+        }
+        catch (CloneNotSupportedException e)
+        {
+            e.printStackTrace();
+        }
+        parser.myLexer = myLexer;
+        parser.myTokens = new ArrayList<Token>(myLexer.tokenize());
+        parser.myRules = new HashMap<String, AbstractParserRule>(myRules);
+        return parser;
     }
 
 
@@ -76,7 +97,7 @@ public abstract class AbstractParser
                         (nextToken = peekNextToken()).tokenRule == myTokenRule)
                     {
                         result.add(consumeNextToken());
-                        System.out.println("ExactlyOne returning: " +
+                        logger.finer("ExactlyOne returning: " +
                                            result.toString());
                         return processResult(result);
                     }
@@ -126,25 +147,25 @@ public abstract class AbstractParser
             public ParserResult evaluate () throws ParserException
             {
                 ParserCheckpoint checkpoint = null;
-                System.out.println("FirstOf: " + myRules.toString());
+                logger.finer("FirstOf: " + myRules.toString());
                 for (AbstractParserRule rule : myRules)
                 {
                     checkpoint = storeCheckpoint();
-                    System.out.println("--Testing: " + rule.toString());
+                    logger.finer("--Testing: " + rule.toString());
                     try
                     {
                         ParserResult result = rule.evaluate();
-                        System.out.println("FirstOf returning: " +
+                        logger.finer("FirstOf returning: " +
                                            result.toString());
                         return processResult(result);
                     }
                     catch (ParserException e)
                     {
-                        System.out.println("--Caught! Restoring from checkpoint... (" +
+                        logger.finer("--Caught! Restoring from checkpoint... (" +
                                            e.toString().replaceAll("\n", " | ") +
                                            ")");
                         restoreCheckpoint(checkpoint);
-                        System.out.println("Tokens: " + myTokens.toString());
+                        logger.finer("Tokens: " + myTokens.toString());
                     }
                 }
                 parseError("FirstOf never matched!");
@@ -275,7 +296,7 @@ public abstract class AbstractParser
                 {
                     restoreCheckpoint(checkpoint);
                 }
-                System.out.println("Optional returning: " + result.toString());
+                logger.finer("Optional returning: " + result.toString());
                 return processResult(result);
             }
 
@@ -351,7 +372,7 @@ public abstract class AbstractParser
             public ParserResult evaluate () throws ParserException
             {
                 ParserResult result = new ParserResult();
-                System.out.println(myRules);
+                logger.finer(myRules.toString());
                 for (AbstractParserRule rule : myRules)
                 {
                     try
@@ -366,7 +387,7 @@ public abstract class AbstractParser
                                                   e);
                     }
                 }
-                System.out.println("Sequence returning: " + result.toString());
+                logger.finer("Sequence returning: " + result.toString());
                 return processResult(result);
             }
 
@@ -386,6 +407,12 @@ public abstract class AbstractParser
         };
     }
 
+
+    public void setLexer (AbstractLexer lexer)
+    {
+        myLexer = lexer;
+        myTokens = new ArrayList<Token>(myLexer.tokenize());
+    }
 
     protected ParserCheckpoint storeCheckpoint ()
     {
@@ -418,7 +445,7 @@ public abstract class AbstractParser
                         break;
                     }
                 }
-                System.out.println("ZeroOrMore returning: " + result.toString());
+                logger.finer("ZeroOrMore returning: " + result.toString());
                 return processResult(result);
             }
 

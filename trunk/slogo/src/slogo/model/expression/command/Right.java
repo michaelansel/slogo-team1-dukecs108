@@ -13,23 +13,23 @@ import util.parser.ParserResult;
 /**
  * @author Michael Ansel
  */
-public class Forward extends Command
+public class Right extends Command
 {
 
-    private Expression myDistanceExpression;
+    private Expression myAngleExpression;
 
 
-    public Forward (Expression distanceExpression)
+    public Right (Expression angleExpression)
     {
-        logger.finer("Creating Forward Expression: " +
-                           distanceExpression.toString());
-        myDistanceExpression = distanceExpression;
+        logger.finer("Creating Right Expression: " +
+                           angleExpression.toString());
+        myAngleExpression = angleExpression;
     }
 
 
-    public Forward (ParserResult result)
+    public Right (ParserResult result)
     {
-        // <fd>,<whitespace>,expression
+        // <rt>,<whitespace>,expression
         this((Expression) result.getList().get(2));
     }
 
@@ -38,9 +38,9 @@ public class Forward extends Command
     public int evaluate (Arena arena)
     {
         logger.fine("Evaluating: " + this.toString());
-        int val = myDistanceExpression.evaluate(arena);
+        int val = myAngleExpression.evaluate(arena);
         logger.finer("SubExpression: " + val);
-        int retval = arena.getCurrentTurtle().move(val);
+        int retval = arena.getCurrentTurtle().rotate(val);
         logger.finer("Returning: " + retval);
         return retval;
     }
@@ -49,14 +49,14 @@ public class Forward extends Command
     @Override
     protected Collection<Expression> getExpressions ()
     {
-        return Arrays.asList(new Expression[] { myDistanceExpression });
+        return Arrays.asList(new Expression[] { myAngleExpression });
     }
 
 
     @Override
     public String toString ()
     {
-        return String.format("Forward(%s)", myDistanceExpression);
+        return String.format("Right(%s)", myAngleExpression);
     }
 
 }

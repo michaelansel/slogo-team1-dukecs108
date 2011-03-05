@@ -3,11 +3,14 @@
  */
 package slogo.model.parser;
 
+import java.util.Date;
 import java.util.ResourceBundle;
 import slogo.model.expression.Constant;
+import slogo.model.expression.Expression;
 import slogo.model.expression.Variable;
 import slogo.model.expression.binary.Arithmetic;
 import slogo.model.expression.command.Command;
+import slogo.ParserTimer;
 import util.parser.AbstractParser;
 import util.parser.IResultHandler;
 import util.parser.ParserException;
@@ -50,6 +53,19 @@ public class SlogoParser
                     return new ParserResult();
                 }
             });
+            parserFactory.setHandler("SubExpression", new IResultHandler()
+            {
+
+                @Override
+                public ParserResult handleResult (ParserResult result)
+                    throws ParserException
+                {
+                    for (Object o : result.getList())
+                        if (o instanceof Expression) return new ParserResult(o);
+                    throw new ParserException("Invalid ParserResult: " +
+                                              result.getList().toString());
+                }
+            });
         }
         catch (ParserException e)
         {
@@ -62,8 +78,16 @@ public class SlogoParser
 
     public static ParserResult parse (String input) throws ParserException
     {
+        Date start = new Date();
         AbstractParser parser = parserFactory.create(new SlogoLexer(input));
+        
+        ParserTimer.createFromFactory +=
+            (new Date().getTime() - start.getTime());
 
-        return parser.run();
+        start = new Date();
+        ParserResult retval = parser.run();
+        ParserTimer.run += (new Date().getTime() - start.getTime());
+
+        return retval;
     }
 }

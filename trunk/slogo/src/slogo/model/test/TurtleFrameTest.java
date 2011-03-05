@@ -2,15 +2,16 @@ package slogo.model.test;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Point;
-import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JFrame;
 import slogo.model.arena.Arena;
 import slogo.model.arena.turtle.Turtle;
-import slogo.model.arena.turtle.qualities.positioning.Position;
+import slogo.model.expression.Expression;
+import slogo.model.parser.SlogoParser;
 import slogo.util.Line;
+import util.parser.ParserException;
 
 public class TurtleFrameTest
 {
@@ -30,6 +31,7 @@ public class TurtleFrameTest
         
         JFrame frame = new JFrame();
         frame.setBackground(Color.white);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
         Turtle turtle =createTestTurtle ();
         Arena a = new Arena(turtle);
@@ -39,7 +41,57 @@ public class TurtleFrameTest
         panel.setPreferredSize(DEFAULT_DIM);
         panel.paintComponent(panel.getGraphics());
         frame.pack();
+        
+        System.out.println("Running parser...");
+        tryParseAndEvaluate(a, "rt ( (-70+-70+-70) + 90)");
+        tryParseAndEvaluate(a, "fd 250");
+        tryParseAndEvaluate(a, "rt 90");
+        tryParseAndEvaluate(a, "fd 150");
+        tryParseAndEvaluate(a, "rt -180");
+        panel.paintComponent(panel.getGraphics());
+        runTurtle(a,panel);
+        System.out.println("done!");
+        long totalTime =    slogo.ParserTimer.createFromFactory+
+                            slogo.ParserTimer.run+
+                            slogo.ParserTimer.createCommandFromFactory+
+                            slogo.ParserTimer.runCommand;
+        System.out.println("Create parser from factory: "+
+                           slogo.ParserTimer.createFromFactory+
+                           " "+100*slogo.ParserTimer.createFromFactory/totalTime+"%");
+        System.out.println("Run parser: "+
+                           slogo.ParserTimer.run+
+                           " "+100*slogo.ParserTimer.run/totalTime+"%");
+        System.out.println("Create command parser from factory: "+
+                           slogo.ParserTimer.createCommandFromFactory+
+                           " "+100*slogo.ParserTimer.createCommandFromFactory/totalTime+"%");
+        System.out.println("Run command parser: "+
+                           slogo.ParserTimer.runCommand+
+                           " "+100*slogo.ParserTimer.runCommand/totalTime+"%");
+        System.out.println("Expressions parsed: "+
+                           slogo.ParserTimer.expressionCount);
+    }
 
+    private static void runTurtle (Arena a, TurtleTestPanel panel)
+    {
+//        for(int i=0; i<3; i++) {
+//            parsedCubeMove(a,100,50);
+//            tryParseAndEvaluate(a, "rt 70");
+//        }
+        parsedCubeMove(a,100,50);
+        panel.paintComponent(panel.getGraphics());
+        
+//        tryParseAndEvaluate(a, "rt 180");
+        tryParseAndEvaluate(a, "fd 35");
+//        tryParseAndEvaluate(a, "rt 180");
+        
+        tryParseAndEvaluate(a, "rt 70");
+        
+        parsedCubeMove(a,100,50);
+        panel.paintComponent(panel.getGraphics());
+        tryParseAndEvaluate(a, "rt 70");
+        parsedCubeMove(a,100,50);
+        panel.paintComponent(panel.getGraphics());
+        tryParseAndEvaluate(a, "rt 70");
     }
 
     private static Turtle createTestTurtle ()
@@ -87,6 +139,50 @@ public class TurtleFrameTest
         
     }
     
+    private static void tryParseAndEvaluate(Arena a, String expression)
+    {
+        slogo.ParserTimer.expressionCount++;
+        try
+        {
+            ((Expression)(SlogoParser.parse(expression).getList().get(0))).evaluate(a);
+        }
+        catch (ParserException e)
+        {
+            e.printStackTrace();
+            throw new RuntimeException("Failed to parse: "+e.toString());
+        }
+    }
+    
+    private static void parsedRotateAndMove(Arena a, double d)
+    {
+        tryParseAndEvaluate(a, "rt 90");
+        tryParseAndEvaluate(a, "fd "+(int)Math.round(d));
+    }
+    
+    private static void parsedSquareMove (Arena a, double d)
+    {
+        for(int i=0; i<4; i++)
+            parsedRotateAndMove(a, d);
+    }
+    
+    private static void parsedCubeMove(Arena a, double d, double e)
+    {
+        for(int i=0; i<4; i++)
+        {
+            parsedMove(a, e, e);
+            parsedMove(a, -e, -e);
+            parsedRotateAndMove(a, d);
+        }
+        parsedMove(a, e, e);
+        parsedSquareMove(a, d);
+    }
+    
+    private static void parsedMove (Arena a, double x, double y)
+    {
+        String expression = String.format("setxy (xcor + %d) (ycor + %d)",(int)Math.round(x),(int)Math.round(y));
+        tryParseAndEvaluate(a, expression);
+    }
+
     private static void basicCubeMove (Turtle turtle, double d, double e)
     {
         moveAndReturn(turtle, e, e);
