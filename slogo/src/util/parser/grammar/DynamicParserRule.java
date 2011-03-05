@@ -4,6 +4,7 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
 import util.parser.AbstractParser;
 import util.parser.AbstractParserRule;
 import util.parser.ParserException;
@@ -11,6 +12,7 @@ import util.parser.ParserException;
 
 final class DynamicParserRule extends AbstractParserRule
 {
+    private static final Logger logger = Logger.getLogger(DynamicParserRule.class.getName());
     private List<ParseTreeNode> children;
     private Map<String, AbstractParserRule> definedRules;
     private boolean initializing;
@@ -60,7 +62,7 @@ final class DynamicParserRule extends AbstractParserRule
         if (initialized()) return;
         if (initializing) return;
         initializing = true;
-        System.out.println("Initializing ParserRule: " +
+        logger.finer("Initializing ParserRule: " +
                            this.toString() +
                            " :: " +
                            this.ruleName +

@@ -6,6 +6,7 @@ package util.parser.grammar;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
+import java.util.logging.Logger;
 import util.parser.AbstractLexer;
 import util.parser.AbstractParser;
 import util.parser.AbstractParserRule;
@@ -20,9 +21,11 @@ import util.parser.ParserResult;
 public class GrammarParserFactory
 {
 
+    private static final Logger logger = Logger.getLogger(GrammarParserFactory.class.getName());
     private Map<String, IResultHandler> myHandlers;
     private Map<String, ParseTreeNode> myParseTrees;
     private ResourceBundle mySyntax;
+    private AbstractParser myParser;
 
 
     public GrammarParserFactory (ResourceBundle syntax) throws ParserException
@@ -61,9 +64,16 @@ public class GrammarParserFactory
 
     public AbstractParser create (AbstractLexer lexer) throws ParserException
     {
+        AbstractParser parser;
+        if(myParser != null)
+        {
+            parser = myParser.clone();
+            parser.setLexer(lexer);
+            return parser;
+        }
         final AbstractParserRule rootRule = new AbstractParserRule()
         {};
-        AbstractParser parser = new AbstractParser(lexer)
+        parser = new AbstractParser(lexer)
         {
             @Override
             protected AbstractParserRule getRootRule ()
@@ -88,11 +98,8 @@ public class GrammarParserFactory
             rules.put(ruleName, rule);
             parser.addRule(ruleName, rule);
         }
-        for (int i = 0; i < 10; i++)
-            System.out.println();
-        System.out.println("Done parsing syntax. Initializing parsed rules.");
-        for (int i = 0; i < 10; i++)
-            System.out.println();
+        logger.finer("Done parsing syntax. Initializing parsed rules.");
+
         for (AbstractParserRule rule : rules.values())
             rule.initializeRule();
 
@@ -100,12 +107,12 @@ public class GrammarParserFactory
 
         for (Map.Entry<String, IResultHandler> entry : myHandlers.entrySet())
         {
-            System.out.println("Adding handler to " + entry.getKey());
+            logger.finer("Adding handler to " + entry.getKey());
             parser.getRule(entry.getKey()).setHandler(entry.getValue());
         }
 
         for (Map.Entry<String, AbstractParserRule> entry : rules.entrySet())
-            System.out.println(entry.getKey() + ": " +
+            logger.finer(entry.getKey() + ": " +
                                entry.getValue().toString());
 
         return parser;

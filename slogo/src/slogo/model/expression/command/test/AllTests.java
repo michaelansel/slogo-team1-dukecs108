@@ -12,6 +12,7 @@ public class AllTests
         TestSuite suite = new TestSuite(AllTests.class.getName());
         //$JUnit-BEGIN$
         suite.addTestSuite(ForwardTest.class);
+        suite.addTestSuite(RightTest.class);
         //$JUnit-END$
         return suite;
     }
