@@ -5,12 +5,13 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Observable;
 import java.util.Map.Entry;
 import slogo.model.arena.turtle.Turtle;
 import slogo.model.expression.Expression;
 
 
-public class Arena implements Cloneable
+public class Arena extends Observable implements Cloneable
 {
     private Map<Integer, Turtle> myTurtles;
     private int myCurrentTurtleID;
