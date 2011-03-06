@@ -1,4 +1,4 @@
-package slogo.view.subpanels;
+package slogo.view.panel;
 
 
 import slogo.*;
@@ -30,6 +30,7 @@ import javax.swing.SwingConstants;
 import slogo.model.arena.Arena;
 import slogo.model.arena.turtle.Turtle;
 import slogo.view.resources.ImageListCellRenderer;
+import slogo.view.subpanels.drawnArena;
 
 /**
  * Panel containing the Arena and its TurtleList. Can be plugged into
