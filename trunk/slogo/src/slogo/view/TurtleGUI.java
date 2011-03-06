@@ -1,26 +1,17 @@
 package slogo.view;
 
-import static org.junit.Assert.assertEquals;
-import slogo.SLogo;
 
 import java.awt.BorderLayout;
-import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.TreeSet;
-
-import javax.imageio.ImageIO;
-import javax.swing.BorderFactory;
+import java.util.Observable;
+import java.util.Observer;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -31,83 +22,75 @@ import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
-import javax.swing.SwingConstants;
 
-import slogo.model.arena.turtle.Turtle;
-import slogo.model.arena.turtle.qualities.positioning.Position;
-import slogo.model.expression.Expression;
-import slogo.model.parser.SlogoParser;
-import slogo.view.resources.ImageListCellRenderer;
+import slogo.controller.Controller;
+import slogo.model.arena.Arena;
 import slogo.view.subpanels.ArenaPanel;
 import util.parser.ParserException;
-import util.parser.ParserResult;
 
-@SuppressWarnings("unused")
 
-public class TurtleGUI {
-	
-	//State Variables
-    public static boolean RIGHT_TO_LEFT = false;
-    public int ID_NUMBER;
-    public TreeSet<Integer> myArenaList = new TreeSet<Integer>();
-    public ArrayList<ArenaPanel> myArenaPanels = new ArrayList<ArenaPanel>();
-    
-  //Declare components
-    static JPanel myPanel;
-	static JButton button;
-	static JTextField textbox;
-	static JList turtleList;
-	static JTabbedPane display;
-	static JScrollPane myScroll;
-	static JFrame entireFrame;
-    
+public class TurtleGUI implements Observer {
+
 	
     /**
      * Create the GUI and show it.
      */
-	public TurtleGUI (int ID_NUM)
+	public TurtleGUI (Controller c)
 	{
-		ID_NUMBER=ID_NUM;
+		myController = c;
 		createAndShowGUI();
 	}
 	
 	/**
-	 * Adds the specified arenaID to "myArenaList". Should probably create
-	 * a pane at this time as well. Will deal with all necessary calls out
-	 * by saying "hey controller, tell the Arena with ID_NUMBER blablabla to
-	 * do this..."
-	 * 
-	 * @param arenaID the ID_NUMBER of the Arena you want to add
-	 * @return false if the ID_NUMBER is already present in myArenaList
+	 * Updates the correct arena when called. Creates a new ArenaPanel
+	 * if there is not already one watching the given Arena
 	 */
-	public boolean addArena(int arenaID){
-		if(myArenaList.add(arenaID)){
-			ArenaPanel a = new ArenaPanel(arenaID);
-			myArenaPanels.add(a);
-			myPanel=a.getPanel();
-	    	display.addTab("Arena "+arenaID, myPanel);
-			return true;
+	public void update(Arena a){
+		boolean newPanel=true;
+		//Checks if we already have an ArenaPanel for this Arena
+		for (ArenaPanel arP: myArenaPanels){
+			if (arP.getArena()==a){
+				//Yes, so this is not a new Arenapanel and we need to update
+				newPanel=false;
+				arP.draw();
+			}
 		}
-		return false;
+		if(newPanel==true){
+			//No, so we need to add a new ArenaPanel
+			addArenaPanel(a);
+		}
+		//Repaints our view to reflect any changes
+		entireFrame.repaint();
 	}
 	
 	/**
-	 * Updates the correct arena when called.
+	 * Updates the correct ArenaPanel for our arena o.
 	 */
-	public void updateArena(int arenaID){
-
-		for (ArenaPanel a: myArenaPanels){
-			if (a.getArenaID()==arenaID){
-				a.draw();
-			}
-		}
-		entireFrame.repaint();
+	@Override
+	/**
+	 * Not sure what arg is...
+	 */
+	//TODO: Figure out what arg is and/or how to use it.
+	public void update(Observable o, Object arg) {
+		if (o instanceof Arena)
+			update((Arena)o);
+	}
+	
+	/**
+	 * Creates a new ArenaPanel, draws it, and adds it to the tabbed display
+	 * and to myArenaPanels list
+	 * 
+	 */
+	public void addArenaPanel(Arena a){
+			ArenaPanel arP = new ArenaPanel(a);
+			myArenaPanels.add(arP);
+	    	display.addTab("Arena "+myArenaPanels.size(), arP.getPanel() );
 	}
 	
 	/**
 	 * Create the GUI and show it.
 	 */
-    private static void createAndShowGUI() {
+    private void createAndShowGUI() {
         //Create and set up the window.
         entireFrame = new JFrame("I like turtles.");
         entireFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -118,7 +101,11 @@ public class TurtleGUI {
         entireFrame.setVisible(true);
     }
     
-    public static void addComponentsToPane(JPanel pane) {
+    /**
+     * Adds the components to our pane
+     * @param pane the pane we want to add components to
+     */
+    public void addComponentsToPane(JPanel pane) {
     	
     	JPanel borderPanel;
     	
@@ -194,67 +181,9 @@ public class TurtleGUI {
     }
 
     /**
-     * General use "makepanel" when you just want a new
-     * default panel.
-     * @return default panel with borderlayout and borders of 10.
-     */
-	private static JPanel makeNewPanel(){
-    	JPanel panel = new JPanel();
-    	panel.setLayout(new BorderLayout(8,8));
-    	return panel;
-    }
-    
-	/**
-	 * Responsible for creating the scrollable JList with images and
-	 * awesome background colors. Does this through the class
-	 * "ImageListCellRenderer.java" which edits how the default JList
-	 * items are rendered.
-	 * 
-	 * @param list the list of turtles you want to represent
-	 * @return a JList of those turtles names+images.
-	 */
-    public static JList createAndPopulateList(ArrayList<Turtle> list){
-    	Object[] panels = new Object[list.size()];
-    	
-    	// construct the menuList as a JList
-    	JList turtleList = new JList();
-    	turtleList.setCellRenderer(new ImageListCellRenderer());
-    	int count = 0;
-    	for (Turtle t: list){
-    		JFrame frame = new JFrame("Turtle image");
-             BufferedImage im = null;
-             try {
-     			im = ImageIO.read(t.getImage());
-     		} catch (IOException e) {
-				JOptionPane.showMessageDialog(myPanel,
-						e.getMessage(),
-						"FILE ERROR; DEFAULT ADDED",
-						JOptionPane.ERROR_MESSAGE);
-     			try {
-					im = ImageIO.read(new File("src/images/default.png"));
-				} catch (IOException e1) {
-					JOptionPane.showMessageDialog(myPanel,
-							e.getMessage(),
-							"UNHANDLED FILE ERROR; PLEASE DELETE OFFENDING TURTLE",
-							JOptionPane.ERROR_MESSAGE);
-				}
-     		}
-     		  		
-            Container imgPane = frame.getContentPane();
-            JLabel imaj = new JLabel("Turtle "+count, new ImageIcon(im), SwingConstants.LEFT);
-            imgPane.add(imaj);
-    		panels[count]=imgPane;
-     		    		count++;
-    	}
-    	 turtleList.setListData(panels);
-		return turtleList;
-    }
-    
-    
-    /**
 	 * Creates a textfield that evaluates on ENTER.
 	 */
-	protected static JTextField makeInput ()
+	private JTextField makeInput ()
 	{
 		JTextField result = new JTextField();
 		result.addActionListener(
@@ -271,7 +200,7 @@ public class TurtleGUI {
 	/**
 	 * Creates "Evaluate!" button that evaluates on LEFTCLICK.
 	 */
-	protected static JButton makeButton(){
+	private JButton makeButton(){
 		JButton result = new javax.swing.JButton("Go!");
 
 		result.addActionListener(
@@ -284,13 +213,15 @@ public class TurtleGUI {
 		result.setPreferredSize(new Dimension(80, 40));
 		return result;
 	}
-	/**
-	 * Evaluate function. Sends the input to controller for further action,
+	
+	/** Evaluate function. Sends the input to controller for further action,
 	 * along with the ID of the arrayList that is currently active.
 	 */
-	public static void evaluateInput() {
+	public void evaluateInput() {
+		ArenaPanel arP = (ArenaPanel) display.getSelectedComponent();
+		Arena a = arP.getArena();
 		try {
-			SLogo.myController.evaluateExpression(textbox.getText(), 0);
+			myController.evaluateExpression(textbox.getText(), a);
 		} catch (ParserException e) {
 			JOptionPane.showMessageDialog(myPanel,
 					e.getMessage(),
@@ -299,20 +230,11 @@ public class TurtleGUI {
 		}
 	}
 	
-	public boolean hasArena(int ID){
-		if (myArenaList.contains(ID)){
-			return true;
-		}
-		
-		return false;
-	}
-    
-    
 	/**
 	 * creates and populates the menu with File>Save, Variables>Add, 
 	 * and Variables>Remove
 	 */
-	private static JMenuBar createMenu() {
+	private JMenuBar createMenu() {
 		JMenuBar jMenuBar1=new JMenuBar();
 		   JMenu fileMenu=new JMenu();
 		   JMenu variableMenu=new JMenu();
@@ -367,5 +289,30 @@ public class TurtleGUI {
 		   return jMenuBar1;
 	}
 	
+    /**
+     * Creates a new generic Panel with BorderLayout with borders (8,8)
+     * @return default panel with borderlayout and borders of 8.
+     */
+	private JPanel makeNewPanel(){
+    	JPanel panel = new JPanel();
+    	panel.setLayout(new BorderLayout(8,8));
+    	return panel;
+    }
+	
+	
+	//State Variables
+    public static boolean RIGHT_TO_LEFT = false;
+    private ArrayList<ArenaPanel> myArenaPanels = new ArrayList<ArenaPanel>();
+    private Controller myController;
+    
+    //Declare components
+    JPanel myPanel;
+	JButton button;
+	JTextField textbox;
+	JList turtleList;
+	JTabbedPane display;
+	JScrollPane myScroll;
+	JFrame entireFrame;
+
 }
 
