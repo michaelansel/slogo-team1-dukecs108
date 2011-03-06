@@ -1,5 +1,7 @@
 package slogo.view.subpanels;
 
+import java.awt.Dimension;
+
 import javax.swing.JPanel;
 
 import slogo.model.arena.Arena;
@@ -10,6 +12,6 @@ public class drawnArena extends JPanel {
 
 	public drawnArena(Arena a) {
 		myArena=a;
+		setPreferredSize(new Dimension(400,400));
 	}
-
 }

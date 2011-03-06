@@ -17,7 +17,7 @@ public class Pen
     private boolean amDown;
    
     public Pen(){
-        this(new BasicStroke(1), Color.WHITE);
+        this(new BasicStroke(2), Color.RED);
     }
   
     public Pen (Stroke stroke, Color color)
