@@ -1,7 +1,7 @@
 package slogo.view;
 
 
-import java.awt.BorderLayout;
+import java.awt.BorderLayout; 
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -30,13 +30,24 @@ import util.parser.ParserException;
 
 
 public class TurtleGUI implements Observer {
-
+	//State Variables
+    public static boolean RIGHT_TO_LEFT = false;
+    private ArrayList<ArenaPanel> myArenaPanels = new ArrayList<ArenaPanel>();
+    private Controller myController;
+    
+    //Declare components
+    JPanel myPanel;
+	JButton button;
+	JTextField textbox;
+	JList turtleList;
+	JTabbedPane display;
+	JScrollPane myScroll;
+	JFrame entireFrame;
 	
     /**
      * Create the GUI and show it.
      */
-	public TurtleGUI (Controller c)
-	{
+	public TurtleGUI (Controller c){
 		myController = c;
 		createAndShowGUI();
 	}
@@ -45,7 +56,7 @@ public class TurtleGUI implements Observer {
 	 * Updates the correct arena when called. Creates a new ArenaPanel
 	 * if there is not already one watching the given Arena
 	 */
-	public void update(Arena a){
+	public void update(Arena a){ 
 		boolean newPanel=true;
 		//Checks if we already have an ArenaPanel for this Arena
 		for (ArenaPanel arP: myArenaPanels){
@@ -59,21 +70,17 @@ public class TurtleGUI implements Observer {
 			//No, so we need to add a new ArenaPanel
 			addArenaPanel(a);
 		}
-		//Repaints our view to reflect any changes
-		entireFrame.repaint();
 	}
 	
 	/**
 	 * Updates the correct ArenaPanel for our arena o.
-	 */
-	@Override
-	/**
 	 * Not sure what arg is...
 	 */
+	@Override
 	//TODO: Figure out what arg is and/or how to use it.
-	public void update(Observable o, Object arg) {
+	public void update(Observable o, Object arg) { 
 		if (o instanceof Arena)
-			update((Arena)o);
+			update((Arena) o);
 	}
 	
 	/**
@@ -107,7 +114,6 @@ public class TurtleGUI implements Observer {
      */
     public void addComponentsToPane(JPanel pane) {
     	
-    	JPanel borderPanel;
     	
     	//Calls the menu to be created
     	//Adds it at the top of the display
@@ -115,8 +121,8 @@ public class TurtleGUI implements Observer {
     	myPanel.add(createMenu());
         pane.add(myPanel, BorderLayout.PAGE_START);
         
+        
         //Creates a new JTabbedPane.
-        //Currently "myPanel" is acting as an example
     	display = new JTabbedPane();
     	display.setPreferredSize(new Dimension(600,400));
         pane.add(display, BorderLayout.CENTER);
@@ -129,54 +135,23 @@ public class TurtleGUI implements Observer {
         pane.add(makeNewPanel(), BorderLayout.LINE_START);
         
         
-        //Creates the awesome list we see on the right side
-        //File f = new File("src/images/default.png");
-        //ArrayList<Turtle> a = new ArrayList<Turtle>();
-        //for (int i=0; i<5; i++){        	a.add(new Turtle("Turtle "+i, f ));
-        	//a.get(i).setPosition(new Position(50, 50));  }
-        
-        
-        //CAUTION: this was done mostly guess/check for a few hours...
-        //This was the only way it ended up working, but I know theres
-        //got to be better ways to do it out there.
-    	//myPanel = makeNewPanel();
-    	//turtleList = createAndPopulateList(a);
-    	//turtleList.setCellRenderer(new ImageListCellRenderer());
-		//turtleList.setBorder(BorderFactory.createRaisedBevelBorder());
-    	//myScroll= new JScrollPane(turtleList);
-        //myScroll.setPreferredSize(new Dimension (165, 300));
-        //myScroll.setMaximumSize(new Dimension (170, 350));
-    	//myScroll.doLayout();
-        //myPanel.setPreferredSize(new Dimension (165, 300));
-        //myPanel.add(myScroll, BorderLayout.CENTER);
-        
-        //borderPanel=makeNewPanel();
-        //borderPanel.add(makeNewPanel(), BorderLayout.PAGE_START);
-        //borderPanel.add(makeNewPanel(), BorderLayout.LINE_END);
-        //borderPanel.add(myPanel, BorderLayout.CENTER);
-        
-        //pane.add(borderPanel, BorderLayout.LINE_END);
-        
-        
-        //Creates the textbox and button in a panel, then adds them to
-        //PAGE_END in the main panel.
-        
+        //Creates the textbox & button, adds spaces where necessary
         myPanel = makeNewPanel();
         textbox = makeInput();
         button= makeButton();
-        
-        borderPanel=makeNewPanel();
+        //Textbox added here
+    	JPanel borderPanel = makeNewPanel();
         borderPanel.add(makeNewPanel(), BorderLayout.PAGE_END);
         borderPanel.add(makeNewPanel(), BorderLayout.LINE_START);
         borderPanel.add(textbox, BorderLayout.CENTER);
         myPanel.add(borderPanel, BorderLayout.CENTER);
-        
+        //Button added here
         borderPanel=makeNewPanel();
         borderPanel.add(makeNewPanel(), BorderLayout.PAGE_END);
         borderPanel.add(makeNewPanel(), BorderLayout.LINE_END);
         borderPanel.add(button, BorderLayout.CENTER);
         myPanel.add(borderPanel, BorderLayout.LINE_END);
-        
+        //whole thing added to pane
         pane.add(myPanel, BorderLayout.PAGE_END);
     }
 
@@ -200,7 +175,7 @@ public class TurtleGUI implements Observer {
 	/**
 	 * Creates "Evaluate!" button that evaluates on LEFTCLICK.
 	 */
-	private JButton makeButton(){
+	private JButton makeButton(){ 
 		JButton result = new javax.swing.JButton("Go!");
 
 		result.addActionListener(
@@ -217,10 +192,10 @@ public class TurtleGUI implements Observer {
 	/** Evaluate function. Sends the input to controller for further action,
 	 * along with the ID of the arrayList that is currently active.
 	 */
-	public void evaluateInput() {
+	public void evaluateInput() { 
 		ArenaPanel arP = (ArenaPanel) display.getSelectedComponent();
 		Arena a = arP.getArena();
-		try {
+		try { 
 			myController.evaluateExpression(textbox.getText(), a);
 		} catch (ParserException e) {
 			JOptionPane.showMessageDialog(myPanel,
@@ -228,6 +203,9 @@ public class TurtleGUI implements Observer {
 					"Input Error!",
 					JOptionPane.ERROR_MESSAGE);
 		}
+		textbox.setText("");
+		//Repaints our view to reflect any changes
+		entireFrame.repaint();
 	}
 	
 	/**
@@ -299,20 +277,6 @@ public class TurtleGUI implements Observer {
     	return panel;
     }
 	
-	
-	//State Variables
-    public static boolean RIGHT_TO_LEFT = false;
-    private ArrayList<ArenaPanel> myArenaPanels = new ArrayList<ArenaPanel>();
-    private Controller myController;
-    
-    //Declare components
-    JPanel myPanel;
-	JButton button;
-	JTextField textbox;
-	JList turtleList;
-	JTabbedPane display;
-	JScrollPane myScroll;
-	JFrame entireFrame;
 
 }
 
