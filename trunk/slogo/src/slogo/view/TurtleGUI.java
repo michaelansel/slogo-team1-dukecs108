@@ -25,7 +25,7 @@ import javax.swing.KeyStroke;
 
 import slogo.controller.Controller;
 import slogo.model.arena.Arena;
-import slogo.view.subpanels.ArenaPanel;
+import slogo.view.panel.ArenaPanel;
 import util.parser.ParserException;
 
 
