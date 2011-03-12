@@ -75,6 +75,7 @@ public abstract class Command extends Expression
                                                             catch (Exception e)
                                                             {
                                                                 e.printStackTrace();
+                                                                System.err.println("Result: "+result.getList().toString());
                                                                 throw new ParserException(e.toString());
                                                             }
                                                         }
@@ -88,8 +89,24 @@ public abstract class Command extends Expression
                                                     public ParserResult handleResult (ParserResult result)
                                                         throws ParserException
                                                     {
-                                                        return new ParserResult(((Token) result.getList()
-                                                                                               .get(0)).value);
+                                                        Object expression =
+                                                            ((Token) result.getList()
+                                                                           .get(0)).value;
+                                                        if (expression instanceof Expression) return new ParserResult(expression);
+                                                        throw new RuntimeException("Invalid NumericExpression: " +
+                                                                                   expression.toString());
+                                                    }
+
+                                                });
+                commandParserFactory.setHandler("IgnoreWhitespace",
+                                                new IResultHandler()
+                                                {
+
+                                                    @Override
+                                                    public ParserResult handleResult (ParserResult result)
+                                                        throws ParserException
+                                                    {
+                                                        return new ParserResult();
                                                     }
 
                                                 });

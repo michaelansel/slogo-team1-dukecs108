@@ -3,8 +3,8 @@
  */
 package slogo.model.expression.command.test;
 
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
+import java.awt.geom.Point2D;
 import junit.framework.TestCase;
 import org.junit.Before;
 import org.junit.Test;
@@ -19,7 +19,7 @@ import util.parser.ParserResult;
 /**
  * @author Michael Ansel
  */
-public class RightTest extends TestCase
+public class SetXYTest extends TestCase
 {
 
     private Arena arena;
@@ -37,49 +37,52 @@ public class RightTest extends TestCase
     @Test
     public final void testLongName () throws ParserException
     {
-        ParserResult result = SlogoParser.parse("right 90");
+        ParserResult result = SlogoParser.parse("setxy 1 2");
         Expression expression = (Expression) result.getList().get(0);
-        when(mockedTurtle.rotate(90)).thenReturn(17);
+        when(mockedTurtle.move(new Point2D.Double(1.0, 2.0))).thenReturn(17);
         assertEquals(17, expression.evaluate(arena));
     }
-
+    
     @Test
     public final void testCommandAsParameter () throws ParserException
     {
-        ParserResult result = SlogoParser.parse("rt rt 90");
+        // TODO Parser should not require parameters to be grouped if they are unambiguous
+        ParserResult result = SlogoParser.parse("setxy (setxy 1 2) (setxy 3 4)");
         Expression expression = (Expression) result.getList().get(0);
-        when(mockedTurtle.rotate(90)).thenReturn(17);
-        when(mockedTurtle.rotate(17)).thenReturn(23);
-        assertEquals(23, expression.evaluate(arena));
+        when(mockedTurtle.move(new Point2D.Double(1.0, 2.0))).thenReturn(17);
+        when(mockedTurtle.move(new Point2D.Double(3.0, 4.0))).thenReturn(23);
+        when(mockedTurtle.move(new Point2D.Double(17.0, 23.0))).thenReturn(31);
+        assertEquals(31, expression.evaluate(arena));
     }
 
 
     @Test
-    public final void testComputedDistance () throws ParserException
+    public final void testComputedCoordinates () throws ParserException
     {
-        ParserResult result = SlogoParser.parse("rt 30+60");
+        ParserResult result = SlogoParser.parse("setxy 5+10 11+7");
         Expression expression = (Expression) result.getList().get(0);
-        when(mockedTurtle.rotate(90)).thenReturn(17);
+        when(mockedTurtle.move(new Point2D.Double(15.0, 18.0))).thenReturn(17);
         assertEquals(17, expression.evaluate(arena));
     }
 
 
     @Test
-    public final void testConstantDistance () throws ParserException
+    public final void testConstantCoordinates () throws ParserException
     {
-        ParserResult result = SlogoParser.parse("rt 90");
+        ParserResult result = SlogoParser.parse("setxy 50 90");
         Expression expression = (Expression) result.getList().get(0);
-        when(mockedTurtle.rotate(90)).thenReturn(17);
+        when(mockedTurtle.move(new Point2D.Double(50.0, 90.0))).thenReturn(17);
         assertEquals(17, expression.evaluate(arena));
     }
 
 
     @Test
-    public final void testNegativeDistance () throws ParserException
+    public final void testNegativeCoordinates () throws ParserException
     {
-        ParserResult result = SlogoParser.parse("rt -90");
+        // TODO Parser should not require parameters to be grouped if they are unambiguous
+        ParserResult result = SlogoParser.parse("setxy (-50) (-90)");
         Expression expression = (Expression) result.getList().get(0);
-        when(mockedTurtle.rotate(-90)).thenReturn(17);
+        when(mockedTurtle.move(new Point2D.Double(-50.0, -90.0))).thenReturn(17);
         assertEquals(17, expression.evaluate(arena));
     }
 
