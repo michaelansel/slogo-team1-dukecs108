@@ -18,9 +18,9 @@ import util.parser.grammar.ParseTreeNode;
 
 
 /**
- * @author mra13
+ * @author Michael Ansel
  */
-public class GrammarParseTreeNodeTest extends TestCase
+public class ParseTreeNodeTest extends TestCase
 {
 
     /**
@@ -69,16 +69,18 @@ public class GrammarParseTreeNodeTest extends TestCase
                 rule.setRuleName("SomeWhitespace");
                 grammarRules.put("SomeWhitespace", rule);
             }
-            System.out.println(String.format("%s => %s", node, rule));
         }
+        // TODO need some sort of verification that test was accurate
 
         for (AbstractParserRule rule : grammarRules.values())
             rule.initializeRule();
         for (ParseTreeNode node : nodes)
             node.toParserRule(tokenRules, grammarRules).initializeRule();
 
-        System.out.println(firstOf.toParserRule(tokenRules, grammarRules)
-                                  .evaluate(lexer.tokenize()));
+        assertEquals("ParserResult([Token(StringTokenRule<Constant>([a-zA-Z0-9._]+),\"hello\")])",
+                     firstOf.toParserRule(tokenRules, grammarRules)
+                            .evaluate(lexer.tokenize())
+                            .toString());
     }
 
 }

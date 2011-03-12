@@ -33,8 +33,8 @@ public class SubtractTest extends TestCase
         List<Object> tokens =
             Arrays.asList(new Object[] {
                     new Constant(5),
-                    SlogoLexer.Token.Subtract.makeToken("-"),
-                    new Constant(10) });
+                    new SlogoLexer("").getTokenRuleByName("Subtract")
+                                      .makeToken("-"), new Constant(10) });
         Expression expected = new Subtract(new Constant(5), new Constant(10));
 
         TestHelper.testCreate(tokens, expected);

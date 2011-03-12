@@ -36,6 +36,7 @@ public abstract class BinaryExpression extends Expression
         static
         {
             // TODO Needs some serious refactoring
+            // need to be able to specify multiple operators with equal precedence (e.g. add,subtract)
             Map<String, Class<? extends BinaryExpression>> tokenClassMap =
                 new HashMap<String, Class<? extends BinaryExpression>>();
 

@@ -33,7 +33,7 @@ public class AddTest extends TestCase
         List<Object> tokens =
             Arrays.asList(new Object[] {
                     new Constant(5),
-                    SlogoLexer.Token.Add.makeToken("+"),
+                    new SlogoLexer("").getTokenRuleByName("Add").makeToken("+"),
                     new Constant(10) });
         Expression expected = new Add(new Constant(5), new Constant(10));
 
