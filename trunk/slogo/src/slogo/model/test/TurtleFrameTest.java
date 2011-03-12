@@ -75,18 +75,19 @@ public class TurtleFrameTest
         tryParseAndEvaluate(a, "seth 90"); // TODO shouldn't 0 be straight up/north?
         tryParseAndEvaluate(a, "setxy 250 250"); // TODO 0,0 should be in the center of the canvas
         panel.paintComponent(panel.getGraphics());
-        
+
         for (int i = 0; i < 3; i++)
         {
             parsedCubeMove(a, 100, 50);
-            panel.paintComponent(panel.getGraphics());
             tryParseAndEvaluate(a, "rt 90");
         }
-        
+        panel.paintComponent(panel.getGraphics());
+
         // star
         tryParseAndEvaluate(a, "seth 90"); // TODO shouldn't 0 be straight up/north?
         tryParseAndEvaluate(a, "setxy 100 100"); // TODO 0,0 should be in the center of the canvas
-        tryParseAndEvaluate(a, "repeat 5 [ fd 100 rt 144 ]");
+        tryParseAndEvaluate(a,
+                            "repeat 5 [ fd 100 lt 90 fd 33 rt 90 repeat 5 [ fd 100 rt 144 ] rt 90 fd 33 lt 90 rt 144 ]");
         panel.paintComponent(panel.getGraphics());
     }
 
