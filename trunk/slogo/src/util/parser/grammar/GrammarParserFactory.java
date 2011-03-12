@@ -6,6 +6,7 @@ package util.parser.grammar;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import util.parser.AbstractParser;
 import util.parser.AbstractParserRule;
@@ -102,7 +103,7 @@ public class GrammarParserFactory
             rules.put(ruleName, rule);
             parser.addRule(ruleName, rule);
         }
-//        logger.finer("Done parsing syntax. Initializing parsed rules.");
+        if (logger.isLoggable(Level.FINER)) logger.finer("Done parsing syntax. Initializing parsed rules.");
 
         for (AbstractParserRule rule : rules.values())
             rule.initializeRule();
@@ -111,15 +112,15 @@ public class GrammarParserFactory
 
         for (Map.Entry<String, IResultHandler> entry : myHandlers.entrySet())
         {
-//            logger.finer("Adding handler to " + entry.getKey());
+            if (logger.isLoggable(Level.FINER)) logger.finer("Adding handler to " +
+                                                             entry.getKey());
             parser.getRule(entry.getKey()).setHandler(entry.getValue());
         }
 
-//        for (Map.Entry<String, AbstractParserRule> entry : rules.entrySet())
-//            logger.finer(entry.getKey() + ": " +
-//                               entry.getValue().toString());
+        if (logger.isLoggable(Level.FINER)) for (Map.Entry<String, AbstractParserRule> entry : rules.entrySet())
+            logger.finer(entry.getKey() + ": " + entry.getValue().toString());
 
-        return (/* TODO myParser = */parser);
+        return (myParser = parser);
     }
 
 

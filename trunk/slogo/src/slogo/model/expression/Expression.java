@@ -4,6 +4,7 @@
 package slogo.model.expression;
 
 import java.util.Collection;
+import java.util.logging.Logger;
 import slogo.model.arena.Arena;
 import util.parser.IResultHandler;
 import util.parser.ParserException;
@@ -29,6 +30,9 @@ public abstract class Expression
             return result;
         }
     }
+
+    public static final Logger logger =
+        Logger.getLogger(Expression.class.getName());
 
     private static IResultHandler myParseResultHandlerInstance;
 

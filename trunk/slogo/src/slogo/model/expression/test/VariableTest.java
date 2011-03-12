@@ -46,8 +46,10 @@ public class VariableTest extends TestCase
     {
         List<Object> tokens =
             Arrays.asList(new Object[] {
-                    SlogoLexer.Token.Variable.makeToken(":myvar"),
-                    SlogoLexer.Token.AssignmentOperator.makeToken("="),
+                    new SlogoLexer("").getTokenRuleByName("Variable")
+                                      .makeToken(":myvar"),
+                    new SlogoLexer("").getTokenRuleByName("AssignmentOperator")
+                                      .makeToken("="),
                     new Constant(10) });
         Expression expected = new Variable(":myvar", new Constant(10));
 
@@ -59,7 +61,8 @@ public class VariableTest extends TestCase
     public final void testCreateLookup () throws ParserException
     {
         List<Object> tokens =
-            Arrays.asList(new Object[] { SlogoLexer.Token.Variable.makeToken(":myvar") });
+            Arrays.asList(new Object[] { new SlogoLexer("").getTokenRuleByName("Variable")
+                                                           .makeToken(":myvar") });
         Expression expected = new Variable(":myvar");
 
         testCreate(tokens, expected);
