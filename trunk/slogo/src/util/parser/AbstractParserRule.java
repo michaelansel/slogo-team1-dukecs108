@@ -3,21 +3,28 @@
  */
 package util.parser;
 
+import java.util.logging.Logger;
+
+
 /**
  * @author Michael Ansel
  */
 public abstract class AbstractParserRule
 {
+    protected Logger logger =
+        Logger.getLogger(AbstractParserRule.class.getName());
     private IResultHandler myResultHandler = null;
     private AbstractParserRule myRule = null;
-    private String myRuleName = null;
+
+    private String myRuleName = "?";
 
 
-    public ParserResult evaluate () throws ParserException
+    public ParserResult evaluate (TokenManager tokenManager)
+        throws ParserException
     {
         if (!initialized()) throw new RuntimeException("Uninitialized Rule: " +
                                                        toString());
-        return processResult(myRule.evaluate());
+        return processResult(myRule.evaluate(tokenManager));
     }
 
 
@@ -31,6 +38,20 @@ public abstract class AbstractParserRule
     {
         if (initialized()) return;
         throw new UnsupportedOperationException("Abstract implementation not overridden");
+    }
+
+
+    protected void parseError () throws ParserException
+    {
+        parseError("");
+    }
+
+
+    protected void parseError (String message) throws ParserException
+    {
+        // TODO Externalize strings, ParserException, print debug info
+        if (!message.isEmpty()) message += "\n";
+        throw new ParserException(message);
     }
 
 
@@ -63,7 +84,6 @@ public abstract class AbstractParserRule
     @Override
     public String toString ()
     {
-        return String.format("AbstractParserRule<%s>",
-                             (myRuleName != null) ? myRuleName : "?");
+        return "AbstractParserRule<" + myRuleName + ">";
     }
 }

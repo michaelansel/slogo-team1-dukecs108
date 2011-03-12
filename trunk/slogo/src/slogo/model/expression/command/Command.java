@@ -5,6 +5,7 @@ package slogo.model.expression.command;
 
 import java.util.Date;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -24,9 +25,6 @@ import util.parser.grammar.GrammarParserFactory;
  */
 public abstract class Command extends Expression
 {
-    public static final Logger logger = Logger.getLogger(Command.class.getName());
-
-
     private static final class ParseResultHandler implements IResultHandler
     {
         protected static GrammarParserFactory commandParserFactory;
@@ -58,8 +56,8 @@ public abstract class Command extends Expression
                 String[] ruleNames = m.group(1).split("\\s*,\\s*");
                 for (final String ruleName : ruleNames)
                 {
-                    logger.finer("Adding Handler to \"Command\" Rule: " +
-                                       ruleName);
+                    if (logger.isLoggable(Level.FINER)) logger.finer("Adding Handler to \"Command\" Rule: " +
+                                                                     ruleName);
                     commandParserFactory.setHandler(ruleName,
                                                     new IResultHandler()
                                                     {
@@ -120,10 +118,13 @@ public abstract class Command extends Expression
 //                               lexer.tokenize().toString());
 //            for (int i = 0; i < 20; i++)
 //                System.out.println();
-            
+
             Date start = new Date();
-            AbstractParser commandParser = commandParserFactory.create(lexer);
-            ParserTimer.createCommandFromFactory += (new Date().getTime() - start.getTime());
+            AbstractParser commandParser =
+                commandParserFactory.create(lexer.tokenize(),
+                                            lexer.getTokenRuleMap());
+            ParserTimer.createCommandFromFactory +=
+                (new Date().getTime() - start.getTime());
             start = new Date();
             result = commandParser.run();
             ParserTimer.runCommand += (new Date().getTime() - start.getTime());
@@ -131,6 +132,9 @@ public abstract class Command extends Expression
         }
 
     }
+
+    protected static final Logger logger =
+        Logger.getLogger(Command.class.getName());
 
     private static IResultHandler myParseResultHandlerInstance;
 

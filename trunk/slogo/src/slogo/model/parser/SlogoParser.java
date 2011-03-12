@@ -5,12 +5,13 @@ package slogo.model.parser;
 
 import java.util.Date;
 import java.util.ResourceBundle;
+import slogo.ParserTimer;
 import slogo.model.expression.Constant;
 import slogo.model.expression.Expression;
 import slogo.model.expression.Variable;
 import slogo.model.expression.binary.Arithmetic;
 import slogo.model.expression.command.Command;
-import slogo.ParserTimer;
+import util.parser.AbstractLexer;
 import util.parser.AbstractParser;
 import util.parser.IResultHandler;
 import util.parser.ParserException;
@@ -79,8 +80,10 @@ public class SlogoParser
     public static ParserResult parse (String input) throws ParserException
     {
         Date start = new Date();
-        AbstractParser parser = parserFactory.create(new SlogoLexer(input));
-        
+        AbstractLexer lexer = new SlogoLexer(input);
+        AbstractParser parser =
+            parserFactory.create(lexer.tokenize(), lexer.getTokenRuleMap());
+
         ParserTimer.createFromFactory +=
             (new Date().getTime() - start.getTime());
 

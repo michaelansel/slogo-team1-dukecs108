@@ -7,12 +7,13 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.logging.Logger;
-import util.parser.AbstractLexer;
 import util.parser.AbstractParser;
 import util.parser.AbstractParserRule;
 import util.parser.IResultHandler;
+import util.parser.ITokenRule;
 import util.parser.ParserException;
 import util.parser.ParserResult;
+import util.parser.TokenManager;
 
 
 /**
@@ -21,11 +22,12 @@ import util.parser.ParserResult;
 public class GrammarParserFactory
 {
 
-    private static final Logger logger = Logger.getLogger(GrammarParserFactory.class.getName());
+    private static final Logger logger =
+        Logger.getLogger(GrammarParserFactory.class.getName());
     private Map<String, IResultHandler> myHandlers;
+    private AbstractParser myParser;
     private Map<String, ParseTreeNode> myParseTrees;
     private ResourceBundle mySyntax;
-    private AbstractParser myParser;
 
 
     public GrammarParserFactory (ResourceBundle syntax) throws ParserException
@@ -44,7 +46,7 @@ public class GrammarParserFactory
         for (String ruleName : syntax.keySet())
         {
             GrammarParser parser =
-                new GrammarParser(new GrammarLexer(syntax.getString(ruleName)));
+                new GrammarParser(new GrammarLexer(syntax.getString(ruleName)).tokenize());
             ParserResult parsedGrammar = parser.run();
             if (parsedGrammar.getList().size() != 1) throw new ParserException("Improper ParserResult: " +
                                                                                parsedGrammar.toString());
@@ -62,18 +64,20 @@ public class GrammarParserFactory
     }
 
 
-    public AbstractParser create (AbstractLexer lexer) throws ParserException
+    public AbstractParser create (TokenManager tokenManager,
+                                  Map<String, ITokenRule> tokenRules)
+        throws ParserException
     {
         AbstractParser parser;
-        if(myParser != null)
+        if (myParser != null)
         {
             parser = myParser.clone();
-            parser.setLexer(lexer);
+            parser.setTokenManager(tokenManager);
             return parser;
         }
         final AbstractParserRule rootRule = new AbstractParserRule()
         {};
-        parser = new AbstractParser(lexer)
+        parser = new AbstractParser(tokenManager)
         {
             @Override
             protected AbstractParserRule getRootRule ()
@@ -93,12 +97,12 @@ public class GrammarParserFactory
         {
             String ruleName = entry.getKey();
             ParseTreeNode node = entry.getValue().clone();
-            AbstractParserRule rule = node.toParserRule(parser, rules);
+            AbstractParserRule rule = node.toParserRule(tokenRules, rules);
             rule.setRuleName(ruleName);
             rules.put(ruleName, rule);
             parser.addRule(ruleName, rule);
         }
-        logger.finer("Done parsing syntax. Initializing parsed rules.");
+//        logger.finer("Done parsing syntax. Initializing parsed rules.");
 
         for (AbstractParserRule rule : rules.values())
             rule.initializeRule();
@@ -107,15 +111,15 @@ public class GrammarParserFactory
 
         for (Map.Entry<String, IResultHandler> entry : myHandlers.entrySet())
         {
-            logger.finer("Adding handler to " + entry.getKey());
+//            logger.finer("Adding handler to " + entry.getKey());
             parser.getRule(entry.getKey()).setHandler(entry.getValue());
         }
 
-        for (Map.Entry<String, AbstractParserRule> entry : rules.entrySet())
-            logger.finer(entry.getKey() + ": " +
-                               entry.getValue().toString());
+//        for (Map.Entry<String, AbstractParserRule> entry : rules.entrySet())
+//            logger.finer(entry.getKey() + ": " +
+//                               entry.getValue().toString());
 
-        return parser;
+        return (/* TODO myParser = */parser);
     }
 
 

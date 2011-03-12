@@ -26,7 +26,7 @@ public class StringLexer extends AbstractLexer
     }
 
 
-    public List<Token> tokenize ()
+    public TokenManager tokenize ()
     {
         if (getTokenRules() == null) throw new RuntimeException("TokenRules never initialized!");
         StringBuilder remainder = new StringBuilder(getInput());
@@ -35,10 +35,7 @@ public class StringLexer extends AbstractLexer
         {
             List<Token> tokens = new ArrayList<Token>();
             for (ITokenRule rule : getTokenRules())
-            {
-                if (!rule.matches(remainder)) continue;
-                tokens.add(rule.makeToken(remainder));
-            }
+                if (rule.matches(remainder)) tokens.add(rule.makeToken(remainder));
 
             if (tokens.size() == 0) throw new RuntimeException("No matching tokens found!\nRemainder: " +
                                                                remainder.toString());
@@ -51,6 +48,6 @@ public class StringLexer extends AbstractLexer
             results.add(bestMatch);
             remainder.delete(0, ((String) bestMatch.value).length());
         }
-        return results;
+        return new TokenManager(results);
     }
 }

@@ -13,6 +13,7 @@ import util.parser.SimpleTokenRule;
 import util.parser.StringLexer;
 import util.parser.StringTokenRule;
 import util.parser.Token;
+import util.parser.TokenManager;
 
 
 /**
@@ -57,7 +58,7 @@ public class CommandLexer extends AbstractLexer
      * @see util.parser.AbstractLexer#tokenize()
      */
     @Override
-    public List<Token> tokenize ()
+    public TokenManager tokenize ()
     {
         List<Token> tokens = new ArrayList<Token>();
         for (Object o : getInput())
@@ -65,7 +66,7 @@ public class CommandLexer extends AbstractLexer
             else if (o instanceof Expression) tokens.add(getTokenRuleByName("Expression").makeToken(o));
             else throw new RuntimeException("Unrecognizable input: " +
                                             o.toString());
-        return tokens;
+        return new TokenManager(tokens);
     }
 
 
@@ -77,7 +78,7 @@ public class CommandLexer extends AbstractLexer
                 setTokenRules(CommandLexer.stringRules);
             }
         };
-        return lexer.tokenize().get(0);
+        return lexer.tokenize().getTokens().get(0);
     }
 
 }

@@ -6,10 +6,10 @@ package util.parser.grammar;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import util.parser.AbstractParser;
 import util.parser.AbstractParserRule;
 import util.parser.ITokenRule;
 import util.parser.ParserException;
+import util.parser.rule.ExactlyOneRule;
 
 
 /**
@@ -97,7 +97,7 @@ public class ParseTreeNode implements Cloneable
     }
 
 
-    public AbstractParserRule toParserRule (AbstractParser parser,
+    public AbstractParserRule toParserRule (Map<String, ITokenRule> tokenRules,
                                             Map<String, AbstractParserRule> definedRules)
         throws ParserException
     {
@@ -105,11 +105,10 @@ public class ParseTreeNode implements Cloneable
 
         if (myType == Type.Token)
         {
-            ITokenRule tokenRule =
-                parser.getLexer().getTokenRuleByName(myToken);
+            ITokenRule tokenRule = tokenRules.get(myToken);
             if (tokenRule == null) throw new ParserException("Couldn't find token in lexer: " +
                                                              myToken);
-            return parser.ExactlyOne(tokenRule);
+            return (myParserRule = ExactlyOneRule.create(tokenRule));
         }
         if (myType == Type.IndirectCall &&
             definedRules.containsKey(getName()) &&
@@ -119,7 +118,10 @@ public class ParseTreeNode implements Cloneable
             return definedRules.get(getName());
         }
         return (myParserRule =
-            new DynamicParserRule(parser, getName(), myParameters, definedRules));
+            new DynamicParserRule(getName(),
+                                  myParameters,
+                                  tokenRules,
+                                  definedRules));
     }
 
 

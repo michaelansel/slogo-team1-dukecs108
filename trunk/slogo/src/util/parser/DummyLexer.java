@@ -27,9 +27,9 @@ public class DummyLexer extends AbstractLexer
 
 
     @Override
-    public List<Token> tokenize ()
+    public TokenManager tokenize ()
     {
-        return getInput();
+        return new TokenManager(getInput());
     }
 
 }

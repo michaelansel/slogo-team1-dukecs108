@@ -115,7 +115,7 @@ public class TurtleFrameTest
     private static void basicCircleMove (Turtle turtle, int r)
     {
         turtle.getPen().putUp();
-        turtle.moveInvisible(new Point((int) turtle.getPosition().getX() - r, (int) turtle.getPosition().getY()));
+        turtle.move(new Point((int) turtle.getPosition().getX() - r, (int) turtle.getPosition().getY()));
         turtle.getPen().putDown();
 
         for (int i = 0; i < r*2; i++  ){
@@ -197,7 +197,7 @@ public class TurtleFrameTest
         moveAndReturn(turtle, e, e);
         turtle.rotate(90);
         turtle.move(d);
-        turtle.moveInvisible(new Point2D.Double(turtle.getPosition().getX()+e, turtle.getPosition().getY()+e));
+        turtle.move(new Point2D.Double(turtle.getPosition().getX()+e, turtle.getPosition().getY()+e));
         basicSquareMove ( turtle,  d);
     }
     
@@ -238,7 +238,7 @@ public class TurtleFrameTest
     private static void basicSunMove (Turtle turtle, int r, Point center)
     {
         turtle.getPen().putUp();
-        turtle.moveInvisible(new Point((int) center.getX() - r, (int) center.getY()));
+        turtle.move(new Point((int) center.getX() - r, (int) center.getY()));
         turtle.getPen().putDown();
 
         for (int i = 0; i < r*2; i++  ){
@@ -253,11 +253,11 @@ public class TurtleFrameTest
             turtle.rotate(-360/r);
         }
         
-        turtle.moveInvisible(new Point((int)center.getX()-r/3, (int)center.getY()-r/3));
+        turtle.move(new Point((int)center.getX()-r/3, (int)center.getY()-r/3));
         basicCircleMove(turtle, r/10);
-        turtle.moveInvisible(new Point((int)center.getX()+r/3, (int)center.getY()-r/3));
+        turtle.move(new Point((int)center.getX()+r/3, (int)center.getY()-r/3));
         basicCircleMove(turtle, r/10);
-        turtle.moveInvisible(new Point((int)center.getX()-r/3, (int)center.getY()+r/3));    
+        turtle.move(new Point((int)center.getX()-r/3, (int)center.getY()+r/3));    
         turtle.setHeading(45);
         basicArcMove(turtle, r);
         

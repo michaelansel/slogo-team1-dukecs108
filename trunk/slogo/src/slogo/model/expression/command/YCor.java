@@ -5,6 +5,7 @@ package slogo.model.expression.command;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.logging.Level;
 import slogo.model.arena.Arena;
 import slogo.model.expression.Expression;
 import util.parser.ParserResult;
@@ -18,7 +19,7 @@ public class YCor extends Command
 
     public YCor ()
     {
-        logger.finer("Creating YCor Expression");
+        if (logger.isLoggable(Level.FINER)) logger.finer("Creating YCor Expression");
     }
 
 
@@ -32,10 +33,11 @@ public class YCor extends Command
     @Override
     public int evaluate (Arena arena)
     {
-        logger.fine("Evaluating: " + this.toString());
+        if (logger.isLoggable(Level.FINE)) logger.fine("Evaluating: " +
+                                                       this.toString());
         int retval =
             (int) Math.round(arena.getCurrentTurtle().getPosition().getY());
-        logger.finer("Returning: " + retval);
+        if (logger.isLoggable(Level.FINER)) logger.finer("Returning: " + retval);
         return retval;
     }
 
