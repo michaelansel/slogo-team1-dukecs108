@@ -20,7 +20,7 @@ public class StringTokenRule implements ITokenRule
 
     public StringTokenRule (char c)
     {
-        this(c, null);
+        this(c, "?");
     }
 
 
@@ -32,7 +32,7 @@ public class StringTokenRule implements ITokenRule
 
     public StringTokenRule (String regex)
     {
-        this(regex, null);
+        this(regex, "?");
     }
 
 
@@ -51,7 +51,7 @@ public class StringTokenRule implements ITokenRule
     @Override
     public String getName ()
     {
-        return myRuleName != null ? myRuleName : "?";
+        return myRuleName;
     }
 
 
@@ -81,7 +81,7 @@ public class StringTokenRule implements ITokenRule
     public String toString ()
     {
         return String.format("StringTokenRule<%s>(%s)",
-                             (myRuleName != null) ? myRuleName : "?",
+                             myRuleName,
                              (myRegex.length() > 1) ? myRegex
                                                    : String.format("[%s]",
                                                                    myRegex));

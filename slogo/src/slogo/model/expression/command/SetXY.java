@@ -6,6 +6,7 @@ package slogo.model.expression.command;
 import java.awt.geom.Point2D;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.logging.Level;
 import slogo.model.arena.Arena;
 import slogo.model.expression.Expression;
 import util.parser.ParserResult;
@@ -22,9 +23,10 @@ public class SetXY extends Command
 
     public SetXY (Expression xExpression, Expression yExpression)
     {
-        logger.finer("Creating SetXY Expression: " +
-                           xExpression.toString() + "," +
-                           yExpression.toString());
+        if (logger.isLoggable(Level.FINER)) logger.finer("Creating SetXY Expression: " +
+                                                         xExpression.toString() +
+                                                         "," +
+                                                         yExpression.toString());
         myXExpression = xExpression;
         myYExpression = yExpression;
     }
@@ -41,14 +43,17 @@ public class SetXY extends Command
     @Override
     public int evaluate (Arena arena)
     {
-        logger.fine("Evaluating: " + this.toString());
+        if (logger.isLoggable(Level.FINE)) logger.fine("Evaluating: " +
+                                                       this.toString());
         int xVal = myXExpression.evaluate(arena);
         int yVal = myYExpression.evaluate(arena);
-        logger.finer("X Expression: " + xVal);
-        logger.finer("Y Expression: " + yVal);
+        if (logger.isLoggable(Level.FINER)) logger.finer("X Expression: " +
+                                                         xVal);
+        if (logger.isLoggable(Level.FINER)) logger.finer("Y Expression: " +
+                                                         yVal);
         int retval =
             arena.getCurrentTurtle().move(new Point2D.Double(xVal, yVal));
-        logger.finer("Returning: " + retval);
+        if (logger.isLoggable(Level.FINER)) logger.finer("Returning: " + retval);
         return retval;
     }
 

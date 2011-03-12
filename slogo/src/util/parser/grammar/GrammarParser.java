@@ -5,12 +5,14 @@ package util.parser.grammar;
 
 import java.util.ArrayList;
 import java.util.List;
-import util.parser.AbstractLexer;
 import util.parser.AbstractParser;
 import util.parser.AbstractParserRule;
 import util.parser.ParserException;
 import util.parser.ParserResult;
 import util.parser.Token;
+import util.parser.TokenManager;
+import util.parser.rule.ExactlyOneRule;
+import util.parser.rule.FirstOfRule;
 
 
 /**
@@ -70,7 +72,7 @@ public class GrammarParser extends AbstractParser
         @Override
         public void initializeRule ()
         {
-            setRule(ExactlyOne(GrammarLexer.Token.Constant));
+            setRule(ExactlyOneRule.create(GrammarLexer.Token.Constant));
         }
 
 
@@ -88,7 +90,7 @@ public class GrammarParser extends AbstractParser
         @Override
         public void initializeRule ()
         {
-            setRule(FirstOf(SimpleRule, Token, Constant));
+            setRule(new FirstOfRule(SimpleRule, Token, Constant));
         }
     };
 
@@ -98,7 +100,7 @@ public class GrammarParser extends AbstractParser
         public void initializeRule ()
         {
             // setRule(FirstOf(AnonymousPrototype, Expression));
-            setRule(ExactlyOne(Expression));
+            setRule(ExactlyOneRule.create(Expression));
         }
     };
 
@@ -166,8 +168,8 @@ public class GrammarParser extends AbstractParser
     };
 
 
-    public GrammarParser (AbstractLexer lexer)
+    public GrammarParser (TokenManager tokenManager)
     {
-        super(lexer);
+        super(tokenManager);
     }
 }

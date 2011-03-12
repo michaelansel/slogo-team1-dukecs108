@@ -5,6 +5,7 @@ package slogo.model.expression.command;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.logging.Level;
 import slogo.model.arena.Arena;
 import slogo.model.expression.Expression;
 import util.parser.ParserResult;
@@ -21,8 +22,8 @@ public class Right extends Command
 
     public Right (Expression angleExpression)
     {
-        logger.finer("Creating Right Expression: " +
-                           angleExpression.toString());
+        if (logger.isLoggable(Level.FINER)) logger.finer("Creating Right Expression: " +
+                                                         angleExpression.toString());
         myAngleExpression = angleExpression;
     }
 
@@ -37,11 +38,13 @@ public class Right extends Command
     @Override
     public int evaluate (Arena arena)
     {
-        logger.fine("Evaluating: " + this.toString());
+        if (logger.isLoggable(Level.FINE)) logger.fine("Evaluating: " +
+                                                       this.toString());
         int val = myAngleExpression.evaluate(arena);
-        logger.finer("SubExpression: " + val);
+        if (logger.isLoggable(Level.FINER)) logger.finer("SubExpression: " +
+                                                         val);
         int retval = arena.getCurrentTurtle().rotate(val);
-        logger.finer("Returning: " + retval);
+        if (logger.isLoggable(Level.FINER)) logger.finer("Returning: " + retval);
         return retval;
     }
 

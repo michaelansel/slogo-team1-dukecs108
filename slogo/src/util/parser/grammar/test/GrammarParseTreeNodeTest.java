@@ -10,8 +10,8 @@ import java.util.Map;
 import junit.framework.TestCase;
 import org.junit.Before;
 import org.junit.Test;
-import util.parser.AbstractParser;
 import util.parser.AbstractParserRule;
+import util.parser.ITokenRule;
 import util.parser.ParserException;
 import util.parser.grammar.GrammarLexer;
 import util.parser.grammar.ParseTreeNode;
@@ -55,28 +55,30 @@ public class GrammarParseTreeNodeTest extends TestCase
                     someWhitespace,
                     firstOf });
 
-        Map<String, AbstractParserRule> rules =
+        GrammarLexer lexer = new GrammarLexer("hello");
+        Map<String, ITokenRule> tokenRules = lexer.getTokenRuleMap();
+        Map<String, AbstractParserRule> grammarRules =
             new HashMap<String, AbstractParserRule>();
-        AbstractParser parser = new AbstractParser(new GrammarLexer("hello"))
-        {};
 
         for (ParseTreeNode node : nodes)
         {
-            AbstractParserRule rule = node.toParserRule(parser, rules);
+            AbstractParserRule rule =
+                node.toParserRule(tokenRules, grammarRules);
             if (node.equals(someWhitespace))
             {
                 rule.setRuleName("SomeWhitespace");
-                rules.put("SomeWhitespace", rule);
+                grammarRules.put("SomeWhitespace", rule);
             }
             System.out.println(String.format("%s => %s", node, rule));
         }
 
-        for (AbstractParserRule rule : rules.values())
+        for (AbstractParserRule rule : grammarRules.values())
             rule.initializeRule();
         for (ParseTreeNode node : nodes)
-            node.toParserRule(parser, rules).initializeRule();
+            node.toParserRule(tokenRules, grammarRules).initializeRule();
 
-        System.out.println(firstOf.toParserRule(parser, rules).evaluate());
+        System.out.println(firstOf.toParserRule(tokenRules, grammarRules)
+                                  .evaluate(lexer.tokenize()));
     }
 
 }

@@ -7,7 +7,7 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.List;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
 
@@ -62,7 +62,7 @@ public abstract class AbstractLexer
 
     private Object myInput;
 
-    private Map<String, ITokenRule> myTokenMap;
+    private Map<String, ITokenRule> myTokenRuleMap;
 
     private Collection<ITokenRule> myTokenRules;
 
@@ -70,6 +70,7 @@ public abstract class AbstractLexer
     public AbstractLexer (Object input)
     {
         myInput = input;
+        myTokenRuleMap = new HashMap<String, ITokenRule>();
     }
 
 
@@ -81,9 +82,13 @@ public abstract class AbstractLexer
 
     public ITokenRule getTokenRuleByName (String tokenName)
     {
-        for (ITokenRule tokenRule : getTokenRules())
-            if (tokenRule.getName().equals(tokenName)) return tokenRule;
-        return null;
+        return myTokenRuleMap.get(tokenName);
+    }
+
+
+    public Map<String, ITokenRule> getTokenRuleMap ()
+    {
+        return myTokenRuleMap;
     }
 
 
@@ -96,6 +101,9 @@ public abstract class AbstractLexer
     protected void setTokenRules (Collection<ITokenRule> tokenRules)
     {
         myTokenRules = tokenRules;
+        myTokenRuleMap.clear();
+        for (ITokenRule tokenRule : tokenRules)
+            myTokenRuleMap.put(tokenRule.getName(), tokenRule);
     }
 
 
@@ -110,5 +118,5 @@ public abstract class AbstractLexer
      * 
      * @return list of generated Tokens
      */
-    public abstract List<Token> tokenize ();
+    public abstract TokenManager tokenize ();
 }

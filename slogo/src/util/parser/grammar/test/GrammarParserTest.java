@@ -10,6 +10,7 @@ import org.junit.Before;
 import org.junit.Test;
 import util.parser.AbstractParser;
 import util.parser.AbstractParserRule;
+import util.parser.ITokenRule;
 import util.parser.ParserException;
 import util.parser.ParserResult;
 import util.parser.grammar.GrammarLexer;
@@ -40,7 +41,8 @@ public class GrammarParserTest extends TestCase
     public final void testGrammarParser ()
     {
         String input = "a(b(e,f,g),c(d))";
-        AbstractParser parser = new GrammarParser(new GrammarLexer(input));
+        AbstractParser parser =
+            new GrammarParser(new GrammarLexer(input).tokenize());
     }
 
 
@@ -53,18 +55,20 @@ public class GrammarParserTest extends TestCase
     public final void testGrammarParserRun () throws ParserException
     {
         String input = "Sequence(ZeroOrMore(<Delimiter>))";
-        AbstractParser parser = new GrammarParser(new GrammarLexer(input));
+        GrammarLexer lexer = new GrammarLexer(input);
+        AbstractParser parser = new GrammarParser(lexer.tokenize());
         ParserResult result = parser.run();
-        System.out.println(result);
+        assertEquals("[ParseTreeNode<Sequence([ParseTreeNode<ZeroOrMore([ParseTreeNode(ExactlyOne(Delimiter))])>])>]",
+                     result.getList().toString());
+
         ParseTreeNode node = ((ParseTreeNode) (result.getList().get(0)));
-        Map<String, AbstractParserRule> rules =
+        Map<String, ITokenRule> tokenRules = lexer.getTokenRuleMap();
+        Map<String, AbstractParserRule> grammarRules =
             new HashMap<String, AbstractParserRule>();
-        AbstractParser newParser =
-            new AbstractParser(new GrammarLexer(",,,,,,,"))
-            {};
-        AbstractParserRule rule = node.toParserRule(newParser, rules);
+        AbstractParserRule rule = node.toParserRule(tokenRules, grammarRules);
         rule.initializeRule();
-        ParserResult newResult = rule.evaluate();
+        ParserResult newResult =
+            rule.evaluate(new GrammarLexer(",,,,,,,").tokenize());
         assertEquals(7, newResult.getList().size());
 
     }
