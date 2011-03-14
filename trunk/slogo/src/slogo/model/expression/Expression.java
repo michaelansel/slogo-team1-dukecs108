@@ -31,10 +31,11 @@ public abstract class Expression
         }
     }
 
+    public static final int FALSE = 0;
     public static final Logger logger =
         Logger.getLogger(Expression.class.getName());
-
     private static IResultHandler myParseResultHandlerInstance;
+    public static final int TRUE = 1;
 
 
     /**
