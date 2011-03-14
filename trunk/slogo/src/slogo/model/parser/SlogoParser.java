@@ -74,7 +74,7 @@ public class SlogoParser
                                               result.getList().toString());
                 }
             });
-            parserFactory.setHandler("CommandGroup", new IResultHandler()
+            IResultHandler groupHandler = new IResultHandler()
             {
 
                 @Override
@@ -90,22 +90,18 @@ public class SlogoParser
                     return new ParserResult(expressions);
                 }
 
-            });
+            };
+            parserFactory.setHandler("CommandGroup", groupHandler);
+            parserFactory.setHandler("ExpressionGroup", groupHandler);
 
-            /*
-             * TODO OMG!!! There MUST be a better way to do this! However, it
-             * will be an isolated change, and is therefore deferred for later.
-             * Basic idea: Add an IResultHandler to all the standard commands.
-             * Can probably use keySet() of SlogoCommandClasses ResourceBundle.
-             */
-            // TODO Rebuild to handle user-defined commands (dynamically constructed grammar?)
+            // TODO Handle user-defined commands (recompile grammar on each new command?)
             // ****Use a map from (Token)CommandName.value to AbstractParserRule****
             for (String ruleName : SlogoCommandClasses.keySet())
             {
                 final String ruleClass =
                     SlogoCommandClasses.getString(ruleName);
                 logger.log(Level.FINE,
-                           "Adding Handler for {1}: {2}",
+                           "Adding Handler for {0}: {1}",
                            new Object[] { ruleName, ruleClass });
                 parserFactory.setHandler(ruleName, new IResultHandler()
                 {
