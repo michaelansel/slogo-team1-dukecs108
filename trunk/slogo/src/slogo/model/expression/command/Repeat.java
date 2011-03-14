@@ -5,7 +5,6 @@ package slogo.model.expression.command;
 
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.List;
 import java.util.logging.Level;
 import slogo.model.arena.Arena;
 import slogo.model.expression.Expression;
@@ -19,43 +18,41 @@ public class Repeat extends Command
 {
 
     private Expression myCountExpression;
-    private List<Expression> myExpressions;
+    private Expression myRepeatExpression;
 
 
-    public Repeat (Expression countExpression, List<Expression> expressions)
+    public Repeat (Expression countExpression, Expression repeatExpression)
     {
         if (logger.isLoggable(Level.FINER)) logger.finer("Creating Repeat Expression: " +
                                                          countExpression.toString() +
                                                          " " +
-                                                         expressions.toString());
+                                                         repeatExpression.toString());
         myCountExpression = countExpression;
-        myExpressions = expressions;
+        myRepeatExpression = repeatExpression;
     }
 
 
-    @SuppressWarnings("unchecked")
     public Repeat (ParserResult result)
     {
         // <repeat>,<whitespace>,expression,commandgroup
         this((Expression) result.getList().get(2),
-             (List<Expression>) result.getList().get(3));
+             (Expression) result.getList().get(3));
     }
 
 
     @Override
     public int evaluate (Arena arena)
     {
-        if (logger.isLoggable(Level.FINE)) logger.fine("Evaluating: " +
-                                                       this.toString());
+        logger.log(Level.FINE, "Evaluating: {0}", this);
+
         int countVal = myCountExpression.evaluate(arena);
-        if (logger.isLoggable(Level.FINER)) logger.finer("Count Expression: " +
-                                                         countVal);
+        logger.log(Level.FINER, "Count Expression: {0}", countVal);
+
         int retval = 0;
-        for(int i=0; i<countVal; i++)
-            for(Expression expression : myExpressions)
-                retval  = expression.evaluate(arena);
-        
-        if (logger.isLoggable(Level.FINER)) logger.finer("Returning: " + retval);
+        for (int i = 0; i < countVal; i++)
+            retval = myRepeatExpression.evaluate(arena);
+
+        logger.log(Level.FINER, "Returning: {0}", retval);
         return retval;
     }
 
@@ -63,17 +60,18 @@ public class Repeat extends Command
     @Override
     protected Collection<Expression> getExpressions ()
     {
-        List<Expression> list =
-            Arrays.asList(new Expression[] { myCountExpression });
-        list.addAll(myExpressions);
-        return list;
+        return Arrays.asList(new Expression[] {
+                myCountExpression,
+                myRepeatExpression });
     }
 
 
     @Override
     public String toString ()
     {
-        return String.format("Repeat(%s,%s)", myCountExpression, myExpressions);
+        return String.format("Repeat(%s,%s)",
+                             myCountExpression,
+                             myRepeatExpression);
     }
 
 }
