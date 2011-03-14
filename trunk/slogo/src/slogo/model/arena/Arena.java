@@ -258,10 +258,6 @@ public class Arena extends Observable implements Cloneable
         throw new TurtleException("No turtle with that name exists");
     }
     
-    
-    
-    
-
 
     private boolean containsTurtleByName (String name)
     {
