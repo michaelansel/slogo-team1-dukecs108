@@ -16,7 +16,8 @@ import javax.swing.JPanel;
 import slogo.model.arena.Arena;
 import slogo.model.arena.TurtleException;
 import slogo.model.arena.turtle.Turtle;
-import slogo.util.Line;
+import slogo.util.drawables2D.IDraw2D;
+import slogo.util.drawables2D.Line;
 
 
 public class TurtleTestPanel extends JPanel
@@ -64,9 +65,9 @@ public class TurtleTestPanel extends JPanel
     /**
      * @param lines
      */
-    private void drawLines (List<Line> lines)
+    private void drawLines (List<IDraw2D> lines)
     {
-        for (Line line: lines){
+        for (IDraw2D line: lines){
             line.draw(myImage.createGraphics(), this.getPreferredSize());
         }
     }
