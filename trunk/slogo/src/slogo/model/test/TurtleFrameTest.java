@@ -11,7 +11,7 @@ import slogo.model.arena.Arena;
 import slogo.model.arena.turtle.Turtle;
 import slogo.model.expression.Expression;
 import slogo.model.parser.SlogoParser;
-import slogo.util.Line;
+import slogo.util.drawables2D.Line;
 import util.parser.ParserException;
 
 
