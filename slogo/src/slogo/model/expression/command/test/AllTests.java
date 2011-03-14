@@ -11,16 +11,19 @@ public class AllTests
     {
         TestSuite suite = new TestSuite(AllTests.class.getName());
         //$JUnit-BEGIN$
-        suite.addTestSuite(HomeTest.class);
         suite.addTestSuite(XCorTest.class);
-        suite.addTestSuite(SetXYTest.class);
+        suite.addTestSuite(HomeTest.class);
         suite.addTestSuite(LeftTest.class);
+        suite.addTestSuite(RepeatTest.class);
+        suite.addTestSuite(PenDownTest.class);
+        suite.addTestSuite(SetXYTest.class);
         suite.addTestSuite(YCorTest.class);
         suite.addTestSuite(ForwardTest.class);
+        suite.addTestSuite(PenUpTest.class);
         suite.addTestSuite(SetHeadingTest.class);
-        suite.addTestSuite(RepeatTest.class);
         suite.addTestSuite(BackwardTest.class);
         suite.addTestSuite(RightTest.class);
+        suite.addTestSuite(TellTest.class);
         //$JUnit-END$
         return suite;
     }
