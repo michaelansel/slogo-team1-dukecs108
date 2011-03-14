@@ -72,10 +72,20 @@ public class TurtleFrameTest
 
     private static void runTurtle (Arena a, TurtleTestPanel panel)
     {
+        // change turtle and move
+        tryParseAndEvaluate(a, "tell [ 2 ]");
+        a.getTurtle(2).getPen().setColor(Color.BLUE);
+        // TODO setpalette
+//        tryParseAndEvaluate(a, "setpalette 2 0 0 255"); // BLUE
+        // TODO setpencolor
+//        tryParseAndEvaluate(a, "setpencolor 2");
+        tryParseAndEvaluate(a, "penup");
         tryParseAndEvaluate(a, "seth 90"); // TODO shouldn't 0 be straight up/north?
         tryParseAndEvaluate(a, "setxy 250 250"); // TODO 0,0 should be in the center of the canvas
+        tryParseAndEvaluate(a, "pendown");
         panel.paintComponent(panel.getGraphics());
 
+        // cubes
         for (int i = 0; i < 3; i++)
         {
             parsedCubeMove(a, 100, 50);
@@ -83,11 +93,25 @@ public class TurtleFrameTest
         }
         panel.paintComponent(panel.getGraphics());
 
-        // star
+        // change turtle and move
+        tryParseAndEvaluate(a, "tell [ 3 ]");
+        a.getTurtle(3).getPen().setColor(Color.GREEN);
+        // TODO setpalette
+//      tryParseAndEvaluate(a, "setpalette 3 0 255 0"); // GREEN
+        // TODO setpencolor
+//      tryParseAndEvaluate(a, "setpencolor 3");
+        tryParseAndEvaluate(a, "penup");
         tryParseAndEvaluate(a, "seth 90"); // TODO shouldn't 0 be straight up/north?
+        tryParseAndEvaluate(a, "lt 18"); // rotate stars to point north
         tryParseAndEvaluate(a, "setxy 100 100"); // TODO 0,0 should be in the center of the canvas
-        tryParseAndEvaluate(a,
-                            "repeat 5 [ fd 100 lt 90 fd 33 rt 90 repeat 5 [ fd 100 rt 144 ] rt 90 fd 33 lt 90 rt 144 ]");
+        tryParseAndEvaluate(a, "pendown");
+        
+        // stars
+        tryParseAndEvaluate(a, "repeat 5 [ fd 100 "
+                               + " penup lt 90 fd 33 rt 90 pendown"
+                               + " repeat 5 [ fd 100 rt 144 ]"
+                               + " penup rt 90 fd 33 lt 90 pendown"
+                               + " rt 144 ]");
         panel.paintComponent(panel.getGraphics());
     }
 
