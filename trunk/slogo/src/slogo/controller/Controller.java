@@ -24,7 +24,7 @@ public class Controller {
 	//private int ARENA_COUNT = 0;
 	
 	/**
-	 * constructor method
+	 * Creates a new TurtleGUI with a new Arena
 	 */
 	public Controller(){
 		TurtleGUI t = new TurtleGUI(this);
@@ -69,41 +69,4 @@ public class Controller {
         
     	exp.evaluate(a);
     }
-    
-    
-    /**
-     * 
-     */
-    /*public void addTurtle(Arena a){
-    	
-    }*/
-    
-    /**
-     * 
-     */
-    
- 
-    
-    /**
-     * grabs the graphic representation of the model as drawn by "ArenaDraw"
-     * @param ArenaID the ID of the arena you want
-     */
-    /*public JPanel getDrawnPanel(int ArenaID){
-    	for (Arena a: myArenas){
-    		if (a.getID()==ArenaID){
-    			return a.getPanel();
-    		}
-    	}
-    	
-    	return null;
-    }*/
-    
-    
-    /**
-     * returns a list of Turtle Objects from the specified Arena
-     * @param ArenaID the ID of the arena you want to grab the turtleList of
-     */
-    /*public Map<Integer, Turtle> getTurtleList(Arena a){
-    	return a.getTurtleMap();
-    }*/
 }
