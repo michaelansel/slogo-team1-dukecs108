@@ -291,7 +291,7 @@ public class TurtleGUI implements Observer {
 					JOptionPane.ERROR_MESSAGE);
 		}
 		//redraws our GUI
-		drawAndRepaint(arP);
+		drawAndRepaint(a);
 	}
 
 	/**
@@ -303,7 +303,7 @@ public class TurtleGUI implements Observer {
 
 		a.addTurtle();
 
-		drawAndRepaint(arP);
+		drawAndRepaint(a);
 	}
 	
 	//TODO: add turtle with user specified qualities
@@ -317,7 +317,7 @@ public class TurtleGUI implements Observer {
 		
 		//TODO: grab active turtle ID, remove
 
-		drawAndRepaint(arP);
+		drawAndRepaint(a);
 	}
 
 	/**
@@ -331,9 +331,9 @@ public class TurtleGUI implements Observer {
 	/**
 	 * Draws the active panel, repaints the entire frame
 	 */
-	public void drawAndRepaint(ArenaPanel arP){
-		//re-draws the arenaPanel
-		arP.draw();
+	public void drawAndRepaint(Arena a){
+		//Updates our drawn Arena
+		update(a);
 		//Repaints our view to reflect any changes
 		entireFrame.repaint();
 	}

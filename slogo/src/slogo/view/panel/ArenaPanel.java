@@ -51,11 +51,12 @@ public class ArenaPanel extends JPanel{
 		myArena=a;
 		draw();
 	}
-
+ 
 	/**
 	 * Updates the Panel to match the current state of the Arena.
 	 */
 	public void draw(){
+		removeAll();
 		this.setLayout(new BorderLayout(8,8));
 		this.add(drawArenaPanel(), BorderLayout.CENTER);
 		this.add(makeList(), BorderLayout.LINE_END);
@@ -140,8 +141,7 @@ public class ArenaPanel extends JPanel{
 			panels[count]=frame.getContentPane();
 			count++;
 		}
-
-
+		
 		turtleList.setListData(panels);
 		return turtleList;
 	}
@@ -172,7 +172,7 @@ public class ArenaPanel extends JPanel{
 		}
 		return im;
 	}
-
+	
 	/**
 	 * Creates a new generic Panel with BorderLayout with borders (8,8)
 	 * @return default panel with borderlayout and borders of 8.
@@ -182,5 +182,5 @@ public class ArenaPanel extends JPanel{
 		panel.setLayout(new BorderLayout(8,8));
 		return panel;
 	}
-
+	
 }
