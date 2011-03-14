@@ -4,12 +4,14 @@
 package slogo.model.parser;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import slogo.ParserTimer;
+import slogo.model.arena.Arena;
 import slogo.model.expression.Constant;
 import slogo.model.expression.Expression;
 import slogo.model.expression.Variable;
@@ -74,9 +76,20 @@ public class SlogoParser
                                               result.getList().toString());
                 }
             });
-            IResultHandler groupHandler = new IResultHandler()
+            parserFactory.setHandler("CommandGroup", new IResultHandler()
             {
 
+                @Override
+                public ParserResult handleResult (ParserResult result)
+                    throws ParserException
+                {
+                    // <BeginParameterGroup>,CommandList,<EndParameterGroup>
+                    return new ParserResult(result.getList().get(1));
+                }
+
+            });
+            parserFactory.setHandler("ExpressionGroup", new IResultHandler()
+            {
                 @Override
                 public ParserResult handleResult (ParserResult result)
                     throws ParserException
@@ -89,10 +102,49 @@ public class SlogoParser
                         expressions.add((Expression) list.remove(0));
                     return new ParserResult(expressions);
                 }
+            });
+            parserFactory.setHandler("CommandList", new IResultHandler()
+            {
+                @Override
+                public ParserResult handleResult (ParserResult result)
+                    throws ParserException
+                {
+                    if (result.getList().size() == 1) return result;
 
-            };
-            parserFactory.setHandler("CommandGroup", groupHandler);
-            parserFactory.setHandler("ExpressionGroup", groupHandler);
+                    final List<Expression> expressions =
+                        new ArrayList<Expression>();
+                    for (Object o : result.getList())
+                        if (o instanceof Expression) expressions.add((Expression) o);
+                    return new ParserResult(new Expression()
+                    {
+                        private List<Expression> myExpressions = expressions;
+
+
+                        @Override
+                        protected Collection<Expression> getExpressions ()
+                        {
+                            return myExpressions;
+                        }
+
+
+                        @Override
+                        public int evaluate (Arena arena)
+                        {
+                            int retval = 0;
+                            for (Expression e : myExpressions)
+                                retval = e.evaluate(arena);
+                            return retval;
+                        }
+
+
+                        @Override
+                        public String toString ()
+                        {
+                            return myExpressions.toString();
+                        }
+                    });
+                }
+            });
 
             // TODO Handle user-defined commands (recompile grammar on each new command?)
             // ****Use a map from (Token)CommandName.value to AbstractParserRule****
