@@ -37,19 +37,28 @@ public class PenUpTest extends TestCase
     public final void testWhenPenUp () throws ParserException
     {
         pen.putUp();
-        simpleTest();
+        simpleTest("pu");
     }
-    
+
+
     @Test
     public final void testWhenPenDown () throws ParserException
     {
         pen.putDown();
-        simpleTest();
+        simpleTest("pu");
     }
-    
-    private void simpleTest() throws ParserException
+
+
+    @Test
+    public final void testLongName () throws ParserException
     {
-        ParserResult result = SlogoParser.parse("penup");
+        simpleTest("penup");
+    }
+
+
+    private void simpleTest (String command) throws ParserException
+    {
+        ParserResult result = SlogoParser.parse(command);
         Expression expression = (Expression) result.getList().get(0);
         assertEquals(Expression.FALSE, expression.evaluate(arena));
         assertTrue(pen.isUp());
