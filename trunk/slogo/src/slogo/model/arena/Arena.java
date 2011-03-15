@@ -1,5 +1,6 @@
 package slogo.model.arena;
 
+import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -9,6 +10,7 @@ import java.util.Observable;
 import java.util.Map.Entry;
 import slogo.model.arena.turtle.Turtle;
 import slogo.model.expression.Expression;
+import slogo.view.subpanels.ArenaDraw;
 
 
 public class Arena extends Observable implements Cloneable
@@ -267,6 +269,13 @@ public class Arena extends Observable implements Cloneable
             if (t.getName().equals(name)) return true;
         }
         return false;
+    }
+
+
+    public Point2D getCenter ()
+    {
+        //TODO make this not static
+        return ArenaDraw.ORIGIN;
     }
     
 }
