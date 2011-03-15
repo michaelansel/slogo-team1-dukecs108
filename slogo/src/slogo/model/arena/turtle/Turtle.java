@@ -216,7 +216,6 @@ public class Turtle
     
     public int move (Line line){
         myDrawables.add(myBehavior.applyBehavior(line));
-        System.out.println(line);
         myPosition.setLocation(((Line)myDrawables.get(myDrawables.size()-1)).getP2());
         return (int) Math.round(myDrawables.get(myDrawables.size()-1).length());
     }
