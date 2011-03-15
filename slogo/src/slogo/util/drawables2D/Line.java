@@ -107,7 +107,7 @@ public class Line extends Line2D.Double implements Comparable, ICartesian2D, IDr
         
        
             
-        return drawAtPoint(g2d, new Point2D.Double());
+        return drawAtPoint(g2d, this.getP1());
     }
     
    
@@ -226,7 +226,7 @@ public class Line extends Line2D.Double implements Comparable, ICartesian2D, IDr
         this.shiftToPoint(point);
         myTool.applyTool(g2d);
         g2d.draw(this);
-        return null;
+        return g2d;
     }
 
     @Override

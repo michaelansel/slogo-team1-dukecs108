@@ -84,7 +84,7 @@ public class Turtle implements IMorph, IDraw2D, ITurtle
 
     public Turtle (String name, Position position, DrawTool pen, File image)
     {
-        this(name, position, pen, image, new DefaultBehavior(), new WrapMode());
+        this(name, position, pen, image, new DefaultBehavior(), new DefaultDrawMode());
     }
 
     public Turtle (String name,
