@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.TreeSet;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Line2D;
+import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -35,6 +36,8 @@ public class ArenaDraw extends JPanel{
 	//private TurtleLevel turtlePanel;
 	//private LinesLevel linePanel;
 	public static Dimension myDimension=new Dimension(400, 400);
+    public static Point2D ORIGIN = new Point2D.Double(myDimension.getWidth()/2,myDimension.getHeight()/2); //TODO this needs to not be static
+
 	private Map<Integer, Turtle> myTurtleMap;
 
 	/**
@@ -71,8 +74,14 @@ public class ArenaDraw extends JPanel{
 				for (IDraw2D l: curren.getLinesToDraw(0)){ //redraws every line every time
 					l.draw(graphics, myDimension);
 				}
-				g.drawImage(img, (int)curren.getPosition().getX()-img.getWidth()/2,
-						(int)curren.getPosition().getY()-img.getHeight()/2, null);
+				try
+                {
+                    curren.draw(graphics);
+                }
+                catch (IOException e)
+                {
+                    e.printStackTrace();
+                }
 			}
 		}
 		//add(turtlePanel);

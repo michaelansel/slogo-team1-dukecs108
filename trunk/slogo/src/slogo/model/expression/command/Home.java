@@ -9,6 +9,7 @@ import java.util.Collection;
 import java.util.logging.Level;
 import slogo.model.arena.Arena;
 import slogo.model.expression.Expression;
+import slogo.view.subpanels.ArenaDraw;
 import util.parser.ParserResult;
 
 
@@ -39,7 +40,7 @@ public class Home extends Command
                                                        this.toString());
 
         int retval =
-            arena.getCurrentTurtle().move(new Point2D.Double(0.0, 0.0));
+            arena.getCurrentTurtle().move(arena.getCenter());
         if (logger.isLoggable(Level.FINER)) logger.finer("Returning: " + retval);
         return retval;
     }
