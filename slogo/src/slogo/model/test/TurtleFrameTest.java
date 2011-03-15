@@ -13,6 +13,7 @@ import slogo.model.arena.turtle.qualities.mode.MirrorMode;
 import slogo.model.expression.Expression;
 import slogo.model.parser.SlogoParser;
 import slogo.util.drawables2D.Line;
+import slogo.util.interfaces.IMorph;
 import util.parser.ParserException;
 
 
@@ -129,7 +130,7 @@ public class TurtleFrameTest
     }
 
 
-    private static void basicArcMove (Turtle turtle, int r)
+    private static void basicArcMove (IMorph turtle, int r)
     {
         for (int i = 0; i < r / 3; i++)
         {
@@ -156,7 +157,7 @@ public class TurtleFrameTest
     }
 
 
-    private static void basicSquareMove (Turtle turtle, double d)
+    private static void basicSquareMove (IMorph turtle, double d)
     {
 
         turtle.rotate(90);

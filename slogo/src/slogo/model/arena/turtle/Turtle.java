@@ -26,11 +26,13 @@ import slogo.model.arena.turtle.qualities.mode.DrawModeDecorator;
 import slogo.model.arena.turtle.qualities.mode.IMode;
 import slogo.model.arena.turtle.qualities.mode.WrapMode;
 import slogo.util.Position;
-import slogo.util.drawables2D.IDraw2D;
 import slogo.util.drawables2D.Line;
 
 import slogo.util.drawtools.DrawTool;
 import slogo.util.drawtools.Pen2D;
+import slogo.util.interfaces.ICartesian;
+import slogo.util.interfaces.IDraw2D;
+import slogo.util.interfaces.IMorph;
 import slogo.view.subpanels.ArenaDraw;
 
 /**
@@ -39,7 +41,7 @@ import slogo.view.subpanels.ArenaDraw;
  * @author Julian Genkins
  *
  */
-public class Turtle 
+public class Turtle implements IMorph, IDraw2D 
 {
     private static final File DEFAULT_IMAGE = new File("src/images/turtlecloud.png"); 
     private static final int ICON_HEIGHT = 20;
@@ -50,7 +52,7 @@ public class Turtle
     private File myImage;
     private Position myPosition;
     private DrawTool myPen;
-    private List<IDraw2D> myDrawables;
+    private List<ICartesian> myDrawables;
     private boolean amVisible;
 
 
@@ -98,7 +100,7 @@ public class Turtle
         setImage(image);
         myPen.putDown();
         myBehavior = behavior;
-        myDrawables = new ArrayList<IDraw2D>();
+        myDrawables = new ArrayList<ICartesian>();
         amVisible = true;
         myMode = mode;
     }
@@ -124,20 +126,20 @@ public class Turtle
     }
 
 
-    public void addAllDrawables (List<IDraw2D> drawables)
+    public void addAllDrawables (List<ICartesian> drawables)
     {
         myDrawables.addAll(drawables);
 
     }
 
 
-    public void addDrawable (IDraw2D drawable)
+    public void addDrawable (ICartesian drawable)
     {
         myDrawables.add(drawable);
     }
 
 
-    public List<IDraw2D> getDrawables ()
+    public List<ICartesian> getDrawables ()
     {
         return myDrawables;
     }
@@ -155,7 +157,7 @@ public class Turtle
     }
 
 
-    public void removeDrawables (List<IDraw2D> drawables)
+    public void removeDrawables (List<ICartesian> drawables)
     {
         myDrawables.removeAll(drawables);
     }
@@ -197,6 +199,10 @@ public class Turtle
 
 //Morphable
 
+    /* (non-Javadoc)
+     * @see slogo.model.arena.turtle.IMorph#move(double)
+     */
+    @Override
     public int move (double distance)
     {
         return move (new Line(myPen, 
@@ -209,11 +215,19 @@ public class Turtle
                                                                                             myPosition.getHeading()))))));
     }
 
+    /* (non-Javadoc)
+     * @see slogo.model.arena.turtle.IMorph#move(java.awt.geom.Point2D)
+     */
+    @Override
     public int move (Point2D target){
         return move (new Line(myPen.clone(), myPosition.getLocation(), target));
     }
     
     
+    /* (non-Javadoc)
+     * @see slogo.model.arena.turtle.IMorph#move(slogo.util.drawables2D.Line)
+     */
+    @Override
     public int move (Line line){
         myDrawables.add(myBehavior.applyBehavior(line));
         myPosition.setLocation(((Line)myDrawables.get(myDrawables.size()-1)).getP2());
@@ -223,6 +237,10 @@ public class Turtle
     
 
 
+    /* (non-Javadoc)
+     * @see slogo.model.arena.turtle.IMorph#rotate(double)
+     */
+    @Override
     public int rotate (double dAngle)
     {
         myPosition.changeHeadingBy(dAngle);
@@ -231,6 +249,10 @@ public class Turtle
     }
 
 
+    /* (non-Javadoc)
+     * @see slogo.model.arena.turtle.IMorph#setHeading(double)
+     */
+    @Override
     public int setHeading (double heading)
     {
 
@@ -257,6 +279,10 @@ public class Turtle
     }
 
 
+    /* (non-Javadoc)
+     * @see slogo.model.arena.turtle.IMorph#isVisible()
+     */
+    @Override
     public boolean isVisible ()
     {
         return amVisible;
@@ -289,7 +315,7 @@ public class Turtle
     }
 
 
-    public List<IDraw2D> getLinesToDraw (int start) //throws TurtleException
+    public List<ICartesian> getLinesToDraw (int start) //throws TurtleException
     {
 //        if (myLines.size()<= start){
 //            throw new TurtleException("Nothing to draw");
@@ -323,23 +349,38 @@ public class Turtle
 //        return lines;
 //    }
     
-    public void draw (Graphics2D g) throws IOException{
-        drawAtPoint(g, myPosition.getLocation());
+    /* (non-Javadoc)
+     * @see slogo.model.arena.turtle.IDraw2D#draw(java.awt.Graphics2D)
+     */
+    @Override
+    public Graphics2D draw (Graphics2D g2d){
+        return drawAtPoint(g2d, myPosition.getLocation());
     }
 
-    public void drawAtPoint (Graphics2D g, Point2D point) throws IOException{
+    /* (non-Javadoc)
+     * @see slogo.model.arena.turtle.IDraw2D#drawAtPoint(java.awt.Graphics2D, java.awt.geom.Point2D)
+     */
+    @Override
+    public Graphics2D drawAtPoint (Graphics2D g2d, Point2D point){
 //      AffineTransform xform = AffineTransform.getRotateInstance(Math.toRadians(myPosition.getHeading()));
 //      
 //      
 //      g.transform(xform);
       
-      g.drawImage(ImageIO.read(myImage),
-                  (int) point.getX()-ICON_HEIGHT/2,
-                  (int) point.getY()-ICON_WIDTH/2, 
-                  ICON_HEIGHT, 
-                  ICON_WIDTH, 
-                  null);
-
+      try
+    {
+        g2d.drawImage(ImageIO.read(myImage),
+                      (int) point.getX()-ICON_HEIGHT/2,
+                      (int) point.getY()-ICON_WIDTH/2, 
+                      ICON_HEIGHT, 
+                      ICON_WIDTH, 
+                      null);
+    }
+    catch (Exception e)
+    {
+        e.printStackTrace();
+    }
+      return g2d;
     }
     
 }

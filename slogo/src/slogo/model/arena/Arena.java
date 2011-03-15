@@ -10,6 +10,7 @@ import java.util.Observable;
 import java.util.Map.Entry;
 import slogo.model.arena.turtle.Turtle;
 import slogo.model.expression.Expression;
+import slogo.util.interfaces.IMorph;
 import slogo.view.subpanels.ArenaDraw;
 
 
@@ -174,7 +175,7 @@ public class Arena extends Observable implements Cloneable
     /**
      * @return This Arena's currently selected Turtle
      */
-    public Turtle getCurrentTurtle ()
+    public IMorph getCurrentTurtle ()
     {
         return myTurtles.get(myCurrentTurtleID);
     }
@@ -252,7 +253,7 @@ public class Arena extends Observable implements Cloneable
      * @return
      * @throws TurtleException
      */
-    public Turtle getTurtleByName(String name) throws TurtleException{
+    public IMorph getTurtleByName(String name) throws TurtleException{
         
            
         for (Entry<Integer, Turtle> entry: myTurtles.entrySet()){

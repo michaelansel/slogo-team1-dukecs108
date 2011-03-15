@@ -3,7 +3,7 @@ package slogo.model;
 import java.util.List;
 import java.util.Map;
 import slogo.model.expression.Expression;
-import slogo.model.arena.turtle.Turtle;
+import slogo.util.interfaces.IMorph;
 
 public interface IModel {
 	/**
@@ -11,7 +11,7 @@ public interface IModel {
 	 * 
 	 * @param toAnimate
 	 */
-	public void animate(Turtle toAnimate);
+	public void animate(IMorph toAnimate);
 
 	/**
 	 * @return a list of previous Expressions
@@ -25,7 +25,7 @@ public interface IModel {
 	 *            Specify which Turtle to retrieve
 	 * @return Turtle with given id
 	 */
-	public Turtle getTurtleById(int id);
+	public IMorph getTurtleById(int id);
 
 	/**
 	 * @return Map of variables as Strings mapped to corresponding Expressions
