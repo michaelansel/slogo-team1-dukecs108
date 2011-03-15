@@ -182,8 +182,6 @@ public class Line extends Line2D.Double implements Comparable, IDraw2D, IWrap2D 
     
     @Override
     public void shiftXY(double x, double y){
-        System.out.println(y);
-        System.out.println(this);
         this.setLine(this.getX1()+x, this.getY1()+y, this.getX2()+x, this.getY2()+y);
         
     }
