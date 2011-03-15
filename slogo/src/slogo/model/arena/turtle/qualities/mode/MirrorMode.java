@@ -5,7 +5,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import slogo.util.drawables2D.Line;
-import slogo.util.interfaces.ICartesian;
+import slogo.util.interfaces.ICartesian2D;
+import slogo.util.interfaces.IDraw2D;
 
 /**
  * Mirrors turtle path around origin
@@ -20,12 +21,12 @@ public class MirrorMode extends DrawModeDecorator {
 
 
     @Override
-    public List<ICartesian> applyMode (List<ICartesian> list)
+    public List<IDraw2D> applyMode (List<IDraw2D> list)
     {
-        List<ICartesian> modified = new ArrayList<ICartesian>();
-        for (ICartesian shape: list){
+        List<IDraw2D> modified = new ArrayList<IDraw2D>();
+        for (IDraw2D shape: list){
             modified.add(shape);
-            modified.add(shape.flipXY());
+            modified.add((IDraw2D) ((ICartesian2D) shape).flipXY());
         }
         return modified;
     }
