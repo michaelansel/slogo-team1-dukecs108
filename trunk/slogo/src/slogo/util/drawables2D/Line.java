@@ -9,14 +9,20 @@ import java.awt.Shape;
 import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
+import java.awt.geom.Point2D.Double;
 import java.awt.image.BufferedImage;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import slogo.util.Position;
 import slogo.util.drawtools.DrawTool;
 import slogo.util.drawtools.DrawTool2D;
 import slogo.util.drawtools.Pen2D;
+import slogo.util.interfaces.ICartesian2D;
+import slogo.util.interfaces.IDraw2D;
+import slogo.util.interfaces.IWrap;
+import slogo.util.interfaces.IWrap2D;
 
 
 
@@ -28,7 +34,7 @@ import slogo.util.drawtools.Pen2D;
  * @author Julian Genkins
  *
  */
-public class Line extends Line2D.Double implements Comparable, IDraw2D, IWrap2D {
+public class Line extends Line2D.Double implements Comparable, ICartesian2D, IDraw2D, IWrap2D {
 
 	private DrawTool2D myTool;
 	
@@ -97,14 +103,11 @@ public class Line extends Line2D.Double implements Comparable, IDraw2D, IWrap2D 
     }
 
     @Override
-    public Graphics2D draw(Graphics2D g2d, Dimension dimension){
+    public Graphics2D draw(Graphics2D g2d){
         
-        for (Shape line: this.wrap(dimension)){
-                myTool.applyTool(g2d);
-                g2d.draw(line);
+       
             
-        }   
-        return g2d;
+        return drawAtPoint(g2d, new Point2D.Double());
     }
     
    
@@ -148,7 +151,7 @@ public class Line extends Line2D.Double implements Comparable, IDraw2D, IWrap2D 
 //    }
 
     @Override
-    public IDraw2D flipXY ()
+    public ICartesian2D flipXY ()
     {
         return this.flipX().flipY();
     }
@@ -203,72 +206,179 @@ public class Line extends Line2D.Double implements Comparable, IDraw2D, IWrap2D 
         this.shiftXY(0, y);
     }
 
-    /* (non-Javadoc)
-     * @see slogo.util.IDrawable2D#wrap(java.awt.Dimension)
-     */
-    @Override
-    public ArrayList<Shape> wrap (Dimension limits)
-    {
-        Line left = new Line(new Point(), new Point(0, (int) limits.getHeight()));
-        Line top = new Line(left.getP1(), new Point2D.Double((int) limits.getWidth(), 0));
-        Line right = new Line(top.getP2(), new Point((int) limits.getWidth(), (int) limits.getHeight()));
-        IWrap2D bottom = new Line(left.getP1(), right.getP2());
-        
-       ArrayList<Shape> lines = new ArrayList<Shape>();
-        
-        lines.add(this);
-        
-        
-        return lines;
-    }
     
-    /* (non-Javadoc)
-     * @see slogo.util.drawables2D.IWrap2D#wrapRight(java.awt.Dimension)
-     */
     @Override
-    public ArrayList<IWrap2D> wrapRight (Dimension limits){
-        return null;
-        
-    }
-    
-    /* (non-Javadoc)
-     * @see slogo.util.drawables2D.IWrap2D#wrapLeft(java.awt.Dimension)
-     */
-    @Override
-    public ArrayList<IWrap2D> wrapLeft (Dimension limits){
-        return null;
-        
-    }
-    
-    /* (non-Javadoc)
-     * @see slogo.util.drawables2D.IWrap2D#wrapBottom(java.awt.Dimension)
-     */
-    @Override
-    public ArrayList<IWrap2D> wrapBottom (Dimension limits){
-        return null;
-        
-    }
-    
-    /* (non-Javadoc)
-     * @see slogo.util.drawables2D.IWrap2D#wrapTop(java.awt.Dimension)
-     */
-    @Override
-    public ArrayList<IWrap2D> wrapTop (Dimension limits){
-        return null;
-        
-    }
-
-    @Override
-    public IDraw2D flipX ()
+    public ICartesian2D flipX ()
     {
         this.setLine(this.x1, -this.y1, this.x2, -this.y2);
         return this;
     }
 
     @Override
-    public IDraw2D flipY ()
+    public ICartesian2D flipY ()
     {
         this.setLine(-this.x1, this.y1, -this.x2, this.y2);
         return this;    }
+
+    @Override
+    public Graphics2D drawAtPoint (Graphics2D g2d, Point2D point)
+    {
+        this.shiftToPoint(point);
+        myTool.applyTool(g2d);
+        g2d.draw(this);
+        return null;
+    }
+
+    @Override
+    public void shiftToPoint (Point2D point)
+    {
+        this.shiftXY(point.getX()-this.getX1(), point.getY()-this.getY1());
+        
+    }
+
+    
+    
+    
+    @Override
+    public Collection<IWrap> wrap (Dimension bounds)
+    {
+        Collection<IWrap> wrapped = new ArrayList<IWrap>();
+        for (IWrap2D wrap: this.wrap2D(bounds)){
+            wrapped.add(wrap);
+        }
+        return wrapped;
+    }
+    
+    @Override
+    public Collection<IWrap2D> wrap2D(Dimension bounds){
+        Line left = new Line(new Point(), new Point(0, (int) bounds.getHeight()));
+        Line top = new Line(left.getP1(), new Point2D.Double((int) bounds.getWidth(), 0));
+        Line right = new Line(top.getP2(), new Point((int) bounds.getWidth(), (int) bounds.getHeight()));
+        Line bottom = new Line(left.getP1(), right.getP2());
+        
+        ArrayList<IWrap2D> lines = new ArrayList<IWrap2D>();
+        
+        System.out.println(left);
+        System.out.println(this);
+        System.out.println(this.intersectsLine(left));
+        if (this.intersectsLine(left)){
+            lines.addAll(this.wrapLeft(left, bounds));
+        }
+        else if (this.intersectsLine(top)){
+            
+        }
+        else if (this.intersectsLine(right)){
+            
+        }
+        else if (this.intersectsLine(bottom)){
+    
+        }
+        else
+            lines.add(this);
+        
+        return lines;
+    }
+    
+    
+    @Override
+    public Collection<IWrap2D> wrapLeft (Line limit,
+                                          Dimension bounds)
+    {
+        Collection<ICartesian2D> split = this.split(this.findIntersect( limit));
+        Collection<IWrap2D> wrapped = new ArrayList<IWrap2D>();
+        for(ICartesian2D line: split){
+            if (line.isOutOfBounds(bounds)){
+                line.shiftX(bounds.getWidth());
+                wrapped.addAll(((IWrap2D) line).wrap2D(bounds));
+            }
+            else{
+                wrapped.add((IWrap2D) line);
+            }
+        }
+        
+        return wrapped;
+    }
+
+    @Override
+    public boolean isOutOfBounds (Dimension bounds)
+    {
+        
+        return (this.getX1() < 0 || this.getX1() > bounds.getWidth()) ||
+               (this.getY1() < 0 || this.getY1() > bounds.getHeight()) ||
+               (this.getX2() < 0 || this.getX2() > bounds.getWidth()) ||
+               (this.getY2() < 0 || this.getY2() > bounds.getHeight());
+    }
+
+    @Override
+    public Collection<ICartesian2D> split (Point2D splitPoint)
+    {
+        Collection<ICartesian2D> split = new ArrayList<ICartesian2D>();
+        split.add(new Line(this.getP1(), splitPoint));
+        split.add(new Line(splitPoint, this.getP2()));
+        return split;
+    }
+
+    @Override
+    public Point2D findIntersect (Line limit)
+    {
+        return findIntersect(limit.x1, limit.y1, limit.x2, limit.y2);
+    }
+    
+    @Override
+    public Point2D findIntersect (Point2D start, Point2D end){
+        return findIntersect(start.getX(), start.getY(), end.getX(), end.getY());
+    }
+    
+    @Override
+    public Point2D findIntersect (double x1, double y1, double x2, double y2){
+        
+        double denom = ((this.x1 - this.x2) * (y2 - y1)) - ((this.y2 - this.y1) * (x2 - x1));
+
+        //  AB & CD are parallel 
+        if (denom == 0)
+                return null;
+
+        double numer = ((this.y1 - y1) * (x2 - x1)) - ((this.x1 - x1) * (y2 - y1));
+
+        double r = numer / denom;
+
+        double numer2 = ((this.y1 - y1) * (this.x2 - this.x1)) - ((this.x1 - x1) * (this.y2 - this.y1));
+
+        double s = numer2 / denom;
+
+        if ((r < 0 || r > 1) || (s < 0 || s > 1))
+                    return null;
+
+        // Find intersection point
+        Point2D result = new Point2D.Double(this.x1 + (r * (this.x2 - this.x1)), this.y1 + (r * (this.y2 - this.y1)));
+            
+
+        return result;
+       
+    }
+    
+
+    @Override
+    public Collection<IWrap2D> wrapRight (Line right, Dimension bounds)
+    {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public Collection<IWrap2D> wrapBottom (Line bottom, Dimension bounds)
+    {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public Collection<IWrap2D> wrapTop (Line top, Dimension bounds)
+    {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+   
     
 }

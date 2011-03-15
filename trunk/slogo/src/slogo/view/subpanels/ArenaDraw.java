@@ -20,8 +20,9 @@ import javax.swing.JPanel;
 
 import slogo.model.arena.Arena;
 import slogo.model.arena.turtle.Turtle;
-import slogo.util.drawables2D.IDraw2D;
 import slogo.util.drawables2D.Line;
+import slogo.util.interfaces.ICartesian2D;
+import slogo.util.interfaces.IDraw2D;
 
 /**
  * Drawing base, send your instructions here, it calls others as
@@ -72,16 +73,9 @@ public class ArenaDraw extends JPanel{
 					e.printStackTrace();
 				}
 				for (IDraw2D l: curren.getLinesToDraw(0)){ //redraws every line every time
-					l.draw(graphics, myDimension);
+					l.draw(graphics);
 				}
-				try
-                {
-                    curren.draw(graphics);
-                }
-                catch (IOException e)
-                {
-                    e.printStackTrace();
-                }
+				curren.draw(graphics);
 			}
 		}
 		//add(turtlePanel);

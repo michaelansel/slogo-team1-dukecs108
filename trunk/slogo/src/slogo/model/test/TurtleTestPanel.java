@@ -17,7 +17,7 @@ import slogo.model.arena.Arena;
 import slogo.model.arena.TurtleException;
 import slogo.model.arena.turtle.Turtle;
 import slogo.util.drawables2D.Line;
-import slogo.util.interfaces.ICartesian;
+import slogo.util.interfaces.ICartesian2D;
 
 
 public class TurtleTestPanel extends JPanel
@@ -65,9 +65,9 @@ public class TurtleTestPanel extends JPanel
     /**
      * @param lines
      */
-    private void drawLines (List<ICartesian> lines)
+    private void drawLines (List<ICartesian2D> lines)
     {
-        for (ICartesian line: lines){
+        for (ICartesian2D line: lines){
             line.draw(myImage.createGraphics(), this.getPreferredSize());
         }
     }
