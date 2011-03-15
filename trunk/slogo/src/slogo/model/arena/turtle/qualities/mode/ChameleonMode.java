@@ -4,7 +4,7 @@ import java.awt.Graphics2D;
 import java.util.Collection;
 import java.util.List;
 import slogo.util.drawables2D.Line;
-import slogo.util.interfaces.ICartesian;
+import slogo.util.interfaces.IDraw2D;
 
 /**
  * @author Julian Genkins
@@ -13,7 +13,7 @@ import slogo.util.interfaces.ICartesian;
 public class ChameleonMode extends DrawModeDecorator {
 
     @Override
-    public List<ICartesian> applyMode (List<ICartesian> list)
+    public List<IDraw2D> applyMode (List<IDraw2D> list)
     {
         // TODO Auto-generated method stub
         return null;
