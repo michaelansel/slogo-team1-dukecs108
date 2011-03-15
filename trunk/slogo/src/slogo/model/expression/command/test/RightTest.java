@@ -39,7 +39,8 @@ public class RightTest extends TestCase
     {
         ParserResult result = SlogoParser.parse("right 90");
         Expression expression = (Expression) result.getList().get(0);
-        when(mockedTurtle.rotate(90)).thenReturn(17);
+        // TODO This seems counter-intuitive: right should be positive
+        when(mockedTurtle.rotate(-90)).thenReturn(17);
         assertEquals(17, expression.evaluate(arena));
     }
 
@@ -48,8 +49,9 @@ public class RightTest extends TestCase
     {
         ParserResult result = SlogoParser.parse("rt rt 90");
         Expression expression = (Expression) result.getList().get(0);
-        when(mockedTurtle.rotate(90)).thenReturn(17);
-        when(mockedTurtle.rotate(17)).thenReturn(23);
+        // TODO This seems counter-intuitive: right should be positive
+        when(mockedTurtle.rotate(-90)).thenReturn(17);
+        when(mockedTurtle.rotate(-17)).thenReturn(23);
         assertEquals(23, expression.evaluate(arena));
     }
 
@@ -59,7 +61,8 @@ public class RightTest extends TestCase
     {
         ParserResult result = SlogoParser.parse("rt 30+60");
         Expression expression = (Expression) result.getList().get(0);
-        when(mockedTurtle.rotate(90)).thenReturn(17);
+        // TODO This seems counter-intuitive: right should be positive
+        when(mockedTurtle.rotate(-90)).thenReturn(17);
         assertEquals(17, expression.evaluate(arena));
     }
 
@@ -69,7 +72,8 @@ public class RightTest extends TestCase
     {
         ParserResult result = SlogoParser.parse("rt 90");
         Expression expression = (Expression) result.getList().get(0);
-        when(mockedTurtle.rotate(90)).thenReturn(17);
+        // TODO This seems counter-intuitive: right should be positive
+        when(mockedTurtle.rotate(-90)).thenReturn(17);
         assertEquals(17, expression.evaluate(arena));
     }
 
@@ -79,7 +83,8 @@ public class RightTest extends TestCase
     {
         ParserResult result = SlogoParser.parse("rt -90");
         Expression expression = (Expression) result.getList().get(0);
-        when(mockedTurtle.rotate(-90)).thenReturn(17);
+        // TODO This seems counter-intuitive: right should be positive
+        when(mockedTurtle.rotate(90)).thenReturn(17);
         assertEquals(17, expression.evaluate(arena));
     }
 

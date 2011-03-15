@@ -3,8 +3,8 @@
  */
 package slogo.model.expression.command.test;
 
-import static org.mockito.Mockito.*;
-import java.awt.geom.Point2D;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 import junit.framework.TestCase;
 import org.junit.Before;
 import org.junit.Test;
@@ -40,7 +40,7 @@ public class HomeTest extends TestCase
     {
         ParserResult result = SlogoParser.parse("home");
         Expression expression = (Expression) result.getList().get(0);
-        when(mockedTurtle.move(new Point2D.Double(0.0, 0.0))).thenReturn(17);
+        when(mockedTurtle.move(arena.getCenter())).thenReturn(17);
         assertEquals(17, expression.evaluate(arena));
     }
 }

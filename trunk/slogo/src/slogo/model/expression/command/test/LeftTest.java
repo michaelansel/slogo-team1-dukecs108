@@ -34,22 +34,26 @@ public class LeftTest extends TestCase
         arena.setCurrentTurtleID(arena.addTurtle(mockedTurtle));
     }
 
+
     @Test
     public final void testLongName () throws ParserException
     {
         ParserResult result = SlogoParser.parse("left 90");
         Expression expression = (Expression) result.getList().get(0);
-        when(mockedTurtle.rotate(-90)).thenReturn(17);
+        // TODO This seems counter-intuitive: left should be negative
+        when(mockedTurtle.rotate(90)).thenReturn(17);
         assertEquals(17, expression.evaluate(arena));
     }
+
 
     @Test
     public final void testCommandAsParameter () throws ParserException
     {
         ParserResult result = SlogoParser.parse("lt lt 90");
         Expression expression = (Expression) result.getList().get(0);
-        when(mockedTurtle.rotate(-90)).thenReturn(17);
-        when(mockedTurtle.rotate(-17)).thenReturn(23);
+        // TODO This seems counter-intuitive: left should be negative
+        when(mockedTurtle.rotate(90)).thenReturn(17);
+        when(mockedTurtle.rotate(17)).thenReturn(23);
         assertEquals(23, expression.evaluate(arena));
     }
 
@@ -59,7 +63,8 @@ public class LeftTest extends TestCase
     {
         ParserResult result = SlogoParser.parse("lt 30+60");
         Expression expression = (Expression) result.getList().get(0);
-        when(mockedTurtle.rotate(-90)).thenReturn(17);
+        // TODO This seems counter-intuitive: left should be negative
+        when(mockedTurtle.rotate(90)).thenReturn(17);
         assertEquals(17, expression.evaluate(arena));
     }
 
@@ -69,7 +74,8 @@ public class LeftTest extends TestCase
     {
         ParserResult result = SlogoParser.parse("lt 90");
         Expression expression = (Expression) result.getList().get(0);
-        when(mockedTurtle.rotate(-90)).thenReturn(17);
+        // TODO This seems counter-intuitive: left should be negative
+        when(mockedTurtle.rotate(90)).thenReturn(17);
         assertEquals(17, expression.evaluate(arena));
     }
 
@@ -79,7 +85,8 @@ public class LeftTest extends TestCase
     {
         ParserResult result = SlogoParser.parse("lt -90");
         Expression expression = (Expression) result.getList().get(0);
-        when(mockedTurtle.rotate(90)).thenReturn(17);
+        // TODO This seems counter-intuitive: left should be negative
+        when(mockedTurtle.rotate(-90)).thenReturn(17);
         assertEquals(17, expression.evaluate(arena));
     }
 

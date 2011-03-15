@@ -10,9 +10,9 @@ import org.junit.Before;
 import org.junit.Test;
 import slogo.model.arena.Arena;
 import slogo.model.arena.turtle.Turtle;
-import slogo.model.arena.turtle.qualities.positioning.Position;
 import slogo.model.expression.Expression;
 import slogo.model.parser.SlogoParser;
+import slogo.util.Position;
 import util.parser.ParserException;
 import util.parser.ParserResult;
 
@@ -34,6 +34,7 @@ public class YCorTest extends TestCase
         arena = new Arena();
         arena.setCurrentTurtleID(arena.addTurtle(mockedTurtle));
     }
+
 
     @Test
     public final void testSimple () throws ParserException
