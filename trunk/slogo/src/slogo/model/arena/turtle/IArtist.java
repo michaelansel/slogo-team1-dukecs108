@@ -1,8 +1,8 @@
 package slogo.model.arena.turtle;
 
 import java.util.List;
-import slogo.util.Line;
-import slogo.util.Pen;
+import slogo.util.drawables2D.Line;
+import slogo.util.drawtools.IDrawTool2D;
 
 /**
  * iterface to deal with the turtle's artistic qualities including: line, trace,
@@ -11,22 +11,21 @@ import slogo.util.Pen;
  * @author Julian
  * 
  */
-// TODO: Involved with pixmap interaction?
 public interface IArtist {
 
 	/**
-	 * Sets the Trace of the pen to the passed in trace
+	 * Sets the pen to the passed in pen
 	 * 
 	 * @param newColor
 	 */
-	public abstract void setPen(Pen newPen);
+	public abstract void setPen(IDrawTool2D newPen);
 
 	/**
-	 * Sets the Trace of the pen to the passed in trace
+	 * get the current pen
 	 * 
 	 * @param newColor
 	 */
-	public abstract Pen getPen();
+	public abstract IDrawTool2D getPen();
 
 	/**
 	 * return's the turtle's list of lines

@@ -1,6 +1,6 @@
 package slogo.model.arena.turtle.qualities.behavior;
 
-import slogo.util.Line;
+import slogo.util.drawables2D.Line;
 
 /**
  * applies the default (no) behavior to line

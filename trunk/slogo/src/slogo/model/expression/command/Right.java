@@ -43,7 +43,7 @@ public class Right extends Command
         int val = myAngleExpression.evaluate(arena);
         if (logger.isLoggable(Level.FINER)) logger.finer("SubExpression: " +
                                                          val);
-        int retval = arena.getCurrentTurtle().rotate(val);
+        int retval = arena.getCurrentTurtle().rotate(-1*val);
         if (logger.isLoggable(Level.FINER)) logger.finer("Returning: " + retval);
         return retval;
     }

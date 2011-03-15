@@ -11,7 +11,7 @@ import javax.swing.*;
 
 import slogo.model.arena.Arena;
 import slogo.model.arena.turtle.Turtle;
-import slogo.model.arena.turtle.qualities.positioning.Position;
+import slogo.util.Position;
 import slogo.view.panel.PanelFactory;
 import slogo.view.panel.TextPanel;
 import util.resources.ResourceManager;

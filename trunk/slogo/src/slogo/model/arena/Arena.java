@@ -152,8 +152,10 @@ public class Arena extends Observable implements Cloneable
      */
     public void setCurrentTurtleID (Integer turtleID)
     {
-        if (getTurtle(turtleID) == null) throw new IllegalArgumentException("Turtle with ID not found! ID=" +
-                                                                            turtleID);
+       
+        if (getTurtle(turtleID) == null) setTurtle(turtleID, new
+                                                   Turtle("Turtle " + turtleID));
+        
         myCurrentTurtleID = turtleID;
     }
 
