@@ -7,8 +7,8 @@ import slogo.model.arena.turtle.qualities.behavior.BehaviorDecorator;
 import slogo.model.arena.turtle.qualities.behavior.IBehavior;
 import slogo.model.arena.turtle.qualities.mode.DrawModeDecorator;
 import slogo.model.arena.turtle.qualities.mode.IMode;
-import slogo.model.arena.turtle.qualities.positioning.Positionable;
-import slogo.util.Pen;
+import slogo.model.arena.turtle.qualities.positioning.IPositionable;
+import slogo.util.drawtools.Pen2D;
 
 /**
  * interface for methods that control a turtles behavior, Appearance/Image, and
@@ -41,9 +41,9 @@ public interface IMorphable {
 
 	public abstract File getImage();
 
-	public abstract void setPosition(Positionable position);
+	public abstract void setPosition(IPositionable position);
 
-	public abstract Positionable getPosition();
+	public abstract IPositionable getPosition();
 
 	// public abstract void update(TurtleMorph morph);
 
@@ -53,7 +53,7 @@ public interface IMorphable {
 	 * 
 	 * @param target
 	 */
-	public int move(Point2D target);
+	public int moveInvisible(Point2D target);
 
 	public int move(double distance);
 

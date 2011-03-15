@@ -3,7 +3,8 @@ package slogo.model.arena.turtle.qualities.mode;
 import java.awt.Graphics2D;
 import java.util.Collection;
 import java.util.List;
-import slogo.util.Line;
+import slogo.util.drawables2D.IDraw2D;
+import slogo.util.drawables2D.Line;
 
 /**
  * An additional set of algorithms designed to not effect the trail of the
@@ -14,5 +15,5 @@ import slogo.util.Line;
  */
 public interface IMode {
 
-    List<Line> applyMode (List<Line> subList);
+    List<IDraw2D> applyMode (List<IDraw2D> list);
 }

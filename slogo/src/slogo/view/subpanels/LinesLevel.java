@@ -17,8 +17,8 @@ import javax.swing.JComponent;
 import javax.swing.JPanel;
 
 import slogo.model.arena.turtle.Turtle;
-import slogo.model.arena.turtle.qualities.positioning.Position;
-import slogo.util.Line;
+import slogo.util.Position;
+import slogo.util.drawables2D.Line;
 
 /**
  * Level where the lines are drawn and stored. Doesn't need to be

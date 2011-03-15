@@ -9,6 +9,7 @@ import java.util.List;
 import javax.swing.JFrame;
 import slogo.model.arena.Arena;
 import slogo.model.arena.turtle.Turtle;
+import slogo.model.arena.turtle.qualities.mode.MirrorMode;
 import slogo.model.expression.Expression;
 import slogo.model.parser.SlogoParser;
 import slogo.util.drawables2D.Line;
@@ -120,7 +121,9 @@ public class TurtleFrameTest
     {
         Turtle turtle = new Turtle("1");
 
+//        turtle.addMode(new MirrorMode());
         basicSunMove(turtle, 100, new Point(250, 250));
+        basicCubeMove(turtle, 100, 50);
 
         return turtle;
     }

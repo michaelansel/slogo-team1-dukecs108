@@ -19,6 +19,7 @@ import javax.swing.JPanel;
 
 import slogo.model.arena.Arena;
 import slogo.model.arena.turtle.Turtle;
+import slogo.util.drawables2D.IDraw2D;
 import slogo.util.drawables2D.Line;
 
 /**
@@ -33,7 +34,7 @@ public class ArenaDraw extends JPanel{
 	private Graphics2D graphics;
 	//private TurtleLevel turtlePanel;
 	//private LinesLevel linePanel;
-	private Dimension myDimension=new Dimension(400, 400);
+	public static Dimension myDimension=new Dimension(400, 400);
 	private Map<Integer, Turtle> myTurtleMap;
 
 	/**
@@ -67,8 +68,7 @@ public class ArenaDraw extends JPanel{
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
-				List<Line> lineSet=curren.getLinesToDraw(0); //redraws every line every time
-				for (Line l: lineSet){
+				for (IDraw2D l: curren.getLinesToDraw(0)){ //redraws every line every time
 					l.draw(graphics, myDimension);
 				}
 				g.drawImage(img, (int)curren.getPosition().getX()-img.getWidth()/2,
@@ -78,6 +78,9 @@ public class ArenaDraw extends JPanel{
 		//add(turtlePanel);
 		//add(linePanel);
 	}
+	
+	
+	
 	
 	/**
 	 * clears the panel
