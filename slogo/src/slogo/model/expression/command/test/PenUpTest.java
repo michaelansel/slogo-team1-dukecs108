@@ -9,7 +9,7 @@ import org.junit.Test;
 import slogo.model.arena.Arena;
 import slogo.model.expression.Expression;
 import slogo.model.parser.SlogoParser;
-import slogo.util.Pen;
+import slogo.util.drawtools.DrawTool;
 import util.parser.ParserException;
 import util.parser.ParserResult;
 
@@ -21,7 +21,7 @@ public class PenUpTest extends TestCase
 {
 
     private Arena arena;
-    private Pen pen;
+    private DrawTool pen;
 
 
     @Before

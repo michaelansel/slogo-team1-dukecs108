@@ -12,7 +12,6 @@ import slogo.model.arena.Arena;
 import slogo.model.arena.turtle.Turtle;
 import slogo.model.expression.Expression;
 import slogo.model.parser.SlogoParser;
-import slogo.util.Position;
 import util.parser.ParserException;
 import util.parser.ParserResult;
 
@@ -20,7 +19,7 @@ import util.parser.ParserResult;
 /**
  * @author Michael Ansel
  */
-public class XCorTest extends TestCase
+public class ClearScreenTest extends TestCase
 {
 
     private Arena arena;
@@ -37,12 +36,24 @@ public class XCorTest extends TestCase
 
 
     @Test
-    public final void testSimple () throws ParserException
+    public final void testShortName () throws ParserException
     {
-        ParserResult result = SlogoParser.parse("xcor");
-        Expression expression = (Expression) result.getList().get(0);
-        when(mockedTurtle.getPosition()).thenReturn(new Position(10, 20));
-        assertEquals(10, expression.evaluate(arena));
+        simpleTest("cs");
     }
 
+
+    @Test
+    public final void testLongName () throws ParserException
+    {
+        simpleTest("clearscreen");
+    }
+
+
+    private void simpleTest (String command) throws ParserException
+    {
+        ParserResult result = SlogoParser.parse(command);
+        Expression expression = (Expression) result.getList().get(0);
+        when(mockedTurtle.resetTurtle(arena.getCenter())).thenReturn(17);
+        assertEquals(17, expression.evaluate(arena));
+    }
 }

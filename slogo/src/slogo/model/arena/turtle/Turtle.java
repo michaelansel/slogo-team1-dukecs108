@@ -263,14 +263,15 @@ public class Turtle
     }
 
 
-//    public int resetTurtle ()
-//    {
-//        this.moveInvisible(new Point());
-//        this.myPosition.changeHeadingBy(Position.DEFAULT_HEADING);
-//        int d = (int) myDrawables.get(myDrawables.size() - 1).length();
-//        myDrawables.clear();
-//        return d;
-//    }
+    public int resetTurtle (Point2D home)
+    {
+        int retval = (int) Math.round(myPosition.getLocation().distance(home));
+        myPen.putUp();
+        move(home);
+        setHeading(Position.DEFAULT_HEADING);
+        clearLines();
+        return retval;
+    }
 
 
     public IMode getMode ()
