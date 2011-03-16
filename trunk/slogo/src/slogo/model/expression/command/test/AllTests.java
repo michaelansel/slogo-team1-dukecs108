@@ -19,6 +19,7 @@ public class AllTests
         suite.addTestSuite(ClearScreenTest.class);
         suite.addTestSuite(PenDownTest.class);
         suite.addTestSuite(SetXYTest.class);
+        suite.addTestSuite(RandomTest.class);
         suite.addTestSuite(HeadingTest.class);
         suite.addTestSuite(YCorTest.class);
         suite.addTestSuite(ForwardTest.class);
