@@ -24,9 +24,9 @@ public class ParseTreeNode implements Cloneable
     }
 
     private String myName;
-    List<ParseTreeNode> myParameters; // TODO change visibility
+    private List<ParseTreeNode> myParameters;
     private AbstractParserRule myParserRule;
-    String myToken; // TODO change visibility
+    private String myToken;
     private Type myType;
 
 
