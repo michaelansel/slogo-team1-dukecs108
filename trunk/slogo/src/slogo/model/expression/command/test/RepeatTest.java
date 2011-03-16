@@ -51,7 +51,6 @@ public class RepeatTest extends TestCase
     @Test
     public final void testCommandAsParameter () throws ParserException
     {
-        // TODO Parser should not require parameters to be grouped if they are unambiguous
         ParserResult result =
             SlogoParser.parse("repeat repeat 5 [ fd 5 ] [ fd 50 bk 50 ]");
         Expression expression = (Expression) result.getList().get(0);

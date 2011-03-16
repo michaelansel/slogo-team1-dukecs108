@@ -79,8 +79,8 @@ public class SetXYTest extends TestCase
     @Test
     public final void testNegativeCoordinates () throws ParserException
     {
-        // TODO Parser should not require parameters to be grouped if they are unambiguous
-        ParserResult result = SlogoParser.parse("setxy (-50) (-90)");
+        // TODO Parser confuses 2 negative parameters with a single "negative plus positive" parameter
+        ParserResult result = SlogoParser.parse("setxy -50 (-90)");
         Expression expression = (Expression) result.getList().get(0);
         when(mockedTurtle.move(new Point2D.Double(-50.0, -90.0))).thenReturn(17);
         assertEquals(17, expression.evaluate(arena));

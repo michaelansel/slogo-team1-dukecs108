@@ -30,7 +30,7 @@ public class GrammarParserFactoryTest
     @Test
     public final void testCreate ()
     {
-        fail("Not yet implemented"); // TODO
+        fail("Not yet implemented"); // TODO testCreate
     }
 
 
@@ -42,7 +42,7 @@ public class GrammarParserFactoryTest
     @Test
     public final void testGrammarParserFactory ()
     {
-        fail("Not yet implemented"); // TODO
+        fail("Not yet implemented"); // TODO test constructor
     }
 
 }

@@ -42,9 +42,11 @@ public abstract class AbstractParserRule
     }
 
 
-    protected void parseError () throws ParserException
+    protected void matchFailed (String message) throws MatchFailedException
     {
-        parseError("");
+        if (!message.isEmpty()) message += "\n";
+        logger.log(Level.FINEST, "Match Failed: {0}", message);
+        throw new MatchFailedException(message);
     }
 
 

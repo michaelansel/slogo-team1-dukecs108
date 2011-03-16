@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import util.parser.AbstractParserRule;
+import util.parser.MatchFailedException;
 import util.parser.ParserException;
 import util.parser.ParserResult;
 import util.parser.TokenManager;
@@ -33,14 +34,14 @@ public class SequenceRule extends AbstractParserRule
             {
                 result.merge(rule.evaluate(tokenManager));
             }
-            catch (ParserException e)
+            catch (MatchFailedException e)
             {
-                throw new ParserException(/*
-                                           * String.format(
-                                           * "Sequence rule failed while parsing %s.\nRemaining Tokens: %s"
-                                           * , rule.toString(),
-                                           * myTokens.toString())
-                                           */"", e);
+                throw new MatchFailedException(/*
+                                                * String.format(
+                                                * "Sequence rule failed while parsing %s.\nRemaining Tokens: %s"
+                                                * , rule.toString(),
+                                                * myTokens.toString())
+                                                */"Sequence rule match failure.", e);
             }
         }
         if (logger.isLoggable(Level.FINER)) logger.finer("Sequence returning: " +
