@@ -3,6 +3,7 @@
  */
 package util.parser;
 
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 
@@ -49,8 +50,8 @@ public abstract class AbstractParserRule
 
     protected void parseError (String message) throws ParserException
     {
-        // TODO Externalize strings, ParserException, print debug info
         if (!message.isEmpty()) message += "\n";
+        logger.log(Level.WARNING, "Parse Error: {0}", message);
         throw new ParserException(message);
     }
 
