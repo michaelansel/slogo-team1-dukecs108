@@ -27,7 +27,7 @@ public class WrapMode extends DrawModeDecorator
             }
         }
         
-        return list;
+        return wrapped;
     }
 
     

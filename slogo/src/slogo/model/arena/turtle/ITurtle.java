@@ -10,36 +10,42 @@ import slogo.util.interfaces.IDraw2D;
 public interface ITurtle
 {
 
-    public abstract void rename (String name);
+    void rename (String name);
 
 
-    public abstract String getName ();
+    String getName ();
 
 
-    public abstract void addAllDrawables (List<IDraw2D> drawables);
+    void addAllDrawables (List<IDraw2D> drawables);
 
 
-    public abstract void addDrawable (IDraw2D drawable);
+    void addDrawable (IDraw2D drawable);
 
 
-    public abstract List<IDraw2D> getDrawables ();
+    List<IDraw2D> getDrawables ();
 
 
-    public abstract void clearLines ();
+    void clearLines ();
 
 
-    public abstract void revomeDrawable (Integer index);
+    void revomeDrawable (Integer index);
 
 
-    public abstract void removeDrawables (List<IDraw2D> drawables);
+    void removeDrawables (List<IDraw2D> drawables);
 
 
-    public abstract void setImage (File image);
+    void setImage (File image);
 
 
-    public abstract int resetTurtle (Point2D home);
+    int resetTurtle (Point2D home);
 
 
-    public abstract List<IDraw2D> getLinesToDraw (int start);
+    List<IDraw2D> getLinesToDraw (int start);
+    
+    boolean hideTurtle();
+    
+    boolean showTurtle();
+
+    boolean setVisibility (boolean b);
 
 }
