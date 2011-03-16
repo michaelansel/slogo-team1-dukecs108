@@ -15,6 +15,7 @@ import java.awt.image.ImageObserver;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import javax.imageio.ImageIO;
 import slogo.model.arena.TurtleException;
@@ -261,7 +262,7 @@ public class Turtle implements IMorph, IDraw2D, ITurtle
      */
     @Override
     public int move (Line line){
-        myDrawables.add(myBehavior.applyBehavior(line));
+        myDrawables.addAll(myMode.applyMode(Arrays.asList(new IDraw2D[]{line})));
         myPosition.setLocation(((Line)myDrawables.get(myDrawables.size()-1)).getP2());
         return (int) Math.round(((ICartesian2D)myDrawables.get(myDrawables.size()-1)).length());
     }
@@ -324,6 +325,26 @@ public class Turtle implements IMorph, IDraw2D, ITurtle
         return amVisible;
     }
 
+    @Override
+    public boolean hideTurtle(){
+        
+        return this.setVisibility(false); 
+        
+    }
+    
+    @Override
+    public boolean showTurtle(){
+        
+        return this.setVisibility(true); 
+        
+    }
+
+    @Override
+    public boolean setVisibility (boolean b)
+    {
+        amVisible = b;
+        return this.isVisible();
+    }
 
     /* (non-Javadoc)
      * @see slogo.model.arena.turtle.ITurtle#resetTurtle(java.awt.geom.Point2D)
@@ -366,7 +387,8 @@ public class Turtle implements IMorph, IDraw2D, ITurtle
 //        }
         
         
-            return myMode.applyMode(myDrawables.subList(start, myDrawables.size()));
+//            return myMode.applyMode(myDrawables.subList(start, myDrawables.size()));
+        return myDrawables.subList(start, myDrawables.size());
     }
 
     public Turtle clone(){
@@ -406,24 +428,21 @@ public class Turtle implements IMorph, IDraw2D, ITurtle
      */
     @Override
     public Graphics2D drawAtPoint (Graphics2D g2d, Point2D point){
-//      AffineTransform xform = AffineTransform.getRotateInstance(Math.toRadians(myPosition.getHeading()));
-//      
-//      
-//      g.transform(xform);
-      
-      try
-    {
-        g2d.drawImage(ImageIO.read(myImage),
+        if (this.isVisible()){
+            try
+            {
+                g2d.drawImage(ImageIO.read(myImage),
                       (int) point.getX()-ICON_HEIGHT/2,
                       (int) point.getY()-ICON_WIDTH/2, 
                       ICON_HEIGHT, 
                       ICON_WIDTH, 
                       null);
-    }
-    catch (Exception e)
-    {
-        e.printStackTrace();
-    }
+            }
+            catch (Exception e)
+            {
+                e.printStackTrace();
+            }
+        }
       return g2d;
     }
     
