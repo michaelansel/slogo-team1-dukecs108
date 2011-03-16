@@ -72,9 +72,7 @@ public class ArenaDraw extends JPanel{
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
-				for (IDraw2D l: curren.getLinesToDraw(0)){ //redraws every line every time
-					l.draw(graphics);
-				}
+				
 				curren.draw(graphics);
 			}
 		}
