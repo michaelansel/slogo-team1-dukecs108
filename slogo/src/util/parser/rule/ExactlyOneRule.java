@@ -62,7 +62,7 @@ public class ExactlyOneRule extends AbstractParserRule
         if (logger.isLoggable(Level.FINER)) logger.finer(String.format("ExactlyOne Token Mismatch! Expected: %s Got: %s",
                                                                        myTokenRule,
                                                                        nextToken));
-        parseError("Token Mismatch!");
+        matchFailed("Token Mismatch!");
         return null;
     }
 

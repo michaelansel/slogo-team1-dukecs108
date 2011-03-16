@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.logging.Level;
 import util.parser.AbstractParserRule;
 import util.parser.ITokenRule;
+import util.parser.MatchFailedException;
 import util.parser.ParserException;
 import util.parser.ParserResult;
 import util.parser.TokenManager;
@@ -49,7 +50,7 @@ public class FirstOfRule extends AbstractParserRule
                                                                  result.toString());
                 return processResult(result);
             }
-            catch (ParserException e)
+            catch (MatchFailedException e)
             {
                 if (logger.isLoggable(Level.FINER)) logger.finer("--Caught! Restoring from checkpoint... (" +
                                                                  e.toString()
@@ -62,7 +63,7 @@ public class FirstOfRule extends AbstractParserRule
                                                                              .toString());
             }
         }
-        parseError("FirstOf never matched!");
+        matchFailed("FirstOf never matched!");
         return null;
     }
 

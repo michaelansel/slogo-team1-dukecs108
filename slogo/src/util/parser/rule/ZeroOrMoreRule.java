@@ -2,6 +2,7 @@ package util.parser.rule;
 
 import java.util.logging.Level;
 import util.parser.AbstractParserRule;
+import util.parser.MatchFailedException;
 import util.parser.ParserException;
 import util.parser.ParserResult;
 import util.parser.TokenManager;
@@ -31,7 +32,7 @@ public class ZeroOrMoreRule extends AbstractParserRule
             {
                 result.merge(mySequence.evaluate(tokenManager));
             }
-            catch (ParserException e)
+            catch (MatchFailedException e)
             {
                 tokenManager.restoreCheckpoint(checkpoint);
                 break;
