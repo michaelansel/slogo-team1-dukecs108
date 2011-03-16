@@ -420,20 +420,35 @@ public class Turtle implements IMorph, IDraw2D, ITurtle
      */
     @Override
     public Graphics2D draw (Graphics2D g2d){
-        return drawAtPoint(g2d, myPosition.getLocation());
+        
+        return this.drawAtPoint(g2d, myPosition.getLocation());
     }
 
-    /* (non-Javadoc)
-     * @see slogo.model.arena.turtle.IDraw2D#drawAtPoint(java.awt.Graphics2D, java.awt.geom.Point2D)
-     */
     @Override
     public Graphics2D drawAtPoint (Graphics2D g2d, Point2D point){
+        
+        this.drawDrawables(g2d);
+        this.drawTurtle(g2d, point);
+        
+        return g2d;
+    }
+    
+    private Graphics2D drawDrawables (Graphics2D g2d)
+    {
+        for (IDraw2D l: this.getDrawables().subList(0, this.getDrawables().size())){ //redraws every line every time
+            l.draw(g2d);
+        }
+        
+        return g2d;
+    }
+
+    public Graphics2D drawTurtle (Graphics2D g2d, Point2D point){
         if (this.isVisible()){
             try
             {
                 g2d.drawImage(ImageIO.read(myImage),
-                      (int) point.getX()-ICON_HEIGHT/2,
-                      (int) point.getY()-ICON_WIDTH/2, 
+                      (int) myPosition.getX()-ICON_HEIGHT/2,
+                      (int) myPosition.getY()-ICON_WIDTH/2, 
                       ICON_HEIGHT, 
                       ICON_WIDTH, 
                       null);
