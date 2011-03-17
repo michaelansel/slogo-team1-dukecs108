@@ -3,6 +3,7 @@
  */
 package slogo.model.parser;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -21,7 +22,6 @@ import util.parser.AbstractParser;
 import util.parser.IResultHandler;
 import util.parser.ParserException;
 import util.parser.ParserResult;
-import util.parser.grammar.GrammarParserFactory;
 
 
 /**
@@ -32,7 +32,7 @@ public class SlogoParser
     private static final Logger logger =
         Logger.getLogger(AbstractParser.class.getName());
 
-    protected static GrammarParserFactory parserFactory;
+    protected static SlogoParserFactory parserFactory;
 
     protected static final ResourceBundle SlogoCommandClasses =
         ResourceBundle.getBundle("slogo.model.parser.SlogoCommandClasses");
@@ -43,7 +43,7 @@ public class SlogoParser
     {
         try
         {
-            parserFactory = new GrammarParserFactory(SlogoSyntax);
+            parserFactory = new SlogoParserFactory(SlogoSyntax);
             // TODO Either ResourceBundle or final,static array
             parserFactory.setHandler("ArithmeticExpression",
                                      Arithmetic.getParserResultHandler());
@@ -88,7 +88,7 @@ public class SlogoParser
                 }
 
             });
-            parserFactory.setHandler("ExpressionGroup", new IResultHandler()
+            IResultHandler groupHandler = new IResultHandler()
             {
                 @Override
                 public ParserResult handleResult (ParserResult result)
@@ -102,7 +102,9 @@ public class SlogoParser
                         expressions.add((Expression) list.remove(0));
                     return new ParserResult(expressions);
                 }
-            });
+            };
+            parserFactory.setHandler("ExpressionGroup", groupHandler);
+            parserFactory.setHandler("VariableGroup", groupHandler);
             parserFactory.setHandler("CommandList", new IResultHandler()
             {
                 @Override
@@ -162,13 +164,44 @@ public class SlogoParser
                     public ParserResult handleResult (ParserResult result)
                         throws ParserException
                     {
+                        logger.log(Level.FINER,
+                                   "Handling Command result: {0} {1}",
+                                   new Object[] { ruleClass, result.getList() });
                         try
                         {
                             return new ParserResult(Class.forName(ruleClass)
                                                          .getConstructor(ParserResult.class)
                                                          .newInstance(result));
                         }
-                        catch (Exception e)
+                        catch (InstantiationException e)
+                        {
+                            e.printStackTrace();
+                            System.err.println("Result: " +
+                                               result.getList().toString());
+                            throw new ParserException(e.toString());
+                        }
+                        catch (IllegalAccessException e)
+                        {
+                            e.printStackTrace();
+                            System.err.println("Result: " +
+                                               result.getList().toString());
+                            throw new ParserException(e.toString());
+                        }
+                        catch (InvocationTargetException e)
+                        {
+                            e.printStackTrace();
+                            System.err.println("Result: " +
+                                               result.getList().toString());
+                            throw new ParserException(e.toString());
+                        }
+                        catch (NoSuchMethodException e)
+                        {
+                            e.printStackTrace();
+                            System.err.println("Result: " +
+                                               result.getList().toString());
+                            throw new ParserException(e.toString());
+                        }
+                        catch (ClassNotFoundException e)
                         {
                             e.printStackTrace();
                             System.err.println("Result: " +
@@ -203,5 +236,15 @@ public class SlogoParser
         ParserTimer.run += (new Date().getTime() - start.getTime());
 
         return retval;
+    }
+
+
+    public static void addUserCommand (String commandName,
+                                       Expression howToExpression,
+                                       List<Variable> myVariableList)
+    {
+        parserFactory.addUserDefinedCommand(commandName,
+                                            howToExpression,
+                                            myVariableList);
     }
 }

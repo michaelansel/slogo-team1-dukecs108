@@ -133,4 +133,10 @@ public class Variable extends Expression
         else return myName;
     }
 
+
+    public String getName ()
+    {
+        return myName;
+    }
+
 }

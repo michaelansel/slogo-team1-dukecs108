@@ -170,4 +170,10 @@ public abstract class AbstractParser implements Cloneable
     {
         return new ZeroOrMoreRule(objects);
     }
+
+
+    public Map<String, AbstractParserRule> getRules ()
+    {
+        return myRules;
+    }
 }
