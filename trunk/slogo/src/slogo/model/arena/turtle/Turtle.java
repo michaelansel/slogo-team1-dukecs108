@@ -53,6 +53,7 @@ public class Turtle implements IMorph, IDraw2D, ITurtle
     private File myImage;
     private Position myPosition;
     private DrawTool myPen;
+    private int myCurrentDraw;
     private List<IDraw2D> myDrawables;
     private boolean amVisible;
 
@@ -85,7 +86,7 @@ public class Turtle implements IMorph, IDraw2D, ITurtle
 
     public Turtle (String name, Position position, DrawTool pen, File image)
     {
-        this(name, position, pen, image, new DefaultBehavior(), new DefaultDrawMode());
+        this(name, position, pen, image, new DefaultBehavior(), new WrapMode());
     }
 
     public Turtle (String name,
@@ -104,6 +105,7 @@ public class Turtle implements IMorph, IDraw2D, ITurtle
         myDrawables = new ArrayList<IDraw2D>();
         amVisible = true;
         myMode = mode;
+        myCurrentDraw = 0;
     }
 
 
@@ -160,7 +162,7 @@ public class Turtle implements IMorph, IDraw2D, ITurtle
      * @see slogo.model.arena.turtle.ITurtle#getDrawables()
      */
     @Override
-    public List<IDraw2D> getDrawables ()
+    public List<IDraw2D> getAllDrawables ()
     {
         return myDrawables;
     }
@@ -170,7 +172,7 @@ public class Turtle implements IMorph, IDraw2D, ITurtle
      * @see slogo.model.arena.turtle.ITurtle#clearLines()
      */
     @Override
-    public void clearLines ()
+    public void clearDrawables ()
     {
         myDrawables.clear();
     }
@@ -356,7 +358,7 @@ public class Turtle implements IMorph, IDraw2D, ITurtle
         myPen.putUp();
         move(home);
         setHeading(Position.DEFAULT_HEADING);
-        clearLines();
+        clearDrawables();
         return retval;
     }
 
@@ -380,7 +382,7 @@ public class Turtle implements IMorph, IDraw2D, ITurtle
      * @see slogo.model.arena.turtle.ITurtle#getLinesToDraw(int)
      */
     @Override
-    public List<IDraw2D> getLinesToDraw (int start) //throws TurtleException
+    public List<IDraw2D> getDrawablesToDraw () //throws TurtleException
     {
 //        if (myLines.size()<= start){
 //            throw new TurtleException("Nothing to draw");
@@ -388,7 +390,7 @@ public class Turtle implements IMorph, IDraw2D, ITurtle
         
         
 //            return myMode.applyMode(myDrawables.subList(start, myDrawables.size()));
-        return myDrawables.subList(start, myDrawables.size());
+        return myDrawables.subList(myCurrentDraw, myDrawables.size());
     }
 
     public Turtle clone(){
@@ -426,42 +428,63 @@ public class Turtle implements IMorph, IDraw2D, ITurtle
 
     @Override
     public Graphics2D drawAtPoint (Graphics2D g2d, Point2D point){
-        
-        this.drawDrawables(g2d);
-        this.drawTurtle(g2d, point);
-        
-        return g2d;
-    }
-    
-    private Graphics2D drawDrawables (Graphics2D g2d)
-    {
-        for (IDraw2D l: this.getDrawables().subList(0, this.getDrawables().size())){ //redraws every line every time
-            l.draw(g2d);
-        }
-        
-        return g2d;
-    }
-
-    public Graphics2D drawTurtle (Graphics2D g2d, Point2D point){
         if (this.isVisible()){
             try
             {
 
-            	BufferedImage img = ImageIO.read(myImage);
-			    AffineTransform aTransform = new AffineTransform();
-			    aTransform.translate((int) getPosition().getX(), (int) getPosition().getY());
-			    aTransform.rotate( -((getPosition().getHeading())*Math.PI / 180.0)+Math.PI/2);
-			    aTransform.translate(-img.getWidth() / 2.0, -img.getHeight() / 2.0);
-            	
-            	
-                g2d.drawImage(ImageIO.read(myImage), aTransform, null);
+                AffineTransform aTransform = new AffineTransform();
+                aTransform.translate((int) point.getX(), 
+                                     (int) point.getY());
+                aTransform.rotate(Math.toRadians(360-this.getPosition().getHeading()));
+                aTransform.translate((int) 0, 
+                                     (int) -ICON_HEIGHT/2.0);
+                
+                
+                
+                g2d.drawImage(ImageIO.read(myImage).getScaledInstance(ICON_WIDTH, ICON_HEIGHT, 0), 
+                              aTransform, 
+                              null);
             }
             catch (Exception e)
             {
                 e.printStackTrace();
             }
+        
         }
-      return g2d;
+        return g2d;
+    }
+    
+    private int getCurrentDraw ()
+    {
+        return  myCurrentDraw;
+    }
+
+//    private Graphics2D drawDrawables (Graphics2D g2d)
+//    {
+//        for (IDraw2D l: this.getDrawables().subList(0, this.getDrawables().size())){ //redraws every line every time
+//            l.draw(g2d);
+//        }
+//        
+//        return g2d;
+//    }
+
+    public int setCurrentDrawable(int n) {
+        try
+        {
+             if (n > myDrawables.size())
+                 throw new TurtleException("Drawable does not exist");
+        }
+        catch (TurtleException e)
+        {
+            e.printStackTrace();
+        }
+        
+        myCurrentDraw = n;
+        return n;
+    }
+    
+    public int setCurrentDrawToEnd() {
+        return setCurrentDrawable(myDrawables.size());
     }
     
 }

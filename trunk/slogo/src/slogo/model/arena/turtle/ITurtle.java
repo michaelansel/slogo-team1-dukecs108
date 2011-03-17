@@ -22,10 +22,10 @@ public interface ITurtle
     void addDrawable (IDraw2D drawable);
 
 
-    List<IDraw2D> getDrawables ();
+    List<IDraw2D> getAllDrawables ();
 
 
-    void clearLines ();
+    void clearDrawables ();
 
 
     void revomeDrawable (Integer index);
@@ -40,7 +40,7 @@ public interface ITurtle
     int resetTurtle (Point2D home);
 
 
-    List<IDraw2D> getLinesToDraw (int start);
+    List<IDraw2D> getDrawablesToDraw ();
     
     boolean hideTurtle();
     
