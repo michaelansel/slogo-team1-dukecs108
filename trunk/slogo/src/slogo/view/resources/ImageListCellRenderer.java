@@ -1,13 +1,9 @@
 package slogo.view.resources;
 
-import java.awt.Color;
+import java.awt.Color; 
 import java.awt.Component;
-
-import javax.swing.JLabel;
 import javax.swing.JList;
-import javax.swing.JPanel;
 import javax.swing.ListCellRenderer;
-import javax.swing.UIManager;
 
 /**
  * Renders list-cells with an image that can be rendered by a swing JList
