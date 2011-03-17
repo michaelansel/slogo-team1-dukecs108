@@ -80,4 +80,10 @@ public class FirstOfRule extends AbstractParserRule
     {
         return "FirstOfRule(" + myRules.toString() + ")";
     }
+
+
+    public List<AbstractParserRule> getRules ()
+    {
+        return myRules;
+    }
 }
