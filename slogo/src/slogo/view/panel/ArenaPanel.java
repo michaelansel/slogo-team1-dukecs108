@@ -1,8 +1,7 @@
 package slogo.view.panel;
 
-import java.awt.BorderLayout; 
+import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -12,20 +11,15 @@ import java.util.Map.Entry;
 
 import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
-import javax.swing.ImageIcon;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.SwingConstants;
 
 import slogo.model.arena.Arena;
 import slogo.model.arena.turtle.Turtle;
-import slogo.view.resources.ImageListCellRenderer;
+import slogo.view.resources.ImageList;
 import slogo.view.subpanels.ArenaDraw;
-import slogo.view.subpanels.drawnArena;
 
 /**
  * Panel containing the Arena and its TurtleList. Can be plugged into
@@ -94,7 +88,6 @@ public class ArenaPanel extends JPanel{
 		//Sets up the list
 		HashMap<Integer, Turtle> tMap = (HashMap<Integer, Turtle>) myArena.getTurtleMap();
 		JList turtleList = createAndPopulateList(tMap);
-		turtleList.setCellRenderer(new ImageListCellRenderer());
 		turtleList.setBorder(BorderFactory.createRaisedBevelBorder());
 
 		//Sets up the scrolling list display
@@ -122,28 +115,20 @@ public class ArenaPanel extends JPanel{
 	 * @param list the list of turtles you want to represent
 	 * @return a JList of those turtles names+images.
 	 */
-	public JList createAndPopulateList(Map<Integer, Turtle> tMap){ 
-		Object[] panels = new Object[tMap.size()];
-		// construct the menuList as a JList
-		JList turtleList = new JList();
-		turtleList.setCellRenderer(new ImageListCellRenderer());
-		int count = 0;
+	public JList createAndPopulateList(Map<Integer, Turtle> tMap){
+		ImageList turtleList = new ImageList();
+		Map<String, BufferedImage> imap = new HashMap<String, BufferedImage>();
 
 		for (Entry<Integer, Turtle> entry: tMap.entrySet()){
-			JFrame frame = new JFrame("Turtle image");
 			Turtle t = entry.getValue();
 			String myName = t.getName();
 			File myImage = t.getImage();
-
-			BufferedImage im = bufferTurtleImage(myName, myImage);
-
-			JLabel imaj = new JLabel(t.getName()+" (ID: "+entry.getKey()+" )", new ImageIcon(im), SwingConstants.LEFT);
-			frame.getContentPane().add(imaj);
-			panels[count]=frame.getContentPane();
-			count++;
+			
+			BufferedImage tImage = bufferTurtleImage(myName, myImage);
+			imap.put(t.getName()+" (ID: "+entry.getKey()+" )", tImage);
 		}
-		
-		turtleList.setListData(panels);
+		turtleList.setStringFirst();
+		turtleList.setCells(imap);
 		return turtleList;
 	}
 
@@ -151,7 +136,7 @@ public class ArenaPanel extends JPanel{
 	 * Returns the BufferedImage for our turtle
 	 * @param myName the name of the turtle
 	 * @param myImage the turtle's image
-	 * @return a BufferedImage of myFile, or in the case of a reading error- the default.
+	 * @return a BufferedImage of myFile, or in the case of a file error- the default.
 	 */
 	private BufferedImage bufferTurtleImage(String myName, File myImage) {
 		BufferedImage img = null;
@@ -163,7 +148,7 @@ public class ArenaPanel extends JPanel{
 						"Could not read image, default added For "+ myName +" instead.",
 						"Unreadable image error!",
 						JOptionPane.ERROR_MESSAGE);
-				img = ImageIO.read(new File("src/images/default.png"));
+				img = ImageIO.read(new File("src/images/directedTurtle.png"));
 			} catch (IOException e1) {
 				JOptionPane.showMessageDialog(this,
 						"The file is corrupt, please upload an image of the correct type.",
@@ -172,50 +157,8 @@ public class ArenaPanel extends JPanel{
 				e1.printStackTrace();
 			} 
 		}
-		//TODO: Resource these, as well as other "static" items elsewhere.
-		double maxHeight=30.0;
-		double maxWidth =30.0;
-		if (img.getWidth()>maxWidth || img.getHeight()>maxHeight){
-			img = resizeBufferedImage(maxWidth, maxHeight, img);
-		}
 		
 		return img;
-	}
-	
-	/**
-	 * Resizes a BufferedImage to fit the given Width and Height.
-	 */
-	private BufferedImage resizeBufferedImage(double maxWidth, double maxHeight, BufferedImage img){
-		int imgHeight=img.getHeight();
-		int imgWidth=img.getWidth();
-		double dFactor;
-		
-		//Width relatively greater than height, Width=maxWidth, height adjusts
-		//by the same factor as width to keep our list looking good.
-		if ((imgWidth/maxWidth)>(imgHeight/maxHeight)){
-			dFactor=maxWidth/imgWidth;
-			imgHeight=(int) (imgHeight*dFactor);
-			imgWidth=(int) maxWidth;
-		}
-		//Height relatively greater than width, Height=maxHeight, width adjusts
-		//by the same factor as width to keep our list looking good.
-		else if ((imgHeight/maxHeight)>(imgWidth/maxWidth)){
-			dFactor=maxHeight/imgHeight;
-			imgWidth=(int) (imgWidth*dFactor);
-			imgHeight=(int) maxHeight;
-		}
-		//There is no difference. Set both to max.
-		else {
-			imgWidth= (int) maxHeight;
-			imgHeight= (int) maxWidth;
-		}
-		//Makes new BufferedImage, of type "ARGB" where A is alpha, so list displays
-		//even resized turtle images without breaking 
-		BufferedImage resizedImage = new BufferedImage(imgWidth, imgHeight, BufferedImage.TYPE_INT_ARGB);
-		Graphics2D graphics = resizedImage.createGraphics();
-		graphics.drawImage(img, 0, 0, imgWidth, imgHeight, null);
-		graphics.dispose();
-		return resizedImage;
 	}
 	
 	/**

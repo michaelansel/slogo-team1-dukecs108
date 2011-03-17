@@ -72,7 +72,6 @@ public class ArenaDraw extends JPanel{
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
-				
 				curren.draw(graphics);
 			}
 		}
