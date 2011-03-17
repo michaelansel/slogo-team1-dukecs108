@@ -2,6 +2,7 @@ package slogo.view.panel;
 
 import java.awt.BorderLayout; 
 import java.awt.Dimension;
+import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -104,7 +105,7 @@ public class ArenaPanel extends JPanel{
 
 		//Puts the list in a panel
 		myPanel = makeNewPanel();
-		myPanel.setPreferredSize(new Dimension (165, 300));
+		myPanel.setPreferredSize(new Dimension (200, 300));
 		myPanel.add(myScroll, BorderLayout.CENTER);
 
 		//TODO: is this necessary???
@@ -136,7 +137,7 @@ public class ArenaPanel extends JPanel{
 
 			BufferedImage im = bufferTurtleImage(myName, myImage);
 
-			JLabel imaj = new JLabel(t.getName()+" (ID: "+entry.getKey()+")", new ImageIcon(im), SwingConstants.LEFT);
+			JLabel imaj = new JLabel(t.getName()+" (ID: "+entry.getKey()+" )", new ImageIcon(im), SwingConstants.LEFT);
 			frame.getContentPane().add(imaj);
 			panels[count]=frame.getContentPane();
 			count++;
@@ -153,24 +154,68 @@ public class ArenaPanel extends JPanel{
 	 * @return a BufferedImage of myFile, or in the case of a reading error- the default.
 	 */
 	private BufferedImage bufferTurtleImage(String myName, File myImage) {
-		BufferedImage im = null;
+		BufferedImage img = null;
 		try {
-			im = ImageIO.read(myImage);
+			img = ImageIO.read(myImage);
 		} catch (IOException e) {
 			try {
-				im = ImageIO.read(new File("src/images/default.png"));
 				JOptionPane.showMessageDialog(this,
 						"Could not read image, default added For "+ myName +" instead.",
 						"Unreadable image error!",
 						JOptionPane.ERROR_MESSAGE);
+				img = ImageIO.read(new File("src/images/default.png"));
 			} catch (IOException e1) {
 				JOptionPane.showMessageDialog(this,
 						"The file is corrupt, please upload an image of the correct type.",
 						"UNHANDLED FILE ERROR; PLEASE CHANGE IMAGE",
 						JOptionPane.ERROR_MESSAGE);
-			}
+				e1.printStackTrace();
+			} 
 		}
-		return im;
+		//TODO: Resource these, as well as other "static" items elsewhere.
+		double maxHeight=30.0;
+		double maxWidth =30.0;
+		if (img.getWidth()>maxWidth || img.getHeight()>maxHeight){
+			img = resizeBufferedImage(maxWidth, maxHeight, img);
+		}
+		
+		return img;
+	}
+	
+	/**
+	 * Resizes a BufferedImage to fit the given Width and Height.
+	 */
+	private BufferedImage resizeBufferedImage(double maxWidth, double maxHeight, BufferedImage img){
+		int imgHeight=img.getHeight();
+		int imgWidth=img.getWidth();
+		double dFactor;
+		
+		//Width relatively greater than height, Width=maxWidth, height adjusts
+		//by the same factor as width to keep our list looking good.
+		if ((imgWidth/maxWidth)>(imgHeight/maxHeight)){
+			dFactor=maxWidth/imgWidth;
+			imgHeight=(int) (imgHeight*dFactor);
+			imgWidth=(int) maxWidth;
+		}
+		//Height relatively greater than width, Height=maxHeight, width adjusts
+		//by the same factor as width to keep our list looking good.
+		else if ((imgHeight/maxHeight)>(imgWidth/maxWidth)){
+			dFactor=maxHeight/imgHeight;
+			imgWidth=(int) (imgWidth*dFactor);
+			imgHeight=(int) maxHeight;
+		}
+		//There is no difference. Set both to max.
+		else {
+			imgWidth= (int) maxHeight;
+			imgHeight= (int) maxWidth;
+		}
+		//Makes new BufferedImage, of type "ARGB" where A is alpha, so list displays
+		//even resized turtle images without breaking 
+		BufferedImage resizedImage = new BufferedImage(imgWidth, imgHeight, BufferedImage.TYPE_INT_ARGB);
+		Graphics2D graphics = resizedImage.createGraphics();
+		graphics.drawImage(img, 0, 0, imgWidth, imgHeight, null);
+		graphics.dispose();
+		return resizedImage;
 	}
 	
 	/**

@@ -44,7 +44,7 @@ import slogo.view.subpanels.ArenaDraw;
  */
 public class Turtle implements IMorph, IDraw2D, ITurtle 
 {
-    private static final File DEFAULT_IMAGE = new File("src/images/turtlecloud.png"); 
+    private static final File DEFAULT_IMAGE = new File("src/images/directedTurtle.png"); 
     private static final int ICON_HEIGHT = 20;
     private static final int ICON_WIDTH = 20;
     private String myName;
@@ -446,12 +446,15 @@ public class Turtle implements IMorph, IDraw2D, ITurtle
         if (this.isVisible()){
             try
             {
-                g2d.drawImage(ImageIO.read(myImage),
-                      (int) myPosition.getX()-ICON_HEIGHT/2,
-                      (int) myPosition.getY()-ICON_WIDTH/2, 
-                      ICON_HEIGHT, 
-                      ICON_WIDTH, 
-                      null);
+
+            	BufferedImage img = ImageIO.read(myImage);
+			    AffineTransform aTransform = new AffineTransform();
+			    aTransform.translate((int) getPosition().getX(), (int) getPosition().getY());
+			    aTransform.rotate( -((getPosition().getHeading())*Math.PI / 180.0)+Math.PI/2);
+			    aTransform.translate(-img.getWidth() / 2.0, -img.getHeight() / 2.0);
+            	
+            	
+                g2d.drawImage(ImageIO.read(myImage), aTransform, null);
             }
             catch (Exception e)
             {
