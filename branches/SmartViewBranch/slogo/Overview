@@ -1,0 +1,12 @@
+1+ Turtles that move around a Canvas creating Trails
+Trail contains an ordered list of lines drawn that can be rendered on top of a Pixmap
+Canvas has many Trails; it can render all the Trails as a single Pixmap
+
+
+Parser:
+  Rules can:
+    - consume Tokens from the input list
+    - call other Rules (with possible checkpoint/recovery for optional/one-of-many Rules)
+    - return an object which represents the consumed Tokens
+    - OR return a list of consumed Tokens: should be merged with comparable Tokens and passed to object creator
+    - create the object using a custom piece of code or calling the matching constructor on a provided class (factory instead?)
