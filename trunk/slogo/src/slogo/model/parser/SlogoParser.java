@@ -240,11 +240,9 @@ public class SlogoParser
 
 
     public static void addUserCommand (String commandName,
-                                       Expression howToExpression,
                                        List<Variable> myVariableList)
     {
         parserFactory.addUserDefinedCommand(commandName,
-                                            howToExpression,
                                             myVariableList);
     }
 }

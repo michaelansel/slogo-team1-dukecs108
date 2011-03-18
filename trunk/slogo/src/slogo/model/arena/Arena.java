@@ -21,6 +21,7 @@ public class Arena extends Observable implements Cloneable
     private int myCurrentTurtleID;
     private Map<String, Expression> myVariables;
     private List<String> myHistory;
+    private Map<String, Expression> myUserCommands;
 
 
     /**
@@ -43,6 +44,7 @@ public class Arena extends Observable implements Cloneable
         myVariables = new HashMap<String, Expression>();
         myHistory = new ArrayList<String>();
         myCurrentTurtleID = addTurtle(turtle);
+        myUserCommands = new HashMap<String, Expression>();
     }
 
 
@@ -69,6 +71,7 @@ public class Arena extends Observable implements Cloneable
             newArena.myTurtles.put(turtleID, turtle.clone());
         }
         newArena.myVariables.putAll(myVariables);
+        newArena.myUserCommands.putAll(myUserCommands);
         newArena.myHistory.addAll(myHistory);
         newArena.myCurrentTurtleID = myCurrentTurtleID;
 
@@ -284,6 +287,16 @@ public class Arena extends Observable implements Cloneable
         for (Turtle t: myTurtles.values()){
             t.setCurrentDrawToEnd();
         }
+    }
+
+
+    public void addUserCommand (String commandName, Expression howToExpression)
+    {
+        myUserCommands.put(commandName, howToExpression);
+    }
+    public Expression getUserCommand (String commandName)
+    {
+        return myUserCommands.get(commandName);
     }
     
 }

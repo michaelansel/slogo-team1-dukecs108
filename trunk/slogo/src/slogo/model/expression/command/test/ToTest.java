@@ -84,20 +84,41 @@ public class ToTest extends TestCase
     }
     
     @Test
-    public final void testRedefineBuiltinCommand () throws ParserException
+    public final void testRecursiveUserCommand () throws ParserException
     {
-        ParserResult result = SlogoParser.parse("to forward [ :distance ] [ bk :distance ]");
+        // TODO don't require pre-definition of the command
+        ParserResult result = SlogoParser.parse("to hop [ :state ] [ fd 13 ]");
         Expression expression = (Expression) result.getList().get(0);
-        // TODO what is "to" supposed to return?
-        assertEquals(0, expression.evaluate(arena));
-        // command should not be run on definition
-        verify(mockedTurtle, never()).move(anyInt());
+        expression.evaluate(arena);
         
-        // built-in command should override user command
-        when(mockedTurtle.move(50)).thenReturn(17);
-        when(mockedTurtle.move(-50)).thenReturn(23);
-        assertEquals(17, expression.evaluate(arena));
+        result = SlogoParser.parse("to hop [ :state ] [ ifelse :state [ hop 0 ] [ fd :state ]  ]");
+        expression = (Expression) result.getList().get(0);
+        assertEquals(0, expression.evaluate(arena));
+        
+        result = SlogoParser.parse("hop 1");
+        expression = (Expression) result.getList().get(0);
+        when(mockedTurtle.move(0)).thenReturn(23);
+        assertEquals(1, expression.evaluate(arena));
+        verify(mockedTurtle).move(0);
+        verify(mockedTurtle,never()).move(13);
     }
+    
+// Not a valid command
+//    @Test
+//    public final void testRedefineBuiltinCommand () throws ParserException
+//    {
+//        ParserResult result = SlogoParser.parse("to forward [ :distance ] [ bk :distance ]");
+//        Expression expression = (Expression) result.getList().get(0);
+//        // TODO what is "to" supposed to return?
+//        assertEquals(0, expression.evaluate(arena));
+//        // command should not be run on definition
+//        verify(mockedTurtle, never()).move(anyInt());
+//        
+//        // built-in command should override user command
+//        when(mockedTurtle.move(50)).thenReturn(17);
+//        when(mockedTurtle.move(-50)).thenReturn(23);
+//        assertEquals(17, expression.evaluate(arena));
+//    }
 
 
     @Test

@@ -8,7 +8,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
-import slogo.model.expression.Expression;
 import slogo.model.expression.Variable;
 import slogo.model.expression.command.UserCommand;
 import util.parser.AbstractParser;
@@ -34,18 +33,15 @@ public class SlogoParserFactory extends GrammarParserFactory
     {
         public String commandName;
         public ParseTreeNode parseTreeNode;
-        public Expression howToExpression;
         public List<Variable> parameters;
 
 
         public UserCommandEntry (String commandName,
                                  ParseTreeNode parseTreeNode,
-                                 Expression howToExpression,
                                  List<Variable> myVariableList)
         {
             this.commandName = commandName;
             this.parseTreeNode = parseTreeNode;
-            this.howToExpression = howToExpression;
             this.parameters = myVariableList;
         }
     }
@@ -75,7 +71,6 @@ public class SlogoParserFactory extends GrammarParserFactory
             String name = entry.getKey();
             ParseTreeNode command = entry.getValue().parseTreeNode;
             final String commandName = entry.getValue().commandName;
-            final Expression howToExpression = entry.getValue().howToExpression;
             final List<Variable> parameters = entry.getValue().parameters;
 
             AbstractParserRule rule =
@@ -90,14 +85,12 @@ public class SlogoParserFactory extends GrammarParserFactory
                     if (parameters.size() == 0)
                     {
                         // <commandName>
-                        return new ParserResult(new UserCommand(commandName,
-                                                                howToExpression));
+                        return new ParserResult(new UserCommand(commandName));
                     }
                     else
                     {
                         // <commandName>,<whitespace>,(IgnoreWhitespace,Expression)+
                         return new ParserResult(new UserCommand(commandName,
-                                                                howToExpression,
                                                                 parameters,
                                                                 result.getList()
                                                                       .subList(2,
@@ -128,7 +121,6 @@ public class SlogoParserFactory extends GrammarParserFactory
 
 
     public void addUserDefinedCommand (String commandName,
-                                       Expression howToExpression,
                                        List<Variable> myVariableList)
     {
         // Add to lexer
@@ -154,7 +146,6 @@ public class SlogoParserFactory extends GrammarParserFactory
         myUserDefinedCommands.put(commandName,
                                   new UserCommandEntry(commandName,
                                                        parseTreeNode,
-                                                       howToExpression,
                                                        myVariableList));
     }
 

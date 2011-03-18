@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import slogo.model.arena.Arena;
+import slogo.model.expression.Constant;
 import slogo.model.expression.Expression;
 import slogo.model.expression.Variable;
 
@@ -20,27 +21,23 @@ public class UserCommand extends Command
 {
 
     private String myName;
-    private Expression myHowToExpression;
     private List<Variable> myVariables;
     private List<Object> myParameters;
 
 
-    public UserCommand (String commandName, Expression howToExpression)
+    public UserCommand (String commandName)
     {
         this(commandName,
-             howToExpression,
              Arrays.asList(new Variable[] {}),
              Arrays.asList(new Object[] {}));
     }
 
 
     public UserCommand (String commandName,
-                        Expression howToExpression,
                         List<Variable> variables,
                         List<Object> parameters)
     {
         myName = commandName;
-        myHowToExpression = howToExpression;
         myVariables = variables;
         myParameters = parameters;
     }
@@ -49,24 +46,27 @@ public class UserCommand extends Command
     @Override
     public int evaluate (Arena arena)
     {
-        // TODO user-defined commands with parameters
         Map<String, Expression> savedVariables =
             new HashMap<String, Expression>();
         int retval = 0;
         if (myVariables.size() != 0)
         {
+            // Save variable values and override
             for (int i=0; i<myVariables.size(); i++)
             {
                 Variable variable = myVariables.get(i);
                 Expression value = (Expression) myParameters.get(i);
                 savedVariables.put(variable.getName(),
                                    arena.getVariable(variable.getName()));
-                arena.setVariable(variable.getName(), value);
+                arena.setVariable(variable.getName(), new Constant(value.evaluate(arena)));
             }
         }
-        retval = myHowToExpression.evaluate(arena);
+        
+        retval = arena.getUserCommand(myName).evaluate(arena);
+        
         if (myVariables.size() != 0)
         {
+            // Restore old variable values
             for (int i=0; i<myVariables.size(); i++)
             {
                 Variable variable = myVariables.get(i);
@@ -80,13 +80,13 @@ public class UserCommand extends Command
     @Override
     protected Collection<Expression> getExpressions ()
     {
-        return Arrays.asList(new Expression[] { myHowToExpression });
+        return Arrays.asList(new Expression[] {});
     }
 
 
     @Override
     public String toString ()
     {
-        return String.format("%s(%s)", myName, myHowToExpression);
+        return String.format("%s(?)", myName);
     }
 }
