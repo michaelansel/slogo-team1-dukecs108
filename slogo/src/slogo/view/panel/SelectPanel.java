@@ -24,7 +24,7 @@ import javax.swing.SwingConstants;
 import slogo.model.arena.Arena;
 import slogo.model.arena.turtle.Turtle;
 import slogo.util.Position;
-import slogo.view.resources.ImageListCellRenderer;
+import slogo.view.util.ImageListCellRenderer;
 
 /**
  * @author Austin Benesh
