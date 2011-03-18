@@ -22,6 +22,10 @@ public interface ICartesian2D extends Shape
     
     double YDistance();
     
+    double findDX();
+    
+    double findDY();
+    
     ICartesian2D flipXY();
     
     ICartesian2D flipX();
@@ -53,6 +57,6 @@ public interface ICartesian2D extends Shape
     
     Point2D findIntersect (double x1, double y1, double x2, double y2);
     
-    
+    Collection<Point2D> splitToPoints();
     
 }

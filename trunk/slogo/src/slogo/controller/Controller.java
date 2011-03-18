@@ -9,6 +9,7 @@ import slogo.model.arena.Arena;
 import slogo.model.expression.Expression;
 import slogo.model.parser.SlogoParser;
 import slogo.view.TurtleGUI;
+import slogo.view.panel.ArenaPanel;
 import util.parser.ParserException;
 import util.parser.ParserResult;
 
@@ -20,28 +21,30 @@ import util.parser.ParserResult;
  *
  */
 public class Controller {	
-	private ArrayList<Arena> myArenas = new ArrayList<Arena>();
+//	private ArrayList<Arena> myArenas = new ArrayList<Arena>();
+    private ArrayList<ArenaPanel> myArenaPanels = new ArrayList<ArenaPanel>();
+    private TurtleGUI myGUI;
 	//private int ARENA_COUNT = 0;
 	
 	/**
 	 * Creates a new TurtleGUI with a new Arena
 	 */
 	public Controller(){
-		TurtleGUI t = new TurtleGUI(this);
-		t.update(addArena(t));
+		myGUI = new TurtleGUI(this);
+		myGUI.drawAndRepaint(myGUI.addArenaPanel(new Arena()));
 	}
 
    
-   /**
-    * Adds a new Arena with an observing TurtleGUI
-    * @param t
-    */
-   public Arena addArena(TurtleGUI t){
-		Arena a = new Arena();
-		myArenas.add(a);
-		addAsObserver(t, a);
-		return a;
-   }
+//   /**
+//    * Adds a new Arena with an observing TurtleGUI
+//    * @param t
+//    */
+//   public ArenaPanel addArenaPanel(TurtleGUI t){
+//		ArenaPanel a = ;
+//		myArenaPanels.add( a);
+//		addAsObserver(t, a.getArena());
+//		return a;
+//   }
    
 	
    /**
@@ -69,4 +72,6 @@ public class Controller {
         
     	exp.evaluate(a);
     }
+
+
 }
