@@ -11,6 +11,7 @@ public class AllTests
     {
         TestSuite suite = new TestSuite(AllTests.class.getName());
         //$JUnit-BEGIN$
+        suite.addTestSuite(LessThanTest.class);
         suite.addTestSuite(SubtractTest.class);
         suite.addTestSuite(AddTest.class);
         //$JUnit-END$
