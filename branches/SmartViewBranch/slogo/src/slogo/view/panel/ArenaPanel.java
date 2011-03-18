@@ -18,8 +18,8 @@ import javax.swing.JScrollPane;
 
 import slogo.model.arena.Arena;
 import slogo.model.arena.turtle.Turtle;
-import slogo.view.resources.ImageList;
 import slogo.view.subpanels.ArenaDraw;
+import slogo.view.util.ImageList;
 
 /**
  * Panel containing the Arena and its TurtleList. Can be plugged into
