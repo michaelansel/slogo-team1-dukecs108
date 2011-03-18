@@ -29,12 +29,6 @@ public abstract class AbstractParserRule
     }
 
 
-    public AbstractParserRule getRule ()
-    {
-        return myRule;
-    }
-
-
     public boolean initialized ()
     {
         return myRule != null;

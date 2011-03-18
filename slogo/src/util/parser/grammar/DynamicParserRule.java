@@ -129,7 +129,7 @@ final class DynamicParserRule extends AbstractParserRule
             {
                 e.printStackTrace();
                 throw new RuntimeException("Failed to initialize rule: " +
-                                           e.toString(), e);
+                                           e.toString());
             }
 
         for (AbstractParserRule param : params)

@@ -3,7 +3,6 @@ package slogo.view.subpanels;
 import java.awt.Dimension; 
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Shape;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeSet;
@@ -40,17 +39,16 @@ public class ArenaDraw extends JPanel{
 	public static Dimension myDimension=new Dimension(400, 400);
     public static Point2D ORIGIN = new Point2D.Double(myDimension.getWidth()/2,myDimension.getHeight()/2); //TODO this needs to not be static
 
-	private Arena myArena;
-	private boolean amAnimated;
+	private Map<Integer, Turtle> myTurtleMap;
 
 	/**
 	 * called when you instantiate the class. Sets everything up.
 	 */
 	public ArenaDraw(Arena a){
-		myArena=a;
+		myTurtleMap=a.getTurtleMap();
 		setVisible(true);
 		repaint();
-		amAnimated = false;
+		
 		//turtlePanel=new TurtleLevel();
 		//linePanel=new LinesLevel(myDimension);
 		//add(turtlePanel);
@@ -64,33 +62,19 @@ public class ArenaDraw extends JPanel{
 		graphics = (Graphics2D)g;
 		clear(graphics);
 		
-		for (Turtle t : myArena.getTurtleMap().values()){
-		    List<IDraw2D> draws = t.getDrawablesToDraw();
-		    if (draws.size() != 0){
-    		    for (IDraw2D l : draws){
-    		        for (Point2D p : ((Line) l).splitToPoints()){
-    		            
-    //		            if (this.amAnimated){
-    //	                    graphics.drawLine((int)((Line) l).getX1(), (int)((Line) l).getY1(),(int)p.getX(),(int) p.getY());
-    //		                t.drawAtPoint(graphics, p);
-    //		                //draw this graphics to panel
-    //		                //delay somehow
-    //		                graphics.
-    //		            }
-    //		            else{
-    		                graphics.drawLine((int)p.getX(), (int)p.getY(),(int)p.getX(),(int) p.getY());
-    //		            }
-    		        }
-    		    }
-		    
-//		    t.drawAtPoint(graphics, ((Line)draws.get(draws.size()-1)).getP2());
-		    }
-//		    else
-    		    
-		        t.draw(graphics);
-//		    t.setCurrentDrawToEnd(); Due to Observe/observable, I THINK, there are multiple draws going on here. 
+		if(myTurtleMap != null){
+			for (Entry<Integer, Turtle> entry: myTurtleMap.entrySet()){
+				Turtle curren=entry.getValue();
+				
+				BufferedImage img = null;
+				try {
+					img = ImageIO.read(curren.getImage());
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+				curren.draw(graphics);
+			}
 		}
-		
 		//add(turtlePanel);
 		//add(linePanel);
 	}
@@ -112,7 +96,7 @@ public class ArenaDraw extends JPanel{
 	 */
 	public void drawSpace(Arena a){
 
-		myArena=a;
+		myTurtleMap=a.getTurtleMap();
 
 		//Repaints turtles every call
 		//turtlePanel.paintTurtles(turtleList);

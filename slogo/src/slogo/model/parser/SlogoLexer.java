@@ -25,9 +25,8 @@ public class SlogoLexer extends StringLexer
         {
             StringTokenRule rule = loadRule(bundleName, ruleName);
             rules.add(rule);
+            rules.add(rule);
         }
-        // If all other rules fail to match, try this
-        rules.add(new StringTokenRule("[a-zA-Z]+[?]?", "CommandName"));
     }
 
 
@@ -38,22 +37,6 @@ public class SlogoLexer extends StringLexer
     {
         super(input);
         setTokenRules(rules);
-    }
-
-
-    public static void addUserCommand (String commandName)
-    {
-        ArrayList<ITokenRule> newRules = new ArrayList<ITokenRule>();
-        for (ITokenRule rule : rules)
-        {
-            if (rule.getName().equals(commandName)) return; // token rule already exists
-            if (rule.getName().equals("CommandName"))
-            {
-                newRules.add(new StringTokenRule(commandName, commandName));
-            }
-            newRules.add(rule);
-        }
-        rules = newRules;
     }
 
 }

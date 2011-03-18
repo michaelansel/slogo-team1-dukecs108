@@ -7,7 +7,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 import javax.swing.ImageIcon;
@@ -44,7 +43,7 @@ public class TurtleGUI implements Observer {
 	JButton button;
 	JTextField textbox;
 	JList turtleList;
-	public JTabbedPane display;
+	JTabbedPane display;
 	JScrollPane myScroll;
 	JFrame entireFrame;
 
@@ -65,11 +64,10 @@ public class TurtleGUI implements Observer {
 	 * and to myArenaPanels list
 	 * 
 	 */
-	public ArenaPanel addArenaPanel(Arena a){
+	public void addArenaPanel(Arena a){
 		ArenaPanel arP = new ArenaPanel(a);
 		myArenaPanels.add(arP);
 		display.addTab("Arena "+myArenaPanels.size(), arP.getPanel() );
-		return arP;
 	}
 
 	/**
@@ -253,23 +251,20 @@ public class TurtleGUI implements Observer {
 	 * Updates the correct arena when called. Creates a new ArenaPanel
 	 * if there is not already one watching the given Arena
 	 */
-	public void update(ArenaPanel ap){ 
-//		boolean newPanel=true;
-//		//Checks if we already have an ArenaPanel for this Arena
-//		for (ArenaPanel arP: myArenaPanels){
-//			if (arP.getArena()==a){
-//				//Yes, so this is not a new Arenapanel and we need to update
-//				newPanel=false;
-//				arP.draw();
-//			}
-//		}
-//		if(newPanel==true){
-//			//No, so we need to add a new ArenaPanel
-	    if (((ArenaPanel) display.getSelectedComponent()).getArena() == null)
-			addArenaPanel(ap.getArena());
-	    
-//		}
-	    ap.draw();
+	public void update(Arena a){ 
+		boolean newPanel=true;
+		//Checks if we already have an ArenaPanel for this Arena
+		for (ArenaPanel arP: myArenaPanels){
+			if (arP.getArena()==a){
+				//Yes, so this is not a new Arenapanel and we need to update
+				newPanel=false;
+				arP.draw();
+			}
+		}
+		if(newPanel==true){
+			//No, so we need to add a new ArenaPanel
+			addArenaPanel(a);
+		}
 	}
 
 	/** 
@@ -280,32 +275,23 @@ public class TurtleGUI implements Observer {
 		//grabs active panel and sets its arena to a
 		ArenaPanel arP = (ArenaPanel) display.getSelectedComponent();
 		Arena a = arP.getArena();
-		List<ArenaPanel>  arPs = new ArrayList<ArenaPanel>();
-		//Checks if we already have an ArenaPanel for this Arena
-        for (ArenaPanel arP2: myArenaPanels){
-            if (arP2.getArena()==a){
-                arPs.add(arP2);
-            }
-        }
-        
-		
-		
-		try
-        {
-		    for(ArenaPanel ap: arPs){
-                myController.evaluateExpression(textbox.getText(), ap.getArena());
-                textbox.setText("");
-                drawAndRepaint(ap);
-		    }
 
-        }
-        catch (ParserException e1)
-        {
-            e1.printStackTrace();
-        }
-	
-        
-		
+		try {
+			//Parses the text, sets the first node to exp
+			ParserResult result = SlogoParser.parse(textbox.getText());
+			Expression exp = (Expression) result.getList().get(0);
+			//Evaluates the expression recursively for Arena a
+			exp.evaluate(a);
+			//sets our textbox to blank
+			textbox.setText("");
+		} catch (ParserException e) {
+			JOptionPane.showMessageDialog(myPanel,
+					e.getMessage(),
+					"Input Error!",
+					JOptionPane.ERROR_MESSAGE);
+		}
+		//redraws our GUI
+		drawAndRepaint(a);
 	}
 
 	/**
@@ -317,7 +303,7 @@ public class TurtleGUI implements Observer {
 
 		a.addTurtle();
 
-		drawAndRepaint(arP);
+		drawAndRepaint(a);
 	}
 	
 	//TODO: add turtle with user specified qualities
@@ -327,11 +313,11 @@ public class TurtleGUI implements Observer {
 	 */
 	public void removeTurtle(){
 		ArenaPanel arP = getActivePanel();
-//		Arena a = arP.getArena();
+		Arena a = arP.getArena();
 		
 		//TODO: grab active turtle ID, remove
 
-		drawAndRepaint(arP);
+		drawAndRepaint(a);
 	}
 
 	/**
@@ -345,9 +331,9 @@ public class TurtleGUI implements Observer {
 	/**
 	 * Draws the active panel, repaints the entire frame
 	 */
-	public void drawAndRepaint(ArenaPanel ap){
+	public void drawAndRepaint(Arena a){
 		//Updates our drawn Arena
-		update(ap);
+		update(a);
 		//Repaints our view to reflect any changes
 		entireFrame.repaint();
 	}

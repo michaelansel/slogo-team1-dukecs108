@@ -15,8 +15,6 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Set;
-import java.util.TreeSet;
 import slogo.model.arena.TurtleException;
 import slogo.util.Position;
 import slogo.util.drawtools.DrawTool;
@@ -121,12 +119,12 @@ public class Line extends Line2D.Double implements Comparable, ICartesian2D, IDr
     
     @Override
     public double XDistance(){
-        return Math.abs(this.findDX());
+        return Math.abs(this.getP1().getX()-this.getP2().getX());
     }
     
     @Override
     public double YDistance(){
-        return Math.abs(this.findDY());
+        return Math.abs(this.getP1().getY()-this.getP2().getY());
     }
     
 //    public void animate(long t) throws InterruptedException{
@@ -253,18 +251,27 @@ public class Line extends Line2D.Double implements Comparable, ICartesian2D, IDr
     
     @Override
     public Collection<IWrap2D> wrap2D(Dimension bounds){
+        Line left = new Line(new Point(), new Point(0, (int) bounds.getHeight()));
+        Line top = new Line(left.getP1(), new Point2D.Double((int) bounds.getWidth(), 0));
+        Line right = new Line(top.getP2(), new Point((int) bounds.getWidth(), (int) bounds.getHeight()));
+        Line bottom = new Line(left.getP1(), right.getP2());
         
         ArrayList<IWrap2D> lines = new ArrayList<IWrap2D>();
         
-        lines.add(this);
-        for (Line l: Line.convertBoundsToLines(bounds)){
-            if (this.intersectsLine(l)){
-                lines.remove(0);
-                lines.addAll(wrapAround(l, bounds));
-                break;
-            }
+        if (this.intersectsLine(left)){
+            lines.addAll(this.wrapLeft(left, bounds));
         }
-        
+        else if (this.intersectsLine(top)){
+            lines.addAll(this.wrapTop(top, bounds));
+        }
+        else if (this.intersectsLine(right)){
+            lines.addAll(this.wrapRight(right, bounds));
+        }
+        else if (this.intersectsLine(bottom)){
+            lines.addAll(this.wrapBottom(bottom, bounds));
+        }
+        else
+            lines.add(this);
         
         System.out.println(lines);
         
@@ -272,24 +279,6 @@ public class Line extends Line2D.Double implements Comparable, ICartesian2D, IDr
     }
     
     
-    private Collection<? extends IWrap2D> wrapAround (Line l, 
-                                                      Dimension bounds)
-    {
-        Collection<ICartesian2D> split = this.split(this.findIntersect( l));
-        Collection<IWrap2D> wrapped = new ArrayList<IWrap2D>();
-        for(ICartesian2D line: split){
-            if (line.isOutOfBounds(bounds)){
-                line.shiftX(bounds.getWidth());
-                wrapped.addAll(((IWrap2D) line).wrap2D(bounds));
-            }
-            else{
-                wrapped.add((IWrap2D) line);
-            }
-        }
-        
-        return wrapped;
-    }
-
     @Override
     public Collection<IWrap2D> wrapLeft (Line limit,
                                           Dimension bounds)
@@ -310,57 +299,57 @@ public class Line extends Line2D.Double implements Comparable, ICartesian2D, IDr
     }
 
     @Override
-    public Collection<IWrap2D> wrapRight (Line limit, Dimension bounds)
+    public Collection<IWrap2D> wrapRight (Line right, Dimension bounds)
     {
-        Collection<ICartesian2D> split = this.split(this.findIntersect( limit));
-        Collection<IWrap2D> wrapped = new ArrayList<IWrap2D>();
-        for(ICartesian2D line: split){
-            if (line.isOutOfBounds(bounds)){
-                line.shiftX(-1*bounds.getWidth());
-                wrapped.addAll(((IWrap2D) line).wrap2D(bounds));
-            }
-            else{
-                wrapped.add((IWrap2D) line);
-            }
-        }
-        
-        return wrapped;
+//        Collection<ICartesian2D> split = this.split(this.findIntersect( right));
+//        Collection<IWrap2D> wrapped = new ArrayList<IWrap2D>();
+//        for(ICartesian2D line: split){
+//            if (line.isOutOfBounds(bounds)){
+//                line.shiftX(-1*bounds.getWidth());
+//                wrapped.addAll(((IWrap2D) line).wrap2D(bounds));
+//            }
+//            else{
+//                wrapped.add((IWrap2D) line);
+//            }
+//        }
+//        
+//        return wrapped;
     }
 
     @Override
-    public Collection<IWrap2D> wrapBottom (Line limit, Dimension bounds)
+    public Collection<IWrap2D> wrapBottom (Line bottom, Dimension bounds)
     {
-        Collection<ICartesian2D> split = this.split(this.findIntersect( limit));
-        Collection<IWrap2D> wrapped = new ArrayList<IWrap2D>();
-        for(ICartesian2D line: split){
-            if (line.isOutOfBounds(bounds)){
-                line.shiftY(-1*bounds.getHeight());
-                wrapped.addAll(((IWrap2D) line).wrap2D(bounds));
-            }
-            else{
-                wrapped.add((IWrap2D) line);
-            }
-        }
-        
-        return wrapped;
+//        Collection<ICartesian2D> split = this.split(this.findIntersect( bottom));
+//        Collection<IWrap2D> wrapped = new ArrayList<IWrap2D>();
+//        for(ICartesian2D line: split){
+//            if (line.isOutOfBounds(bounds)){
+//                line.shiftY(-1*bounds.getHeight());
+//                wrapped.addAll(((IWrap2D) line).wrap2D(bounds));
+//            }
+//            else{
+//                wrapped.add((IWrap2D) line);
+//            }
+//        }
+//        
+//        return wrapped;
     }
 
     @Override
-    public Collection<IWrap2D> wrapTop (Line limit, Dimension bounds)
+    public Collection<IWrap2D> wrapTop (Line top, Dimension bounds)
     {
-        Collection<ICartesian2D> split = this.split(this.findIntersect( limit));
-        Collection<IWrap2D> wrapped = new ArrayList<IWrap2D>();
-        for(ICartesian2D line: split){
-            if (line.isOutOfBounds(bounds)){
-                line.shiftY(bounds.getHeight());
-                wrapped.addAll(((IWrap2D) line).wrap2D(bounds));
-            }
-            else{
-                wrapped.add((IWrap2D) line);
-            }
-        }
-        
-        return wrapped;
+//        Collection<ICartesian2D> split = this.split(this.findIntersect( top));
+//        Collection<IWrap2D> wrapped = new ArrayList<IWrap2D>();
+//        for(ICartesian2D line: split){
+//            if (line.isOutOfBounds(bounds)){
+//                line.shiftY(bounds.getHeight());
+//                wrapped.addAll(((IWrap2D) line).wrap2D(bounds));
+//            }
+//            else{
+//                wrapped.add((IWrap2D) line);
+//            }
+//        }
+//        
+//        return wrapped;
     }
     
     
@@ -378,14 +367,8 @@ public class Line extends Line2D.Double implements Comparable, ICartesian2D, IDr
     public Collection<ICartesian2D> split (Point2D splitPoint)
     {
         Collection<ICartesian2D> split = new ArrayList<ICartesian2D>();
-        split.add(new Line(this.getP1().getX(),
-                           this.getP1().getY(), 
-                           splitPoint.getX(), 
-                           splitPoint.getY()));
-        split.add(new Line(splitPoint.getX(), 
-                           splitPoint.getY(),
-                           this.getP2().getX(),
-                           this.getP2().getY()));
+        split.add(new Line(this.getP1(), splitPoint));
+        split.add(new Line(splitPoint, this.getP2()));
         return split;
     }
 
@@ -432,57 +415,13 @@ public class Line extends Line2D.Double implements Comparable, ICartesian2D, IDr
     }
     
     public double findSlope(){
-        return this.findDY()/this.findDX();
-    }
-
-    @Override
-    public List<Point2D> splitToPoints ()
-    {
-        System.out.println(this);
-        List<Point2D> points = new ArrayList<Point2D>();
-        if (this.length() < 1.5) {
-            points.add(new Point2D.Double(Math.floor(this.getP1().getX()), 
-                                          Math.floor(this.getP1().getY()) ));
-            points.add(new Point2D.Double(Math.ceil(this.getP2().getX()), 
-                                          Math.ceil(this.getP2().getY()) ));
-
-        }
-        else {
-            for (ICartesian2D l: this.split(this.findMidpoint())){
-                points.addAll(l.splitToPoints());
-            }
-        }
-        return points;
+        return (this.y2-this.y1)/(this.x2-this.x1);
     }
     
-    public Point2D findMidpoint(){
-        
-        
-        return new Point2D.Double(this.getX1()+this.findDX()/2, this.getY1()+this.findDY()/2);
-    }
-
-    @Override
-    public double findDX ()
-    {
-        return this.getP2().getX()-this.getP1().getX();
-    }
-
-    @Override
-    public double findDY ()
-    {
-        return this.getP2().getY()-this.getP1().getY();
-    }
+    
 
 
-   public static List<Line> convertBoundsToLines(Dimension bounds){
-       List<Line> boundaries = new ArrayList<Line>();
-       boundaries.add(new Line(new Point(), new Point(0, (int) bounds.getHeight())));
-       boundaries.add(new Line(new Point(), new Point2D.Double((int) bounds.getWidth(), 0)));
-       boundaries.add(new Line(new Point2D.Double((int) bounds.getWidth(), 0), new Point((int) bounds.getWidth(), (int) bounds.getHeight())));
-       boundaries.add(new Line(new Point(0, (int) bounds.getHeight()),new Point((int) bounds.getWidth(), (int) bounds.getHeight())));
    
-       return boundaries;
-   }
 
    
     

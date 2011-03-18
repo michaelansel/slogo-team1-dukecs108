@@ -280,10 +280,4 @@ public class Arena extends Observable implements Cloneable
         return ArenaDraw.ORIGIN;
     }
     
-    public void updateTurtleMap(){
-        for (Turtle t: myTurtles.values()){
-            t.setCurrentDrawToEnd();
-        }
-    }
-    
 }
