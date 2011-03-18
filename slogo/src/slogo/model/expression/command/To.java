@@ -53,7 +53,8 @@ public class To extends Command
     {
         logger.log(Level.FINE, "Evaluating: {0}", this);
 
-        SlogoParser.addUserCommand(myCommandName, myExpression, myVariableList);
+        SlogoParser.addUserCommand(myCommandName, myVariableList);
+        arena.addUserCommand(myCommandName, myExpression);
         int retval = 0;
 
         logger.log(Level.FINER, "Returning: {0}", retval);
