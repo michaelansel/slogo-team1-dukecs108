@@ -8,7 +8,7 @@ import java.util.Observer;
 import slogo.model.arena.Arena;
 import slogo.model.expression.Expression;
 import slogo.model.parser.SlogoParser;
-import slogo.view.TurtleGUI;
+import slogo.view.gui.TurtleGUI;
 import slogo.view.panel.ArenaPanel;
 import util.parser.ParserException;
 import util.parser.ParserResult;

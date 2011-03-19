@@ -44,7 +44,7 @@ import slogo.view.subpanels.ArenaDraw;
  */
 public class Turtle implements IMorph, IDraw2D, ITurtle 
 {
-    private static final File DEFAULT_IMAGE = new File("src/images/directedTurtle.png"); 
+    public static final File DEFAULT_IMAGE = new File("src/images/directedTurtle.png"); 
     private static final int ICON_HEIGHT = 20;
     private static final int ICON_WIDTH = 20;
     private String myName;
