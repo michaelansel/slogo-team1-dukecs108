@@ -1,7 +1,7 @@
-package slogo.view;
+package slogo.view.gui;
 
 
-import java.awt.BorderLayout; 
+import java.awt.BorderLayout;  
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -28,12 +28,13 @@ import slogo.controller.Controller;
 import slogo.model.arena.Arena;
 import slogo.model.expression.Expression;
 import slogo.model.parser.SlogoParser;
+import slogo.view.components.PopupAddTurtle;
 import slogo.view.panel.ArenaPanel;
 import util.parser.ParserException;
 import util.parser.ParserResult;
 
 
-public class TurtleGUI implements Observer {
+public class TurtleGUI {
 	//State Variables
 	public static boolean RIGHT_TO_LEFT = false;
 	private ArrayList<ArenaPanel> myArenaPanels = new ArrayList<ArenaPanel>();
@@ -58,7 +59,7 @@ public class TurtleGUI implements Observer {
 		createAndShowGUI();
 	}
 
-	
+
 	//Create the GUI
 	/**
 	 * Creates a new ArenaPanel, draws it, and adds it to the tabbed display
@@ -132,7 +133,7 @@ public class TurtleGUI implements Observer {
 		//whole thing added to pane
 		pane.add(myPanel, BorderLayout.PAGE_END);
 	}
- 
+
 	/**
 	 * Creates a textfield that evaluates on ENTER.
 	 */
@@ -140,7 +141,7 @@ public class TurtleGUI implements Observer {
 	{
 		JTextField result = new JTextField();
 		result.addActionListener(
-				new ActionListener(){ 
+				new ActionListener(){
 					public void actionPerformed (ActionEvent evt){
 						evaluateInput();
 					}
@@ -180,7 +181,7 @@ public class TurtleGUI implements Observer {
 		fileMenu.setText("File");
 		fileMenu.setMnemonic(KeyEvent.VK_A);
 		fileMenu.getAccessibleContext().setAccessibleDescription(
-				"The file menu");
+		"The file menu");
 		jMenuBar1.add(fileMenu);
 
 		//a group of JMenuItems
@@ -237,39 +238,39 @@ public class TurtleGUI implements Observer {
 	}
 
 
-	//Change the GUI as the user interacts with the program
-	/**
-	 * Updates the correct ArenaPanel for our arena o.
-	 * Not sure what arg is...
-	 */
-	//TODO: Figure out what arg is and/or how to use it.
-	@Override
-	public void update(Observable o, Object arg) { 
-		if (o instanceof Arena)
-			update((Arena) o);
-	}
-	
+	//	//Change the GUI as the user interacts with the program
+	//	/**
+	//	 * Updates the correct ArenaPanel for our arena o.
+	//	 * Not sure what arg is...
+	//	 */
+	//	//TODO: Figure out what arg is and/or how to use it.
+	//	@Override
+	//	public void update(Observable o, Object arg) { 
+	//		if (o instanceof Arena)
+	//			update((Arena) o);
+	//	}
+
 	/**
 	 * Updates the correct arena when called. Creates a new ArenaPanel
 	 * if there is not already one watching the given Arena
 	 */
 	public void update(ArenaPanel ap){ 
-//		boolean newPanel=true;
-//		//Checks if we already have an ArenaPanel for this Arena
-//		for (ArenaPanel arP: myArenaPanels){
-//			if (arP.getArena()==a){
-//				//Yes, so this is not a new Arenapanel and we need to update
-//				newPanel=false;
-//				arP.draw();
-//			}
-//		}
-//		if(newPanel==true){
-//			//No, so we need to add a new ArenaPanel
-	    if (((ArenaPanel) display.getSelectedComponent()).getArena() == null)
+		//		boolean newPanel=true;
+		//		//Checks if we already have an ArenaPanel for this Arena
+		//		for (ArenaPanel arP: myArenaPanels){
+		//			if (arP.getArena()==a){
+		//				//Yes, so this is not a new Arenapanel and we need to update
+		//				newPanel=false;
+		//				arP.draw();
+		//			}
+		//		}
+		//		if(newPanel==true){
+		//			//No, so we need to add a new ArenaPanel
+		if (((ArenaPanel) display.getSelectedComponent()).getArena() == null)
 			addArenaPanel(ap.getArena());
-	    
-//		}
-	    ap.draw();
+
+		//		}
+		ap.draw();
 	}
 
 	/** 
@@ -282,30 +283,30 @@ public class TurtleGUI implements Observer {
 		Arena a = arP.getArena();
 		List<ArenaPanel>  arPs = new ArrayList<ArenaPanel>();
 		//Checks if we already have an ArenaPanel for this Arena
-        for (ArenaPanel arP2: myArenaPanels){
-            if (arP2.getArena()==a){
-                arPs.add(arP2);
-            }
-        }
-        
-		
-		
-		try
-        {
-		    for(ArenaPanel ap: arPs){
-                myController.evaluateExpression(textbox.getText(), ap.getArena());
-                textbox.setText("");
-                drawAndRepaint(ap);
-		    }
+		for (ArenaPanel arP2: myArenaPanels){
+			if (arP2.getArena()==a){
+				arPs.add(arP2);
+			}
+		}
 
-        }
-        catch (ParserException e1)
-        {
-            e1.printStackTrace();
-        }
-	
-        
-		
+
+
+		try
+		{
+			for(ArenaPanel ap: arPs){
+				myController.evaluateExpression(textbox.getText(), ap.getArena());
+				textbox.setText("");
+				drawAndRepaint(ap);
+			}
+
+		}
+		catch (ParserException e1)
+		{
+			e1.printStackTrace();
+		}
+
+
+
 	}
 
 	/**
@@ -314,21 +315,22 @@ public class TurtleGUI implements Observer {
 	public void addTurtle() { 
 		ArenaPanel arP = getActivePanel();
 		Arena a = arP.getArena();
-
-		a.addTurtle();
-
-		drawAndRepaint(arP);
+		JFrame popup = new JFrame("Add Turtle");
+		popup.setContentPane(new PopupAddTurtle(a, popup));
+		popup.pack();
+		popup.setVisible(true);
+		popup.repaint();
 	}
-	
+
 	//TODO: add turtle with user specified qualities
-	
+
 	/**
 	 * Remove the active turtle from the active Arena
 	 */
 	public void removeTurtle(){
 		ArenaPanel arP = getActivePanel();
-//		Arena a = arP.getArena();
-		
+		//		Arena a = arP.getArena();
+
 		//TODO: grab active turtle ID, remove
 
 		drawAndRepaint(arP);

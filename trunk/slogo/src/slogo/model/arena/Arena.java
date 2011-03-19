@@ -1,6 +1,7 @@
 package slogo.model.arena;
 
 import java.awt.geom.Point2D;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -11,6 +12,8 @@ import java.util.Map.Entry;
 import slogo.model.arena.turtle.ITurtle;
 import slogo.model.arena.turtle.Turtle;
 import slogo.model.expression.Expression;
+import slogo.util.Position;
+import slogo.util.drawtools.Pen2D;
 import slogo.util.interfaces.IMorph;
 import slogo.view.subpanels.ArenaDraw;
 
@@ -114,6 +117,15 @@ public class Arena extends Observable implements Cloneable
 
         setTurtle(nextID, turtle);
         return nextID;
+    }
+    
+    public boolean addTurtle(String name, File file, Pen2D pen){
+    	if (name.equals(""))
+            name="Turtle " + myTurtles.size();
+    	Turtle t = new Turtle(name, new Position(getCenter()), pen, file);
+    	
+    	
+    return addTurtle(t)!=0;	
     }
 
 
