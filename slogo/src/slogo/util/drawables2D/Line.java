@@ -280,7 +280,32 @@ public class Line extends Line2D.Double implements Comparable, ICartesian2D, IDr
         Collection<IWrap2D> wrapped = new ArrayList<IWrap2D>();
         for(ICartesian2D line: split){
             if (line.isOutOfBounds(bounds)){
-                line.shiftX(bounds.getWidth());
+            	double h=bounds.getHeight();
+            	double w=bounds.getWidth();
+            	
+                if(getX2()<0){
+                if(getY2()<0){line.shiftXY(w, h);}
+                if(getY2()>h){line.shiftXY(w, -h);}
+                line.shiftX(w);
+                }
+                if(getX2()>w){
+                if(getY2()<0){line.shiftXY(-w, h);}
+                if(getY2()>h){line.shiftXY(-w, -h);}
+                line.shiftX(-w);
+                }
+                
+                if(getY2()>h){
+                if(getX2()<0){line.shiftXY(w, h);}
+                if(getX2()>w){line.shiftXY(-w, h);}
+                line.shiftY(-h);
+                }
+                if(getY2()<0){
+                if(getX2()<0){shiftXY(w, h);}
+                if(getX2()>w){line.shiftXY(-w, h);}
+                line.shiftY(h);
+                }
+                
+                
                 wrapped.addAll(((IWrap2D) line).wrap2D(bounds));
             }
             else{
