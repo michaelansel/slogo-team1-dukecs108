@@ -29,7 +29,6 @@ public class ImageButton extends JButton {
 		try {
 			i = ImageIO.read(f);
 		} catch (IOException e) {
-			e.printStackTrace();
 		}
 		
 		
