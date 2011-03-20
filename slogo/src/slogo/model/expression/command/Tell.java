@@ -8,6 +8,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.logging.Level;
 import slogo.model.arena.Arena;
+import slogo.model.arena.turtle.Turtle;
 import slogo.model.expression.Expression;
 import util.parser.ParserResult;
 
@@ -39,17 +40,18 @@ public class Tell extends Command
 
 
     @Override
-    public int evaluate (Arena arena)
+    public int evaluate (Arena arena, Turtle turtle)
     {
         logger.log(Level.FINE, "Evaluating: {0}", this);
         List<Integer> turtleIds = new ArrayList<Integer>();
         for (Expression expression : myTurtleIdExpressions)
         {
-            int val = expression.evaluate(arena);
+            logger.log(Level.FINER, "Evaluating TurtleID Expression: {0}", expression);
+            int val = expression.evaluate(arena, turtle);
             logger.log(Level.FINER, "TurtleID Expression: {0}", val);
             turtleIds.add(val);
         }
-        arena.setCurrentTurtleID(turtleIds.get(turtleIds.size() - 1)); // TODO only selects the last turtle
+        arena.selectTurtles(turtleIds);
         int retval = turtleIds.get(turtleIds.size() - 1);
         logger.log(Level.FINER, "Returning: {0}", retval);
         return retval;

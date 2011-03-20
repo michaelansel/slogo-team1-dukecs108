@@ -7,6 +7,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.logging.Level;
 import slogo.model.arena.Arena;
+import slogo.model.arena.turtle.Turtle;
 import slogo.model.expression.Expression;
 import util.parser.ParserResult;
 
@@ -47,23 +48,23 @@ public class IfElse extends Command
 
 
     @Override
-    public int evaluate (Arena arena)
+    public int evaluate (Arena arena, Turtle turtle)
     {
         logger.log(Level.FINE, "Evaluating: {0}", this);
 
-        int condVal = myConditionalExpression.evaluate(arena);
+        int condVal = myConditionalExpression.evaluate(arena, turtle);
         logger.log(Level.FINER, "Conditional Expression: {0}", condVal);
 
         int retval = condVal;
         if (condVal != 0)
         {
             logger.log(Level.FINE, "Evaluating \"true\" branch");
-            myTrueExpression.evaluate(arena);
+            myTrueExpression.evaluate(arena, turtle);
         }
         else
         {
             logger.log(Level.FINE, "Evaluating \"false\" branch");
-            myFalseExpression.evaluate(arena);
+            myFalseExpression.evaluate(arena, turtle);
         }
 
         logger.log(Level.FINER, "Returning: {0}", retval);

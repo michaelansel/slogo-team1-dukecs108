@@ -7,6 +7,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.logging.Level;
 import slogo.model.arena.Arena;
+import slogo.model.arena.turtle.Turtle;
 import slogo.model.expression.Expression;
 import util.parser.ParserResult;
 
@@ -37,10 +38,10 @@ public class Random extends Command
 
 
     @Override
-    public int evaluate (Arena arena)
+    public int evaluate (Arena arena, Turtle turtle)
     {
         logger.log(Level.FINE, "Evaluating: {0}", this);
-        int val = myMaxExpression.evaluate(arena);
+        int val = myMaxExpression.evaluate(arena, turtle);
         logger.log(Level.FINER, "SubExpression: {0}", val);
         int retval = (int) Math.round(Math.random() * val);
         logger.log(Level.FINER, "Returning: {0}", retval);

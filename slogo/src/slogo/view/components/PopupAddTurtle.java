@@ -15,6 +15,7 @@ import javax.swing.JPanel;
 
 import slogo.model.arena.Arena;
 import slogo.model.arena.turtle.Turtle;
+import slogo.util.Position;
 import slogo.util.drawtools.Pen2D;
 import slogo.view.ViewHelper;
 
@@ -144,7 +145,7 @@ public class PopupAddTurtle extends Container{
 		name = textBox.getText(); 
 		file = imageSelect.getFile();
 		pen = pathSelect.getPen();
-		arena.addTurtle(name, file, pen);
+		arena.addTurtle(new Turtle(name, new Position(arena.getCenter()), pen, file));
 		return 1;
 	}
 }

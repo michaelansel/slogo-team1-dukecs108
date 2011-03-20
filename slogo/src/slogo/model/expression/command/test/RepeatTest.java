@@ -33,7 +33,7 @@ public class RepeatTest extends TestCase
     {
         mockedTurtle = mock(Turtle.class);
         arena = new Arena();
-        arena.setCurrentTurtleID(arena.addTurtle(mockedTurtle));
+        arena.selectTurtles(arena.addTurtle(mockedTurtle));
     }
 
 

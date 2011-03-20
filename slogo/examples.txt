@@ -1,10 +1,12 @@
 // cubes
+to cubes [
 cs rt 180 repeat 3 [ repeat 4 [ setxy (xcor + 50) (ycor + 50) setxy (xcor + -50) (ycor + -50) rt 90 fd 100 ] setxy (xcor + 50) (ycor + 50) repeat 4 [ rt 90 fd 100 ] rt 90 ]
+]
 
 // stars
 to stars [
 cs rt 18 repeat 5 [ fd 100 penup lt 90 fd 33 rt 90 pendown repeat 5 [ fd 100 rt 144 ] penup rt 90 fd 33 lt 90 pendown rt 144 ]
 ]
 
-to spiral [ :size ] [ fd 50 ]
+to spiral [ :size ] [ xcor ]
 to spiral [ :size ] [ if :size < 30 [ fd (:size*2) rt 15 spiral (:size + 1) ] ]

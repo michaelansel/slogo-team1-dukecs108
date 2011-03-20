@@ -4,12 +4,13 @@
 package slogo.model.expression.command;
 
 import java.awt.geom.Point2D;
+import java.text.MessageFormat;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.logging.Level;
 import slogo.model.arena.Arena;
+import slogo.model.arena.turtle.Turtle;
 import slogo.model.expression.Expression;
-import src.slogo.view.subpanels.ArenaDraw;
 import util.parser.ParserResult;
 
 
@@ -22,7 +23,6 @@ public class Home extends Command
     public Home ()
     {
         if (logger.isLoggable(Level.FINER)) logger.finer("Creating Home Expression");
-
     }
 
 
@@ -34,13 +34,11 @@ public class Home extends Command
 
 
     @Override
-    public int evaluate (Arena arena)
+    public int evaluate (Arena arena, Turtle turtle)
     {
         if (logger.isLoggable(Level.FINE)) logger.fine("Evaluating: " +
                                                        this.toString());
-
-        int retval =
-            arena.getCurrentTurtle().move(arena.getCenter());
+        int retval = turtle.move(arena.getCenter());
         if (logger.isLoggable(Level.FINER)) logger.finer("Returning: " + retval);
         return retval;
     }

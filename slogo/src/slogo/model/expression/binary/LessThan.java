@@ -4,6 +4,7 @@
 package slogo.model.expression.binary;
 
 import slogo.model.arena.Arena;
+import slogo.model.arena.turtle.Turtle;
 import slogo.model.expression.Expression;
 
 
@@ -25,11 +26,14 @@ public class LessThan extends slogo.model.expression.binary.Boolean
 
     @Override
     protected int evaluate (Arena arena,
+                            Turtle turtle,
                             Expression expressionA,
                             Expression expressionB)
     {
-        return expressionA.evaluate(arena) < expressionB.evaluate(arena) ? Expression.TRUE
-                                                                        : Expression.FALSE;
+        boolean compare =
+            expressionA.evaluate(arena, turtle) < expressionB.evaluate(arena,
+                                                                       turtle);
+        return compare ? Expression.TRUE : Expression.FALSE;
     }
 
 

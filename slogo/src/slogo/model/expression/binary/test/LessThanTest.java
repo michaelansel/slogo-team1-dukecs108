@@ -23,7 +23,6 @@ public class LessThanTest extends TestCase
     public void setUp () throws Exception
     {
         arena = new Arena();
-        arena.setCurrentTurtleID(arena.addTurtle());
     }
 
 

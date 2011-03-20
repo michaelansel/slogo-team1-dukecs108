@@ -4,6 +4,7 @@
 package slogo.model.expression.binary;
 
 import slogo.model.arena.Arena;
+import slogo.model.arena.turtle.Turtle;
 import slogo.model.expression.Expression;
 
 
@@ -25,10 +26,12 @@ public class Modulus extends Arithmetic
 
     @Override
     protected int evaluate (Arena arena,
+                            Turtle turtle,
                             Expression expressionA,
                             Expression expressionB)
     {
-        return expressionA.evaluate(arena) % expressionB.evaluate(arena);
+        return expressionA.evaluate(arena, turtle) %
+               expressionB.evaluate(arena, turtle);
     }
 
 

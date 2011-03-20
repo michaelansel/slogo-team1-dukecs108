@@ -8,6 +8,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.logging.Level;
 import slogo.model.arena.Arena;
+import slogo.model.arena.turtle.Turtle;
 import slogo.model.expression.Expression;
 import util.parser.ParserResult;
 
@@ -41,18 +42,17 @@ public class SetXY extends Command
 
 
     @Override
-    public int evaluate (Arena arena)
+    public int evaluate (Arena arena, Turtle turtle)
     {
         if (logger.isLoggable(Level.FINE)) logger.fine("Evaluating: " +
                                                        this.toString());
-        int xVal = myXExpression.evaluate(arena);
-        int yVal = myYExpression.evaluate(arena);
+        int xVal = myXExpression.evaluate(arena, turtle);
+        int yVal = myYExpression.evaluate(arena, turtle);
         if (logger.isLoggable(Level.FINER)) logger.finer("X Expression: " +
                                                          xVal);
         if (logger.isLoggable(Level.FINER)) logger.finer("Y Expression: " +
                                                          yVal);
-        int retval =
-            arena.getCurrentTurtle().move(new Point2D.Double(xVal, yVal));
+        int retval = turtle.move(new Point2D.Double(xVal, yVal));
         if (logger.isLoggable(Level.FINER)) logger.finer("Returning: " + retval);
         return retval;
     }
