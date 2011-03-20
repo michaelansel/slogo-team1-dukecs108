@@ -49,7 +49,7 @@ public class TurtleGUI implements Observer {
 	JScrollPane myScroll;
 	JFrame entireFrame;
 	TurtleGUI me= this;
-
+ 
 	//Constructor
 	/**
 	 * Create and show the GUI
