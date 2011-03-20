@@ -34,8 +34,9 @@ public class ArenaPanel extends JPanel{
 	private JPanel myPanel;
 	private JScrollPane myScroll;
 	private Arena myArena;
+	private ImageList turtleList=new ImageList();
 
-	
+
 	/**
 	 * Creates an arena panel (drawnArenaPanel and Turtle List)
 	 * (you should probably add it to your display under a tab) 
@@ -44,18 +45,24 @@ public class ArenaPanel extends JPanel{
 	 */
 	public ArenaPanel(Arena a){
 		myArena=a;
+		addComponents();
 		draw();
 	}
- 
-	/**
-	 * Updates the Panel to match the current state of the Arena.
-	 */
-	public void draw(){
+
+	public void addComponents(){
 		removeAll();
 		this.setLayout(new BorderLayout(8,8));
 		this.add(drawArenaPanel(), BorderLayout.CENTER);
 		this.add(makeList(), BorderLayout.LINE_END);
 		repaint();
+	}
+
+	/**
+	 * Updates the Panel to match the current state of the Arena.
+	 */
+	public void draw(){
+		HashMap<Integer, Turtle> tMap = (HashMap<Integer, Turtle>) myArena.getTurtleMap();
+		populateTurtleList(tMap);
 	}
 
 	/**
@@ -87,7 +94,7 @@ public class ArenaPanel extends JPanel{
 
 		//Sets up the list
 		HashMap<Integer, Turtle> tMap = (HashMap<Integer, Turtle>) myArena.getTurtleMap();
-		JList turtleList = createAndPopulateList(tMap);
+		populateTurtleList(tMap);
 		turtleList.setBorder(BorderFactory.createRaisedBevelBorder());
 
 		//Sets up the scrolling list display
@@ -115,21 +122,18 @@ public class ArenaPanel extends JPanel{
 	 * @param list the list of turtles you want to represent
 	 * @return a JList of those turtles names+images.
 	 */
-	public JList createAndPopulateList(Map<Integer, Turtle> tMap){
-		ImageList turtleList = new ImageList();
+	public void populateTurtleList(Map<Integer, Turtle> tMap){
 		Map<String, BufferedImage> imap = new HashMap<String, BufferedImage>();
 
 		for (Entry<Integer, Turtle> entry: tMap.entrySet()){
 			Turtle t = entry.getValue();
 			String myName = t.getName();
 			File myImage = t.getImage();
-			
+
 			BufferedImage tImage = bufferTurtleImage(myName, myImage);
 			imap.put(t.getName()+" (ID: "+entry.getKey()+" )", tImage);
 		}
-		turtleList.setStringFirst();
 		turtleList.setCells(imap);
-		return turtleList;
 	}
 
 	/**
@@ -157,10 +161,10 @@ public class ArenaPanel extends JPanel{
 				e1.printStackTrace();
 			} 
 		}
-		
+
 		return img;
 	}
-	
+
 	/**
 	 * Creates a new generic Panel with BorderLayout with borders (8,8)
 	 * @return default panel with borderlayout and borders of 8.
@@ -170,5 +174,5 @@ public class ArenaPanel extends JPanel{
 		panel.setLayout(new BorderLayout(8,8));
 		return panel;
 	}
-	
+
 }
