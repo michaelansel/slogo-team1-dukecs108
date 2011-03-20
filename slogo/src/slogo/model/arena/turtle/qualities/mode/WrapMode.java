@@ -22,7 +22,7 @@ public class WrapMode extends DrawModeDecorator
         System.out.println(list);
         
         for (IDraw2D drawable: list){
-            for(IWrap wrap: ((IWrap) drawable).wrap(ArenaDraw.myDimension)){
+            for(IWrap wrap: ((IWrap) drawable).wrap(new Dimension(400,400))){
                 wrapped.add((IDraw2D) wrap);
             }
         }
