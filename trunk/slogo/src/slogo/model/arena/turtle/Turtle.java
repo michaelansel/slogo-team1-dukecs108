@@ -34,7 +34,7 @@ import slogo.util.drawtools.Pen2D;
 import slogo.util.interfaces.ICartesian2D;
 import slogo.util.interfaces.IDraw2D;
 import slogo.util.interfaces.IMorph;
-import slogo.view.subpanels.ArenaDraw;
+import src.slogo.view.subpanels.ArenaDraw;
 
 /**
  * The "turtle" which serves as the model for responding to the user's commands
