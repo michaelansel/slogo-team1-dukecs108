@@ -1,40 +1,30 @@
 package slogo.model.arena.turtle;
 
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Image;
-import java.awt.Point; 
-import java.awt.Shape;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
-import java.awt.geom.Point2D.Double;
-import java.awt.image.BufferedImage;
-import java.awt.image.ImageObserver;
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
 import javax.imageio.ImageIO;
+
 import slogo.model.arena.TurtleException;
 import slogo.model.arena.turtle.qualities.behavior.BehaviorDecorator;
 import slogo.model.arena.turtle.qualities.behavior.DefaultBehavior;
 import slogo.model.arena.turtle.qualities.behavior.IBehavior;
-import slogo.model.arena.turtle.qualities.mode.DefaultDrawMode;
 import slogo.model.arena.turtle.qualities.mode.DrawModeDecorator;
 import slogo.model.arena.turtle.qualities.mode.IMode;
 import slogo.model.arena.turtle.qualities.mode.WrapMode;
 import slogo.util.Position;
 import slogo.util.drawables2D.Line;
-
 import slogo.util.drawtools.DrawTool;
 import slogo.util.drawtools.Pen2D;
 import slogo.util.interfaces.ICartesian2D;
 import slogo.util.interfaces.IDraw2D;
 import slogo.util.interfaces.IMorph;
-import src.slogo.view.subpanels.ArenaDraw;
+import slogo.view.gui.panel.subpanels.ArenaDraw;
 
 /**
  * The "turtle" which serves as the model for responding to the user's commands

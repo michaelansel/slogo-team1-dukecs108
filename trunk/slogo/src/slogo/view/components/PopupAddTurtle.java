@@ -141,7 +141,7 @@ public class PopupAddTurtle extends Container{
 	 * Runs when AcceptButton is activated
 	 */
 	private int addTurtle(){ 
-		name = textBox.getText();
+		name = textBox.getText(); 
 		file = imageSelect.getFile();
 		pen = pathSelect.getPen();
 		arena.addTurtle(name, file, pen);
