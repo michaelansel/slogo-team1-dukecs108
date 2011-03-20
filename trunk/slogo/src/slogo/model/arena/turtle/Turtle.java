@@ -49,6 +49,11 @@ public class Turtle implements IMorph, IDraw2D, ITurtle
 
 
 //Constructors
+    public Turtle()
+    {
+        this("Nameless");
+    }
+
     public Turtle (String name)
     {
         this(name, new Position(ArenaDraw.ORIGIN));

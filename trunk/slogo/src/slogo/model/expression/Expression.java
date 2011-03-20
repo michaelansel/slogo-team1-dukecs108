@@ -3,9 +3,11 @@
  */
 package slogo.model.expression;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.logging.Logger;
 import slogo.model.arena.Arena;
+import slogo.model.arena.turtle.Turtle;
 import util.parser.IResultHandler;
 import util.parser.ParserException;
 import util.parser.ParserResult;
@@ -95,14 +97,32 @@ public abstract class Expression
 
 
     /**
+     * Evaluate the Expression tree in the context of the given Arena for all
+     * selected Turtles.
+     * 
+     * @param arena Arena in which to evalute the Expression
+     * @return numeric result of Expression evaluation (see language definition
+     *         for specifics)
+     */
+    public final int evaluate (Arena arena)
+    {
+        int retval = 0;
+        for (Turtle turtle : new ArrayList<Turtle>(arena.getSelectedTurtles()))
+            retval = evaluate(arena, turtle);
+        return retval;
+    }
+
+
+    /**
      * Recursively evaluate this Expression and all of its child Expressions.
      * Children are evaluated first, followed by the parent.
      * 
      * @param arena Arena in which to evaluate the Expression
+     * @param turtle Turtle on which to evaluate the Expression
      * @return numeric result of Expression evaluation (see language definition
      *         for specifics)
      */
-    public abstract int evaluate (Arena arena);
+    public abstract int evaluate (Arena arena, Turtle turtle);
 
 
     /**

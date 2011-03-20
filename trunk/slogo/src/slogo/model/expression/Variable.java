@@ -6,6 +6,7 @@ package slogo.model.expression;
 import java.util.Arrays;
 import java.util.Collection;
 import slogo.model.arena.Arena;
+import slogo.model.arena.turtle.Turtle;
 import util.parser.IResultHandler;
 import util.parser.ParserException;
 import util.parser.ParserResult;
@@ -99,7 +100,7 @@ public class Variable extends Expression
      * @see slogo.model.expression.Expression#evaluate(slogo.model.arena.Arena)
      */
     @Override
-    public int evaluate (Arena arena)
+    public int evaluate (Arena arena, Turtle turtle)
     {
         if (assignment)
         {
@@ -108,7 +109,7 @@ public class Variable extends Expression
         }
         else
         {
-            return arena.getVariable(myName).evaluate(arena);
+            return arena.getVariable(myName).evaluate(arena, turtle);
         }
     }
 

@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import slogo.model.arena.Arena;
+import slogo.model.arena.turtle.Turtle;
 import util.parser.IResultHandler;
 import util.parser.ParserException;
 import util.parser.ParserResult;
@@ -73,7 +74,7 @@ public class Constant extends Expression
 
 
     @Override
-    public int evaluate (Arena arena)
+    public int evaluate (Arena arena, Turtle turtle)
     {
         return myValue;
     }

@@ -28,8 +28,8 @@ public class PenUpTest extends TestCase
     public void setUp () throws Exception
     {
         arena = new Arena();
-        arena.setCurrentTurtleID(arena.addTurtle());
-        pen = arena.getCurrentTurtle().getPen();
+        arena.selectTurtles(arena.addTurtle());
+        pen = arena.getSelectedTurtles().get(0).getPen();
     }
 
 

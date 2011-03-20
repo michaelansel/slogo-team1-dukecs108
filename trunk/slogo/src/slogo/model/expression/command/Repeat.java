@@ -7,6 +7,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.logging.Level;
 import slogo.model.arena.Arena;
+import slogo.model.arena.turtle.Turtle;
 import slogo.model.expression.Expression;
 import util.parser.ParserResult;
 
@@ -41,16 +42,16 @@ public class Repeat extends Command
 
 
     @Override
-    public int evaluate (Arena arena)
+    public int evaluate (Arena arena, Turtle turtle)
     {
         logger.log(Level.FINE, "Evaluating: {0}", this);
 
-        int countVal = myCountExpression.evaluate(arena);
+        int countVal = myCountExpression.evaluate(arena, turtle);
         logger.log(Level.FINER, "Count Expression: {0}", countVal);
 
         int retval = 0;
         for (int i = 0; i < countVal; i++)
-            retval = myRepeatExpression.evaluate(arena);
+            retval = myRepeatExpression.evaluate(arena, turtle);
 
         logger.log(Level.FINER, "Returning: {0}", retval);
         return retval;

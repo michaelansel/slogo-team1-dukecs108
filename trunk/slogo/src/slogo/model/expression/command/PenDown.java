@@ -7,6 +7,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.logging.Level;
 import slogo.model.arena.Arena;
+import slogo.model.arena.turtle.Turtle;
 import slogo.model.expression.Expression;
 import util.parser.ParserResult;
 
@@ -32,11 +33,11 @@ public class PenDown extends Command
 
 
     @Override
-    public int evaluate (Arena arena)
+    public int evaluate (Arena arena, Turtle turtle)
     {
         logger.log(Level.FINE, "Evaluating: {0}", this);
 
-        arena.getCurrentTurtle().getPen().putDown();
+        turtle.getPen().putDown();
         int retval = Expression.TRUE;
         logger.log(Level.FINER, "Returning: {0}", retval);
         return retval;

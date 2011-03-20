@@ -14,6 +14,7 @@ import java.util.Map;
 import java.util.Stack;
 import java.util.regex.Pattern;
 import slogo.model.arena.Arena;
+import slogo.model.arena.turtle.Turtle;
 import slogo.model.expression.Expression;
 import util.parser.IResultHandler;
 import util.parser.ParserException;
@@ -230,13 +231,14 @@ public abstract class BinaryExpression extends Expression
 
 
     @Override
-    public int evaluate (Arena arena)
+    public int evaluate (Arena arena, Turtle turtle)
     {
-        return evaluate(arena, mySubExpressionA, mySubExpressionB);
+        return evaluate(arena, turtle, mySubExpressionA, mySubExpressionB);
     }
 
 
     protected abstract int evaluate (Arena arena,
+                                     Turtle turtle,
                                      Expression expressionA,
                                      Expression expressionB);
 

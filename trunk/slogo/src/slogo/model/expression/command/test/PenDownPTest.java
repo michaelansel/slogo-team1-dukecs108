@@ -7,6 +7,7 @@ import junit.framework.TestCase;
 import org.junit.Before;
 import org.junit.Test;
 import slogo.model.arena.Arena;
+import slogo.model.arena.turtle.Turtle;
 import slogo.model.expression.Expression;
 import slogo.model.parser.SlogoParser;
 import util.parser.ParserException;
@@ -20,13 +21,15 @@ public class PenDownPTest extends TestCase
 {
 
     private Arena arena;
+    private Turtle turtle;
 
 
     @Before
     public void setUp () throws Exception
     {
         arena = new Arena();
-        arena.setCurrentTurtleID(arena.addTurtle());
+        arena.selectTurtles(arena.addTurtle());
+        turtle = arena.getSelectedTurtles().get(0);
     }
 
 
@@ -34,10 +37,10 @@ public class PenDownPTest extends TestCase
     public final void testPMode () throws ParserException
     {
         // when pen down
-        arena.getCurrentTurtle().getPen().putDown();
+        turtle.getPen().putDown();
         simpleTest("pendownp", Expression.TRUE);
         // when pen up
-        arena.getCurrentTurtle().getPen().putUp();
+        turtle.getPen().putUp();
         simpleTest("pendownp", Expression.FALSE);
     }
 
@@ -46,10 +49,10 @@ public class PenDownPTest extends TestCase
     public final void testQMode () throws ParserException
     {
         // when pen down
-        arena.getCurrentTurtle().getPen().putDown();
+        turtle.getPen().putDown();
         simpleTest("pendown?", Expression.TRUE);
         // when pen up
-        arena.getCurrentTurtle().getPen().putUp();
+        turtle.getPen().putUp();
         simpleTest("pendown?", Expression.FALSE);
     }
 

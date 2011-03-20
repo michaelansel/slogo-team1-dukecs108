@@ -26,7 +26,7 @@ public class RandomTest extends TestCase
     public void setUp () throws Exception
     {
         arena = new Arena();
-        arena.setCurrentTurtleID(arena.addTurtle());
+        arena.selectTurtles(arena.addTurtle());
     }
 
 

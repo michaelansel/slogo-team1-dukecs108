@@ -8,6 +8,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.logging.Level;
 import slogo.model.arena.Arena;
+import slogo.model.arena.turtle.Turtle;
 import slogo.model.expression.Expression;
 import slogo.model.expression.Variable;
 import slogo.model.parser.SlogoParser;
@@ -36,6 +37,7 @@ public class To extends Command
     }
 
 
+    @SuppressWarnings("unchecked")
     public To (ParserResult result)
     {
         // <to>,<whitespace>,userCommandName,optional(variablegroup),commandgroup
@@ -49,7 +51,7 @@ public class To extends Command
 
 
     @Override
-    public int evaluate (Arena arena)
+    public int evaluate (Arena arena, Turtle turtle)
     {
         logger.log(Level.FINE, "Evaluating: {0}", this);
 

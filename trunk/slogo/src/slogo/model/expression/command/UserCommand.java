@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import slogo.model.arena.Arena;
+import slogo.model.arena.turtle.Turtle;
 import slogo.model.expression.Constant;
 import slogo.model.expression.Expression;
 import slogo.model.expression.Variable;
@@ -44,7 +45,7 @@ public class UserCommand extends Command
 
 
     @Override
-    public int evaluate (Arena arena)
+    public int evaluate (Arena arena, Turtle turtle)
     {
         Map<String, Expression> savedVariables =
             new HashMap<String, Expression>();
@@ -52,25 +53,28 @@ public class UserCommand extends Command
         if (myVariables.size() != 0)
         {
             // Save variable values and override
-            for (int i=0; i<myVariables.size(); i++)
+            for (int i = 0; i < myVariables.size(); i++)
             {
                 Variable variable = myVariables.get(i);
                 Expression value = (Expression) myParameters.get(i);
                 savedVariables.put(variable.getName(),
                                    arena.getVariable(variable.getName()));
-                arena.setVariable(variable.getName(), new Constant(value.evaluate(arena)));
+                // Evaluate parameters first to prevent infinite recursion
+                arena.setVariable(variable.getName(),
+                                  new Constant(value.evaluate(arena, turtle)));
             }
         }
-        
-        retval = arena.getUserCommand(myName).evaluate(arena);
-        
+
+        retval = arena.getUserCommand(myName).evaluate(arena, turtle);
+
         if (myVariables.size() != 0)
         {
             // Restore old variable values
-            for (int i=0; i<myVariables.size(); i++)
+            for (int i = 0; i < myVariables.size(); i++)
             {
                 Variable variable = myVariables.get(i);
-                arena.setVariable(variable.getName(), savedVariables.get(variable.getName()));
+                arena.setVariable(variable.getName(),
+                                  savedVariables.get(variable.getName()));
             }
         }
         return retval;

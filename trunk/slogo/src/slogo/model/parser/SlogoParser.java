@@ -13,6 +13,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import slogo.ParserTimer;
 import slogo.model.arena.Arena;
+import slogo.model.arena.turtle.Turtle;
 import slogo.model.expression.Constant;
 import slogo.model.expression.Expression;
 import slogo.model.expression.Variable;
@@ -130,11 +131,11 @@ public class SlogoParser
 
 
                         @Override
-                        public int evaluate (Arena arena)
+                        public int evaluate (Arena arena, Turtle turtle)
                         {
                             int retval = 0;
                             for (Expression e : myExpressions)
-                                retval = e.evaluate(arena);
+                                retval = e.evaluate(arena, turtle);
                             return retval;
                         }
 

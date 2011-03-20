@@ -8,16 +8,13 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import java.util.logging.ConsoleHandler;
-import java.util.logging.Handler;
-import java.util.logging.Logger;
 import junit.framework.TestCase;
 import org.junit.Before;
 import org.junit.Test;
 import slogo.model.arena.Arena;
 import slogo.model.arena.turtle.Turtle;
-import slogo.model.expression.Expression;
 import slogo.model.expression.Constant;
+import slogo.model.expression.Expression;
 import slogo.model.parser.SlogoParser;
 import util.parser.ParserException;
 import util.parser.ParserResult;
@@ -38,7 +35,7 @@ public class ToTest extends TestCase
     {
         mockedTurtle = mock(Turtle.class);
         arena = new Arena();
-        arena.setCurrentTurtleID(arena.addTurtle(mockedTurtle));
+        arena.selectTurtles(arena.addTurtle(mockedTurtle));
     }
 
 
@@ -62,14 +59,7 @@ public class ToTest extends TestCase
         assertEquals(0, expression.evaluate(arena));
         // command should not be run on definition
         verify(mockedTurtle, never()).move(50);
-        
-        
-//        Logger logger = Logger.getLogger(util.parser.AbstractParserRule.class.getName());
-//        Handler handler = new ConsoleHandler();
-//        logger.setLevel(java.util.logging.Level.FINEST);
-//        handler.setLevel(java.util.logging.Level.FINEST);
-//        logger.addHandler(handler);
-        
+
         result = SlogoParser.parse("to ski [ bk 50 ]");
         expression = (Expression) result.getList().get(0);
         // TODO what is "to" supposed to return?
