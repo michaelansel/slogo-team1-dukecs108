@@ -1,12 +1,16 @@
 package slogo.controller;
 
+import java.io.File;
 import java.util.ArrayList; 
+import java.util.Map;
 import java.util.Observable;
 import java.util.Observer;
 
 import slogo.model.arena.Arena;
+import slogo.model.arena.turtle.Turtle;
 import slogo.model.expression.Expression;
 import slogo.model.parser.SlogoParser;
+import slogo.util.drawtools.Pen2D;
 import slogo.view.gui.TurtleGUI;
 import util.parser.ParserException;
 import util.parser.ParserResult;
@@ -29,7 +33,7 @@ public class Controller {
 		TurtleGUI t = new TurtleGUI(this);
 		t.update(addArena(t));
 
-//		TurtleGUI t2 = new TurtleGUI(this);
+		TurtleGUI t2 = new TurtleGUI(this);
 //		t2.update(addArena(t2));
 	}
 
@@ -81,10 +85,63 @@ public class Controller {
      */
     public void evaluateExpression (String expression, Arena a) throws ParserException{
     	
-    	//Formats the string into an expression tree with root "exp"
-        ParserResult result = SlogoParser.parse(expression);
-        Expression exp = (Expression) result.getList().get(0);
-        
-    	exp.evaluate(a);
+    	//Parses the text, sets the first node to exp
+		ParserResult result = SlogoParser.parse(expression);
+		Expression exp = (Expression) result.getList().get(0);
+		//Evaluates the expression recursively for Arena a
+		exp.evaluate(a);
+
+		//redraws attached GUIs
+		a.setChanged("1");
+		a.notifyObservers();
     }
+    
+    /**
+     * Get the turtle map
+     * @param a - an arena
+     * @return the turtle map of arena a
+     */
+    public Map<Integer, Turtle> getTurtleMap(Arena a){
+    	return a.getTurtleMap();
+    }
+    
+    /**
+     * Adds a turtle to an arena
+     * @param a the arena you want to add a turtle to
+     * @param name the name of this turtle
+     * @param image the image file of this turtle
+     * @param pen the pen of this turtle
+     */
+    public boolean addTurtle(Arena a, String name, File image, Pen2D pen){
+    	boolean ret = a.addTurtle(name, image, pen);
+    	
+		//redraws attached GUIs
+		a.setChanged("1");
+		a.notifyObservers();
+		return ret;
+    }
+    
+    /**
+     * removes a turtle from an arena
+     * @param a the arena you want to remove a turtle from
+     * @param turtleID the ID of the turtle you want to remove
+     */
+    public boolean removeTurtle(Arena a, int turtleID){
+    	boolean ret = a.removeTurtle(turtleID);
+    	
+
+		//redraws attached GUIs
+		a.setChanged("1");
+		a.notifyObservers();
+		return ret;
+    }
+    
+    /**
+     * Get ImageList-ready TurtleString/Image map
+     * 
+     */
+    
+    
+    
+    
 }
