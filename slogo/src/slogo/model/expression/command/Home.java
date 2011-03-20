@@ -9,7 +9,7 @@ import java.util.Collection;
 import java.util.logging.Level;
 import slogo.model.arena.Arena;
 import slogo.model.expression.Expression;
-import slogo.view.subpanels.ArenaDraw;
+import src.slogo.view.subpanels.ArenaDraw;
 import util.parser.ParserResult;
 
 

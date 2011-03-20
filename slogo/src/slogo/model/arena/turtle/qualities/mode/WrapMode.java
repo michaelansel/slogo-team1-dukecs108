@@ -8,8 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 import slogo.util.drawables2D.Line;
 import slogo.util.interfaces.IDraw2D;
-import slogo.view.subpanels.ArenaDraw;
 import slogo.util.interfaces.*;
+import src.slogo.view.subpanels.ArenaDraw;
 
 public class WrapMode extends DrawModeDecorator
 {

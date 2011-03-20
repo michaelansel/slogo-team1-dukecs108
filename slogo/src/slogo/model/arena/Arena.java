@@ -15,7 +15,7 @@ import slogo.model.expression.Expression;
 import slogo.util.Position;
 import slogo.util.drawtools.Pen2D;
 import slogo.util.interfaces.IMorph;
-import slogo.view.subpanels.ArenaDraw;
+import src.slogo.view.subpanels.ArenaDraw;
 
 
 public class Arena extends Observable implements Cloneable
