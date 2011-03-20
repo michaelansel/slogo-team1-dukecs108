@@ -34,8 +34,8 @@ public class ActiveImagePanel extends JPanel implements ActionListener{
 		setLayout(new BorderLayout(8,8));
 		add(new HeaderLabel("Image: "), BorderLayout.PAGE_START);
 		JPanel j = new JPanel(new BorderLayout(8,8));
-		j.add(makeLoadButton("Load An Image"), BorderLayout.CENTER);
-//		j.add(new JLabel("or choose one:"), BorderLayout.PAGE_END);
+		j.add(makeLoadButton("Load An Image"), BorderLayout.PAGE_START);
+		j.add(new JLabel("Or choose one:"), BorderLayout.PAGE_END);
 		add(j, BorderLayout.LINE_END);
 		try {
 			setDisplay(Turtle.DEFAULT_IMAGE);
@@ -76,9 +76,10 @@ public class ActiveImagePanel extends JPanel implements ActionListener{
 		remove(imageDisplay);
 		imageDisplay=new JLabel(new ImageIcon(image));
 		imageDisplay.setBorder(LineBorder.createGrayLineBorder());
+		imageDisplay.setPreferredSize(new Dimension(53, 53));
 		add(imageDisplay, BorderLayout.CENTER);
 		doLayout();
-	}
+	} 
 	
 	public void setActiveImage(File f){
 			try {

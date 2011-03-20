@@ -14,6 +14,7 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
+import slogo.SLogo;
 import slogo.model.arena.Arena;
 import slogo.model.arena.turtle.Turtle;
 import slogo.util.drawtools.Pen2D;
@@ -83,6 +84,8 @@ public class PopupAddTurtle extends Container{
 					public void actionPerformed (ActionEvent evt){
 						try{
 							addTurtle();
+							arena.notifyObservers();
+							myOwner.dispose();
 						} catch (Exception e){
 							String s = e.getMessage();
 							if(s==null){
@@ -103,8 +106,9 @@ public class PopupAddTurtle extends Container{
 					public void actionPerformed (ActionEvent evt){
 						myOwner.dispose();
 					}
-				});
+				}); 
 		result.add(cancel, BorderLayout.LINE_START);
+		result.add(newPanel(), BorderLayout.PAGE_END);
 		return result;
 	}
 	private JButton makeButton(String s){ 
