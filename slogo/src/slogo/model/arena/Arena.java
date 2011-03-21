@@ -25,13 +25,13 @@ import slogo.view.gui.panel.subpanels.ArenaDraw;
  */
 public class Arena extends Observable implements Cloneable, Observer
 {
+    private List<Action> myActions;
     private List<String> myHistory;
+    private int myNextTurtleID;
     private List<Turtle> mySelectedTurtles;
     private Map<Integer, Turtle> myTurtles;
     private Map<String, Expression> myUserCommands;
     private Map<String, Expression> myVariables;
-    private int myNextTurtleID;
-    private List<Action> myActions;
 
 
     /**
@@ -176,8 +176,9 @@ public class Arena extends Observable implements Cloneable, Observer
             retval = expression.evaluate(this, turtle);
         return retval;
     }
-    
-    public List<Action> getActions()
+
+
+    public List<Action> getActions ()
     {
         return Collections.unmodifiableList(new ArrayList<Action>(myActions));
     }
@@ -197,6 +198,18 @@ public class Arena extends Observable implements Cloneable, Observer
     public Turtle getCurrentTurtle ()
     {
         return myTurtles.get(mySelectedTurtles.get(0));
+    }
+
+
+    /**
+     * Retrieve a list of all history entries
+     * 
+     * @param index
+     * @return History entry at given index
+     */
+    public List<String> getHistoryEntries ()
+    {
+        return new ArrayList<String>(myHistory);
     }
 
 
@@ -260,6 +273,15 @@ public class Arena extends Observable implements Cloneable, Observer
     public Expression getVariable (String variableName)
     {
         return myVariables.get(variableName);
+    }
+
+
+    /**
+     * Retrieve a copy of the variable space
+     */
+    public Map<String, Expression> getVariableMap ()
+    {
+        return new HashMap<String, Expression>(myVariables);
     }
 
 
