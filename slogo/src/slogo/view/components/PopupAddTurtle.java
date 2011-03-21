@@ -13,6 +13,7 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
+import slogo.controller.Controller;
 import slogo.model.arena.Arena;
 import slogo.model.arena.turtle.Turtle;
 import slogo.util.Position;
@@ -44,6 +45,7 @@ public class PopupAddTurtle extends Container{
 	private ImageSelectPanel imageSelect;
 	private PathSelectPanel pathSelect;
 	private JFrame myOwner;
+	private Controller controller;
 
 	//Constructors
 	/**
@@ -52,7 +54,7 @@ public class PopupAddTurtle extends Container{
 	 * @param a - the Arena we want to link our AddTurtle menu to.
 	 * @param frame - the frame you want to add this container to.
 	 */
-	public PopupAddTurtle(Arena a, JFrame frame){
+	public PopupAddTurtle(Arena a, JFrame frame, Controller c){
 		setLayout(new BorderLayout(8,8));
 		//setPreferredSize(new Dimension(200,200));
 
@@ -61,6 +63,7 @@ public class PopupAddTurtle extends Container{
 		textBox=new LabeledTextBox("Name:");
 		imageSelect=new ImageSelectPanel();
 		pathSelect=new PathSelectPanel();
+		controller=c;
 
 		addSpacers();
 
@@ -80,8 +83,8 @@ public class PopupAddTurtle extends Container{
 	 * panel.
 	 * @param a - the Arena we want to link our AddTurtle menu to.
 	 */
-	public PopupAddTurtle(Arena a){
-		this(a, new JFrame());
+	public PopupAddTurtle(Arena a, Controller c){
+		this(a, new JFrame(), c);
 	}
 
 	//Helpers
@@ -145,7 +148,7 @@ public class PopupAddTurtle extends Container{
 		name = textBox.getText(); 
 		file = imageSelect.getFile();
 		pen = pathSelect.getPen();
-		arena.addTurtle(new Turtle(name, new Position(arena.getCenter()), pen, file));
+		controller.addTurtle(arena, name, file, pen);
 		return 1;
 	}
 }
