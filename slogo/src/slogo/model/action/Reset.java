@@ -1,15 +1,12 @@
 package slogo.model.action;
 
-public class Show extends BasicAction
+public class Reset extends BasicAction
 {
-
-    public Show ()
-    {}
-
 
     @Override
     public void draw (DrawRoutines howToDraw)
     {
-        howToDraw.show(this);
+        throw new UnsupportedOperationException();
     }
+
 }

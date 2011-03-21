@@ -10,6 +10,6 @@ public class Hide extends BasicAction
     @Override
     public void draw (DrawRoutines howToDraw)
     {
-        howToDraw.hide();
+        howToDraw.hide(this);
     }
 }

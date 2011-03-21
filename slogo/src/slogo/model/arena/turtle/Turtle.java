@@ -11,6 +11,7 @@ import javax.imageio.ImageIO;
 import slogo.model.action.Action;
 import slogo.model.action.Draw;
 import slogo.model.action.Hide;
+import slogo.model.action.Reset;
 import slogo.model.action.Rotate;
 import slogo.model.action.Show;
 import slogo.model.action.Walk;
@@ -368,7 +369,8 @@ public class Turtle extends Observable implements IMorph, IDraw2D, ITurtle
         myPen.putUp();
         move(home);
         setHeading(Position.DEFAULT_HEADING);
-        clearDrawables();
+        myPen.putDown();
+        notifyAction(new Reset());
         return retval;
     }
 

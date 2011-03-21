@@ -1,0 +1,16 @@
+Move Turtle from point A to point B
+ - walk with line (draw)
+ - walk no line (walk)
+Rotate (rotate)
+Change image (disguise)
+Show/Hide turtle (show/hide)
+
+
+State
+ - Line
+    color
+	width
+	stroke
+ - showing
+ - position
+ - orientation

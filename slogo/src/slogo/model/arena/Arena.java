@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.Observable;
 import java.util.Observer;
 import slogo.model.action.Action;
+import slogo.model.action.Reset;
 import slogo.model.arena.turtle.Turtle;
 import slogo.model.expression.Expression;
 import slogo.view.gui.panel.subpanels.ArenaDraw;
@@ -361,9 +362,16 @@ public class Arena extends Observable implements Cloneable, Observer
     public void update (Observable turtle, Object o)
     {
         Action action = (Action) o;
-        for (Map.Entry<Integer, Turtle> entry : myTurtles.entrySet())
-            if (entry.getValue() == turtle) action.setTurtleID(entry.getKey());
-        myActions.add(action);
+        if (action instanceof Reset)
+        {
+            myActions.clear();
+        }
+        else
+        {
+            for (Map.Entry<Integer, Turtle> entry : myTurtles.entrySet())
+                if (entry.getValue() == turtle) action.setTurtleID(entry.getKey());
+            myActions.add(action);
+        }
         setChanged();
         notifyObservers();
     }

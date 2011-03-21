@@ -26,6 +26,6 @@ public class Walk extends BasicAction
     @Override
     public void draw (DrawRoutines howToDraw)
     {
-        howToDraw.walk(myFrom, myTo);
+        howToDraw.walk(this, myFrom, myTo);
     }
 }

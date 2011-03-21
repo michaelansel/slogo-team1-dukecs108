@@ -18,6 +18,6 @@ public class Draw extends BasicAction
     @Override
     public void draw (DrawRoutines howToDraw)
     {
-        howToDraw.drawLine(myLine);
+        howToDraw.drawLine(this, myLine);
     }
 }
