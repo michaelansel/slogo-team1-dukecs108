@@ -14,8 +14,8 @@ public class AllTests
         suite.addTestSuite(AskTest.class);
         suite.addTestSuite(XCorTest.class);
         suite.addTestSuite(HomeTest.class);
-        suite.addTestSuite(LeftTest.class);
         suite.addTestSuite(ToTest.class);
+        suite.addTestSuite(LeftTest.class);
         suite.addTestSuite(RepeatTest.class);
         suite.addTestSuite(PenDownPTest.class);
         suite.addTestSuite(ClearScreenTest.class);
@@ -23,14 +23,16 @@ public class AllTests
         suite.addTestSuite(IfTest.class);
         suite.addTestSuite(PenDownTest.class);
         suite.addTestSuite(SetXYTest.class);
-        suite.addTestSuite(HeadingTest.class);
         suite.addTestSuite(RandomTest.class);
+        suite.addTestSuite(ShowTurtleTest.class);
+        suite.addTestSuite(HeadingTest.class);
         suite.addTestSuite(YCorTest.class);
         suite.addTestSuite(ForwardTest.class);
         suite.addTestSuite(PenUpTest.class);
         suite.addTestSuite(SetHeadingTest.class);
         suite.addTestSuite(BackwardTest.class);
         suite.addTestSuite(RightTest.class);
+        suite.addTestSuite(HideTurtleTest.class);
         suite.addTestSuite(TellTest.class);
         //$JUnit-END$
         return suite;
