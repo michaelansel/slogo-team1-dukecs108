@@ -30,10 +30,7 @@ public class DefaultQualityLibrary
     public static final Point2D DEFAULT_HOME = new Point2D.Double(0.0,0.0);
     public static final Boolean DEFAULT_VISIBILITY = Visibility.VISIBLE;
     public static final Dimension DEFAULT_ICON_DIM = new Dimension(30,30);
-    
-    
-    
-    public DefaultQualityLibrary(){
+    static{
         defaultStates = new ArrayList<ArtistQuality>();
         try
         {
@@ -49,16 +46,18 @@ public class DefaultQualityLibrary
         }
         catch (Exception e)
         {
-            throw new ModelException("Default Turtle Icon path does not exist");
-        }
-    
+            throw new ModelException("Default Turtle Icon path does not exist",e);
+        }    
     }
+    
+    
     
 
     public static ArtistQuality getDefaultbyClass (Class<? extends ArtistQuality> c)
     {
         for(ArtistQuality mq: defaultStates){
             if (mq.getClass().equals(c))
+                
                 return mq;
         }
         

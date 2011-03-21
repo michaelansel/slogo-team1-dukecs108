@@ -12,6 +12,7 @@ public class Visibility extends ArtistQuality
     
     public Visibility (Boolean visibility)
     {
+        super(Visibility.class);
         amVisible = visibility;
     }
 
@@ -22,13 +23,13 @@ public class Visibility extends ArtistQuality
     }
 
 
-    @Override
-    public int compareTo (ArtistQuality o)
-    {
-        if (this.equals(o))
-            return 0;
-        return 1;
-    }
+//    @Override
+//    public int compareTo (ArtistQuality o)
+//    {
+//        if (this.equals(o))
+//            return 0;
+//        return 1;
+//    }
 
 
     @Override

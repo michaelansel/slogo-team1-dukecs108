@@ -15,6 +15,7 @@ public class Coordinates extends ArtistQuality
     
     
     public Coordinates(Point2D point){
+        super(Coordinates.class);
         myLocation = point;
     }
     
@@ -25,14 +26,14 @@ public class Coordinates extends ArtistQuality
         super();
     }
 
-
-    @Override
-    public int compareTo (ArtistQuality o)
-    {
-        if (Double.compare(myLocation.getX(), ((Coordinates) o).myLocation.getX()) == 0)
-            return Double.compare(myLocation.getY(), ((Coordinates) o).myLocation.getY());
-        return  Double.compare(myLocation.getX(), ((Coordinates) o).myLocation.getX());
-    }
+//
+//    @Override
+//    public int compareTo (ArtistQuality o)
+//    {
+//        if (Double.compare(myLocation.getX(), ((Coordinates) o).myLocation.getX()) == 0)
+//            return Double.compare(myLocation.getY(), ((Coordinates) o).myLocation.getY());
+//        return  Double.compare(myLocation.getX(), ((Coordinates) o).myLocation.getX());
+//    }
 
   
 
@@ -42,9 +43,8 @@ public class Coordinates extends ArtistQuality
     @Override
     public Object setTo (ArtistQuality aq) throws ModelException
     {
-        Line pl = new Line(myLocation, ((Coordinates) aq).getLocation());
         myLocation = ((Coordinates) aq).getLocation();
-        return pl;
+        return null;
     }
 
 

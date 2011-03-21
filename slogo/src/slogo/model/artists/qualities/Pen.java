@@ -26,6 +26,7 @@ public class Pen extends ArtistQuality
 
     public Pen (BasicStroke stroke, Color color, boolean state)
     {
+        super(Pen.class);
         setStroke(stroke);
         setColor(color);
         setState(state);
@@ -34,14 +35,14 @@ public class Pen extends ArtistQuality
     
 
 
-    @Override
-    public int compareTo (ArtistQuality o)
-    {
-        
-        if(this.myColor.equals(((Pen) o).getColor()))
-            return 0;
-        return 1;
-    }
+//    @Override
+//    public int compareTo (ArtistQuality o)
+//    {
+//        
+//        if(this.myColor.equals(((Pen) o).getColor()))
+//            return 0;
+//        return 1;
+//    }
 
 
     @Override
