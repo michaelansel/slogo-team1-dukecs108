@@ -96,6 +96,8 @@ public class Controller {
 		Expression exp = (Expression) result.getList().get(0);
 		//Evaluates the expression recursively for Arena a
 		exp.evaluate(a);
+		//Add expression to history
+		a.addHistoryEntry(expression);
 		//Call for update of TurtleGUIs watching Arena a
 		a.notifyObservers();
     }
