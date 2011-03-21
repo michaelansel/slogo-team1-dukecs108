@@ -10,3 +10,9 @@ cs rt 18 repeat 5 [ fd 100 penup lt 90 fd 33 rt 90 pendown repeat 5 [ fd 100 rt 
 
 to spiral [ :size ] [ xcor ]
 to spiral [ :size ] [ if :size < 30 [ fd (:size*2) rt 15 spiral (:size + 1) ] ]
+to spiral [ :size ] [ if :size < 30000 [ fd (:size/1000) rt 15 spiral (:size + :size*20/1000) ] ]
+
+
+to donut [
+repeat 36[ rt 10 repeat 360 [fd 1 rt 1]] fd 25 rt 90
+]
