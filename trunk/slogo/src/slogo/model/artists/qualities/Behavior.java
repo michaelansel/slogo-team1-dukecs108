@@ -12,6 +12,7 @@ public class Behavior extends ArtistQuality
     IBehavior myBehavior;
 
     public Behavior(IBehavior defaultBehavior){
+        super(Behavior.class);
         myBehavior = defaultBehavior;
     }
     
@@ -20,13 +21,13 @@ public class Behavior extends ArtistQuality
         super();
     }
 
-
-    @Override
-    public int compareTo (ArtistQuality aq) throws ModelException
-    {
-        return this.getBehavior().compareTo(((Behavior) aq).getBehavior());
-        
-    }
+//
+//    @Override
+//    public int compareTo (ArtistQuality aq) throws ModelException
+//    {
+//        return this.getBehavior().compareTo(((Behavior) aq).getBehavior());
+//        
+//    }
 
     public IBehavior getBehavior ()
     {

@@ -9,6 +9,7 @@ public abstract class ArtistQuality implements Cloneable, Comparable<ArtistQuali
 {
     
     public ArtistQuality setToDefault(){
+
         return (ArtistQuality) this.setTo(DefaultQualityLibrary.getDefaultbyClass(this.getClass()));
     }
     
@@ -27,10 +28,22 @@ public abstract class ArtistQuality implements Cloneable, Comparable<ArtistQuali
         return this.getClass().equals(type);
     }
     
+    protected ArtistQuality(Class<? extends ArtistQuality> klass)
+    {
+        
+    }
 
     public ArtistQuality ()
     {
         this.setToDefault();
+    }
+
+    @Override
+    public int compareTo (ArtistQuality o)
+    {
+        if (this.getClass().equals(o))
+            return 0;
+        return 1;
     }
 
     public ArtistQuality (ArtistQuality quality)

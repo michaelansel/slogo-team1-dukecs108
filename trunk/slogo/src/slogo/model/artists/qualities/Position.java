@@ -29,8 +29,9 @@ public class Position extends ArtistQuality
 
     public Position ()
     {
-        myPosition.setToDefault();
-        myHeading.setToDefault();
+        super(Position.class);
+        myPosition = new Coordinates();
+        myHeading= new Heading();
     }
 
 
@@ -40,12 +41,12 @@ public class Position extends ArtistQuality
         this(new Coordinates(point), new Heading(i));
     }
 
-    @Override
-    public int compareTo (ArtistQuality o)
-    {
-        
-        return myPosition.compareTo(((Position)o).getPosition());
-    }
+//    @Override
+//    public int compareTo (ArtistQuality o)
+//    {
+//        
+//        return myPosition.compareTo(((Position)o).getPosition());
+//    }
 
 
     public Coordinates getPosition ()
@@ -86,6 +87,12 @@ public class Position extends ArtistQuality
     {
 
         this.getHeading().setTo(new Heading(this.getHeading().getHeading()+dAngle));
+        
+    }
+
+    public void setLocation (Point2D to)
+    {
+        myPosition.setLocation(to);
         
     }
 

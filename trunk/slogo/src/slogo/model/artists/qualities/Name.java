@@ -10,6 +10,7 @@ public class Name extends ArtistQuality
     
     
     public Name(String name){
+        super(Name.class);
         myName = name;
     }
     
@@ -18,11 +19,11 @@ public class Name extends ArtistQuality
         super();
     }
 
-    @Override
-    public int compareTo (ArtistQuality o)
-    {
-        return myName.compareTo(((Name) o).getName());
-    }
+//    @Override
+//    public int compareTo (ArtistQuality o)
+//    {
+//        return myName.compareTo(((Name) o).getName());
+//    }
 
 
     public String getName ()

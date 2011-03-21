@@ -2,6 +2,7 @@ package slogo.model.artists.qualities;
 
 import java.awt.Dimension;
 import java.awt.Image;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
@@ -27,6 +28,7 @@ public class Icon extends ArtistQuality
 
     public Icon (File file, Dimension dim) 
     {
+        super(Icon.class);
         myFilePath = file;
         try
         {
@@ -37,7 +39,8 @@ public class Icon extends ArtistQuality
             e.printStackTrace();
         }
         myDim =dim;
-        }
+        System.out.println(myFilePath);
+     }
 
     @Override
     boolean equals (ArtistQuality aq) throws ModelException
@@ -67,13 +70,13 @@ public class Icon extends ArtistQuality
         return null;
     }
 
-    @Override
-    public int compareTo (ArtistQuality aq)
-    {
-        if (Double.compare(myDim.getWidth(),((Icon) aq).getDimension().getWidth())==0)
-            return Double.compare(myDim.getHeight(),((Icon) aq).getDimension().getHeight());
-        return Double.compare(myDim.getWidth(),((Icon) aq).getDimension().getWidth());
-    }
+//    @Override
+//    public int compareTo (ArtistQuality aq)
+//    {
+//        if (Double.compare(myDim.getWidth(),((Icon) aq).getDimension().getWidth())==0)
+//            return Double.compare(myDim.getHeight(),((Icon) aq).getDimension().getHeight());
+//        return Double.compare(myDim.getWidth(),((Icon) aq).getDimension().getWidth());
+//    }
 
     public File getFilePath ()
     {
