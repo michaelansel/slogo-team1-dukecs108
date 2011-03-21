@@ -44,6 +44,9 @@ public abstract class BinaryExpression extends Expression
             List<String> tokenClassNames =
                 Arrays.asList(new String[] {
                         "slogo.model.expression.binary.LessThan",
+                        "slogo.model.expression.binary.GreaterThan",
+                        "slogo.model.expression.binary.And",
+                        "slogo.model.expression.binary.Or",
                         "slogo.model.expression.binary.Exponent",
                         "slogo.model.expression.binary.Multiply",
                         "slogo.model.expression.binary.Divide",
