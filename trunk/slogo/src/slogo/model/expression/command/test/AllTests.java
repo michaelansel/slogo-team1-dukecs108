@@ -11,10 +11,11 @@ public class AllTests
     {
         TestSuite suite = new TestSuite(AllTests.class.getName());
         //$JUnit-BEGIN$
+        suite.addTestSuite(AskTest.class);
         suite.addTestSuite(XCorTest.class);
         suite.addTestSuite(HomeTest.class);
-        suite.addTestSuite(ToTest.class);
         suite.addTestSuite(LeftTest.class);
+        suite.addTestSuite(ToTest.class);
         suite.addTestSuite(RepeatTest.class);
         suite.addTestSuite(PenDownPTest.class);
         suite.addTestSuite(ClearScreenTest.class);
