@@ -1,10 +1,14 @@
 package slogo.controller;
 
+import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList; 
 import java.util.Map;
 import java.util.Observable;
 import java.util.Observer;
+
+import javax.imageio.ImageIO;
 
 import slogo.model.arena.Arena;
 import slogo.model.arena.turtle.Turtle;
@@ -18,7 +22,6 @@ import util.parser.ParserException;
 import util.parser.ParserResult;
 
 
-
 /**
  * Middle-man between GUI and Arena
  * @author Dave
@@ -26,6 +29,7 @@ import util.parser.ParserResult;
  */
 public class Controller {	
 	private ArrayList<Arena> myArenas = new ArrayList<Arena>();
+	private int tempImageFileCount=0;
 	//private int ARENA_COUNT = 0;
 	
 	/**
@@ -35,7 +39,7 @@ public class Controller {
 		TurtleGUI t = new TurtleGUI(this);
 		t.update(addArena(t));
 
-		TurtleGUI t2 = new TurtleGUI(this);
+//		TurtleGUI t2 = new TurtleGUI(this);
 //		t2.update(addArena(t2));
 	}
 
@@ -128,6 +132,39 @@ public class Controller {
     	boolean ret = a.removeTurtle(turtleID);
     	a.notifyObservers();
 		return ret;
+    }
+    
+    /**
+     * Add instance tempTurtleImage file.
+     */
+    public File createTempImage(BufferedImage b){
+    	File output=new File("src/temp/turtle_images/temp_turtle_image"+tempImageFileCount);
+    	try {
+			ImageIO.write(b,
+			        "png",
+			        output);
+		} catch (IOException e) {
+			return Turtle.DEFAULT_IMAGE;
+		}
+		tempImageFileCount++;
+		return output;
+    }
+    
+    
+    /**
+     * Returns the arena's position in myArenas ArrayList if it exists, 0
+     * if it does not.
+     * @param a the arena you want the ID for
+     */
+    public int getID(Arena a){
+    	int count=1;
+    	for (Arena cur: myArenas){
+    		if(cur.equals(a)){
+    			return count;
+    		}
+    		count++;
+    	}
+    	return 0;
     }
     
 }
