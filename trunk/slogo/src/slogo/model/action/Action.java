@@ -6,4 +6,10 @@ package slogo.model.action;
 public interface Action
 {
     public void draw (DrawRoutines howToDraw);
+
+
+    public void setTurtleID (int turtleID);
+
+
+    public int getTurtleID ();
 }
