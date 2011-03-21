@@ -304,7 +304,6 @@ public class TurtleGUI implements Observer {
 					"Input Error!",
 					JOptionPane.ERROR_MESSAGE);
 		}
-		a.expressionEvaluated();
 	}
 
 	/**
