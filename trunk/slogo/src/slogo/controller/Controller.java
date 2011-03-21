@@ -93,7 +93,7 @@ public class Controller {
 		//Evaluates the expression recursively for Arena a
 		exp.evaluate(a);
 		//Call for update of TurtleGUIs watching Arena a
-		updateObservers(a);
+		a.notifyObservers();
     }
     
     /**
@@ -115,10 +115,7 @@ public class Controller {
     public boolean addTurtle(Arena a, String name, File image, Pen2D pen){
     	Turtle t=new Turtle(name, new Position(a.getCenter()), pen, image);
     	boolean ret = a.addTurtle(t)>=0;
-    	if(ret){
-    		//redraws attached GUIs
-    		updateObservers(a);
-    	}
+    	a.notifyObservers();
 		return ret;
     }
     
@@ -129,26 +126,8 @@ public class Controller {
      */
     public boolean removeTurtle(Arena a, int turtleID){
     	boolean ret = a.removeTurtle(turtleID);
-    	if(ret){
-    		//redraws attached GUIs
-    		updateObservers(a);
-    	}
+    	a.notifyObservers();
 		return ret;
-    }
-    
-    /**
-     * Get ImageList-ready TurtleString/Image map
-     * 
-     */
-    
-    /**
-     * Calls the Arena a to tell all its observers to update.
-     * @a the arena that has changed.
-     */
-    public void updateObservers(Arena a){
-		//redraws attached GUIs
-		a.setAsChanged();
-		a.notifyObservers();
     }
     
 }

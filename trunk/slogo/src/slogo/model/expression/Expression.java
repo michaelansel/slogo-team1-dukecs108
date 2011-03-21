@@ -97,23 +97,6 @@ public abstract class Expression
 
 
     /**
-     * Evaluate the Expression tree in the context of the given Arena for all
-     * selected Turtles.
-     * 
-     * @param arena Arena in which to evalute the Expression
-     * @return numeric result of Expression evaluation (see language definition
-     *         for specifics)
-     */
-    public final int evaluate (Arena arena)
-    {
-        int retval = 0;
-        for (Turtle turtle : new ArrayList<Turtle>(arena.getSelectedTurtles()))
-            retval = evaluate(arena, turtle);
-        return retval;
-    }
-
-
-    /**
      * Recursively evaluate this Expression and all of its child Expressions.
      * Children are evaluated first, followed by the parent.
      * 
@@ -130,4 +113,11 @@ public abstract class Expression
      *         Expression
      */
     protected abstract Collection<Expression> getExpressions ();
+
+
+    @Deprecated
+    public int evaluate (Arena arena)
+    {
+        return arena.evaluateExpression(this);
+    }
 }

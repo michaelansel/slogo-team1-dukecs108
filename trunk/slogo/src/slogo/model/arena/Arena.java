@@ -50,7 +50,7 @@ public class Arena extends Observable implements Cloneable
         myHistory = new ArrayList<String>();
         mySelectedTurtles = new ArrayList<Turtle>();
         myUserCommands = new HashMap<String, Expression>();
-        myNextTurtleID=0;
+        myNextTurtleID = 0;
         addTurtle(turtle);
     }
 
@@ -154,6 +154,24 @@ public class Arena extends Observable implements Cloneable
     }
 
 
+    /**
+     * Evaluate the Expression tree in the context of this Arena for all
+     * selected Turtles.
+     * 
+     * @param expression Expression to evaluate in this Arena
+     * @return numeric result of Expression evaluation (see language definition
+     *         for specifics)
+     */
+    public int evaluateExpression (Expression expression)
+    {
+        int retval = 0;
+        for (Turtle turtle : new ArrayList<Turtle>(getSelectedTurtles()))
+            retval = expression.evaluate(this, turtle);
+        setChanged();
+        return retval;
+    }
+
+
     public Point2D getCenter ()
     {
         //TODO make this not static
@@ -242,6 +260,8 @@ public class Arena extends Observable implements Cloneable
      */
     public boolean removeTurtle (int id)
     {
+        setChanged();
+
         // Unselect Turtle prior to removal
         if (myTurtles.containsKey(id)) mySelectedTurtles.remove(myTurtles.get(id));
 
@@ -258,6 +278,8 @@ public class Arena extends Observable implements Cloneable
      */
     public boolean removeTurtle (Turtle turtle)
     {
+        setChanged();
+
         // Remove the first matching Turtle
         for (Map.Entry<Integer, Turtle> entry : myTurtles.entrySet())
             if (entry.getValue() == turtle) return removeTurtle(entry.getKey());
@@ -305,11 +327,6 @@ public class Arena extends Observable implements Cloneable
         }
     }
 
-    public void expressionEvaluated()
-    {
-        setChanged();
-        notifyObservers();
-    }
 
     @Deprecated
     public void setCurrentTurtle (int id)
@@ -327,10 +344,6 @@ public class Arena extends Observable implements Cloneable
     public void setVariable (String variableName, Expression variableValue)
     {
         myVariables.put(variableName, variableValue);
-    }
-    
-    public void setAsChanged(){
-    	setChanged();
     }
 
 }
