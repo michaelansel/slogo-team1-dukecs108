@@ -12,7 +12,10 @@ public class AllTests
         TestSuite suite = new TestSuite(AllTests.class.getName());
         //$JUnit-BEGIN$
         suite.addTestSuite(LessThanTest.class);
+        suite.addTestSuite(GreaterThanTest.class);
         suite.addTestSuite(SubtractTest.class);
+        suite.addTestSuite(AndTest.class);
+        suite.addTestSuite(OrTest.class);
         suite.addTestSuite(AddTest.class);
         //$JUnit-END$
         return suite;
