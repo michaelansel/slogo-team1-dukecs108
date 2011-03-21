@@ -10,8 +10,10 @@ import slogo.model.arena.Arena;
 import slogo.model.arena.turtle.Turtle;
 import slogo.model.expression.Expression;
 import slogo.model.parser.SlogoParser;
+import slogo.util.Position;
 import slogo.util.drawtools.Pen2D;
 import slogo.view.gui.TurtleGUI;
+import slogo.view.gui.panel.subpanels.ArenaDraw;
 import util.parser.ParserException;
 import util.parser.ParserResult;
 
@@ -90,10 +92,8 @@ public class Controller {
 		Expression exp = (Expression) result.getList().get(0);
 		//Evaluates the expression recursively for Arena a
 		exp.evaluate(a);
-
-		//redraws attached GUIs
-		a.setChanged("1");
-		a.notifyObservers();
+		//Call for update of TurtleGUIs watching Arena a
+		updateObservers(a);
     }
     
     /**
@@ -113,11 +113,12 @@ public class Controller {
      * @param pen the pen of this turtle
      */
     public boolean addTurtle(Arena a, String name, File image, Pen2D pen){
-    	boolean ret = a.addTurtle(name, image, pen);
-    	
-		//redraws attached GUIs
-		a.setChanged("1");
-		a.notifyObservers();
+    	Turtle t=new Turtle(name, new Position(a.getCenter()), pen, image);
+    	boolean ret = a.addTurtle(t)>=0;
+    	if(ret){
+    		//redraws attached GUIs
+    		updateObservers(a);
+    	}
 		return ret;
     }
     
@@ -128,11 +129,10 @@ public class Controller {
      */
     public boolean removeTurtle(Arena a, int turtleID){
     	boolean ret = a.removeTurtle(turtleID);
-    	
-
-		//redraws attached GUIs
-		a.setChanged("1");
-		a.notifyObservers();
+    	if(ret){
+    		//redraws attached GUIs
+    		updateObservers(a);
+    	}
 		return ret;
     }
     
@@ -141,7 +141,14 @@ public class Controller {
      * 
      */
     
-    
-    
+    /**
+     * Calls the Arena a to tell all its observers to update.
+     * @a the arena that has changed.
+     */
+    public void updateObservers(Arena a){
+		//redraws attached GUIs
+		a.setAsChanged();
+		a.notifyObservers();
+    }
     
 }

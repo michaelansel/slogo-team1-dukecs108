@@ -26,6 +26,7 @@ public class Arena extends Observable implements Cloneable
     private Map<Integer, Turtle> myTurtles;
     private Map<String, Expression> myUserCommands;
     private Map<String, Expression> myVariables;
+    private int myNextTurtleID;
 
 
     /**
@@ -49,6 +50,7 @@ public class Arena extends Observable implements Cloneable
         myHistory = new ArrayList<String>();
         mySelectedTurtles = new ArrayList<Turtle>();
         myUserCommands = new HashMap<String, Expression>();
+        myNextTurtleID=0;
         addTurtle(turtle);
     }
 
@@ -106,7 +108,8 @@ public class Arena extends Observable implements Cloneable
     {
         if (turtle == null) throw new IllegalArgumentException("Cannot add a null Turtle!");
 
-        int newTurtleID = myTurtles.size();
+        int newTurtleID = myNextTurtleID;
+        myNextTurtleID++;
 
         addTurtle(newTurtleID, turtle);
 
@@ -324,6 +327,10 @@ public class Arena extends Observable implements Cloneable
     public void setVariable (String variableName, Expression variableValue)
     {
         myVariables.put(variableName, variableValue);
+    }
+    
+    public void setAsChanged(){
+    	setChanged();
     }
 
 }
