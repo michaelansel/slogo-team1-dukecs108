@@ -141,15 +141,25 @@ public class TurtleGUI implements Observer {
 	 */
 	private JMenuBar createMenu() {
 		JMenuBar jMenuBar1=new JMenuBar();
-		JMenu fileMenu=new JMenu();
-		JMenu variableMenu=new JMenu();
+	
+		jMenuBar1.add(createFileMenu());
+		jMenuBar1.add(createVariableMenu());
+		jMenuBar1.add(createInfoMenu());
+		
 
+		return jMenuBar1;
+	}
+	/**
+	 * Creates File Menu
+	 */
+	public JMenu createFileMenu()
+	{
+		JMenu fileMenu = new JMenu();
 		//Create and populate "file"
 		fileMenu.setText("File");
 		fileMenu.setMnemonic(KeyEvent.VK_A);
 		fileMenu.getAccessibleContext().setAccessibleDescription(
 		"The file menu");
-		jMenuBar1.add(fileMenu);
 
 		//a group of JMenuItems
 		JMenuItem menuItem;
@@ -193,13 +203,17 @@ public class TurtleGUI implements Observer {
 					}
 				});
 		fileMenu.add(menuItem);
-		
-
-		//Create and populate "Turtles"
+		return fileMenu;
+	}
+	/**
+	 * Creates Variable Menu
+	 */
+	public JMenu createVariableMenu()
+	{
+		JMenu variableMenu = new JMenu();
 		variableMenu.setText("Turtles");
-		jMenuBar1.add(variableMenu);
-
-		//a group of JMenuItems
+		
+		JMenuItem menuItem;
 		menuItem = new JMenuItem("Add Turtle",
 				new ImageIcon("src/images/add_icon.gif"));  
 		menuItem.addActionListener(
@@ -219,10 +233,61 @@ public class TurtleGUI implements Observer {
 					}
 				});
 		variableMenu.add(menuItem);
-
-		return jMenuBar1;
+		return variableMenu;
 	}
+	/**
+	 * Creates Information Menu - Variables and History
+	 */
+	public JMenu createInfoMenu()
+	{
+		JMenu infoMenu = new JMenu();
+		infoMenu.setText("Information");
+		
+		JMenuItem menuItem;
+		menuItem = new JMenuItem("History");
+		menuItem.addActionListener(
+				new ActionListener(){  
+					public void actionPerformed (ActionEvent evt){ 
+						borderLeft.updateHistory(getActiveArena().getHistory());
+						entireFrame.pack();
 
+					}
+				});
+		infoMenu.add(menuItem);
+		
+		menuItem = new JMenuItem("Variables");
+		menuItem.addActionListener(
+				new ActionListener(){  
+					public void actionPerformed (ActionEvent evt){ 
+						borderLeft.updateVariables(getActiveArena().getVariableMap());
+						entireFrame.pack();
+					}
+				});
+		infoMenu.add(menuItem);
+		
+		menuItem = new JMenuItem("User Commands");
+		menuItem.addActionListener(
+				new ActionListener(){  
+					public void actionPerformed (ActionEvent evt){ 
+						borderLeft.updateCommands(getActiveArena().getUserCommands());
+						entireFrame.pack();
+					}
+				});
+		infoMenu.add(menuItem);
+		
+		menuItem = new JMenuItem("Close Panel");
+		menuItem.addActionListener(
+				new ActionListener(){  
+					public void actionPerformed (ActionEvent evt){ 
+						borderLeft.clearPanel();
+						entireFrame.pack();
+					}
+				});
+		infoMenu.add(menuItem);
+		
+
+		return infoMenu;
+	}
 	//Change the GUI as the user interacts with the program
 	/**
 	 * Updates the correct ArenaPanel for our arena o.
@@ -276,7 +341,7 @@ public class TurtleGUI implements Observer {
 	 * Creates "Evaluate!" button that evaluates on LEFTCLICK.
 	 */
 	public JButton makeButton(){ 
-		JButton result = new javax.swing.JButton("Go!");
+		JButton result = new javax.swing.JButton(resources.getString("buttonText"));
 
 		result.addActionListener(
 				new ActionListener(){ 
@@ -349,7 +414,6 @@ public class TurtleGUI implements Observer {
 
 		drawAndRepaint(a);
 	}
-	
 	public void connectToArena(){
 		//Popup, ask for user input
 		String s = (String)JOptionPane.showInputDialog(
