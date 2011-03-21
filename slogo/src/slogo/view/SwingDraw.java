@@ -10,7 +10,7 @@ import java.util.Map;
 import slogo.model.action.Action;
 import slogo.model.action.DrawRoutines;
 import slogo.model.arena.turtle.Turtle;
-import slogo.util.Position;
+import slogo.model.artists.qualities.Position;
 import slogo.util.drawables2D.Line;
 
 
@@ -44,7 +44,7 @@ public class SwingDraw implements DrawRoutines
     public void drawLine (Action action, Line line)
     {
         line.draw(myGraphics);
-        getGhost(action.getTurtleID()).position.setLocation(line.getP2());
+        getGhost(action.getTurtleID()).position.getLocation().setLocation(line.getP2());
     }
 
 
@@ -59,14 +59,14 @@ public class SwingDraw implements DrawRoutines
     @Override
     public void walk (Action action, Point2D from, Point2D to)
     {
-        getGhost(action.getTurtleID()).position.setLocation(to);
+        getGhost(action.getTurtleID()).position.getLocation().setLocation(to);
     }
 
 
     @Override
     public void rotate (Action action, int degrees)
     {
-        getGhost(action.getTurtleID()).position.setHeadingTo(degrees);
+        getGhost(action.getTurtleID()).position.getHeading().setHeadingTo(degrees);
     }
 
 
