@@ -292,16 +292,10 @@ public class TurtleGUI implements Observer {
 	 * along with the ID of the arrayList that is currently active.
 	 */
 	public void evaluateInput(){ 
-		//grabs active panel and sets its arena to a
-		ArenaPanel arP = (ArenaPanel) display.getSelectedComponent();
-		Arena a = arP.getArena();
-
+		Arena a = getActiveArena();
 		try {
-			//Parses the text, sets the first node to exp
-			ParserResult result = SlogoParser.parse(textbox.getText());
-			Expression exp = (Expression) result.getList().get(0);
-			//Evaluates the expression recursively for Arena a
-			exp.evaluate(a);
+			//tells Controller to evaluate it
+			myController.evaluateExpression(textbox.getText(), a);
 			//sets our textbox to blank 
 			textbox.setText("");
 		} catch (ParserException e) {
@@ -317,10 +311,9 @@ public class TurtleGUI implements Observer {
 	 * Creates a new generic turtle in the active Arena
 	 */
 	public void addTurtle() { 
-		ArenaPanel arP = getActivePanel();
-		Arena a = arP.getArena();
+		Arena a = getActiveArena();
 		JFrame popup = new JFrame("Add Turtle");
-		popup.setContentPane(new PopupAddTurtle(a, popup));
+		popup.setContentPane(new PopupAddTurtle(a, popup, myController));
 		popup.pack();
 		popup.setVisible(true);
 		popup.repaint();
@@ -330,8 +323,7 @@ public class TurtleGUI implements Observer {
 	 * Remove the active turtle from the active Arena
 	 */
 	public void removeTurtle(){
-		ArenaPanel arP = getActivePanel();
-		Arena a = arP.getArena();
+		Arena a = getActiveArena();
 
 		String s = (String)JOptionPane.showInputDialog(
 				new JFrame(),
@@ -345,7 +337,7 @@ public class TurtleGUI implements Observer {
 				"0");
 		//If a string was returned, say so.
 		if ((s != null) && (s.length() > 0)) {
-			if (!a.removeTurtle(Integer.parseInt(s)))
+			if (!myController.removeTurtle(a, Integer.parseInt(s)))
 				JOptionPane.showMessageDialog(new JFrame(),
 					    "No turtle exists with that ID in the current Arena." +
 					    " Make sure you are using the turtle's ID and not its name.",
@@ -390,6 +382,13 @@ public class TurtleGUI implements Observer {
 	public ArenaPanel getActivePanel(){
 		ArenaPanel arP = (ArenaPanel) display.getSelectedComponent();
 		return arP;
+	}
+	
+	/**
+	 * Returns the active Arena for this gui
+	 */
+	public Arena getActiveArena(){
+		return getActivePanel().getArena();
 	}
 
 	/**
