@@ -31,6 +31,7 @@ import slogo.view.gui.panel.ArenaPanel;
 import slogo.model.parser.SlogoParser;
 import util.parser.ParserException;
 import util.parser.ParserResult;
+import util.resources.ResourceManager;
 import slogo.model.expression.*;
 
 
@@ -39,7 +40,8 @@ public class TurtleGUI implements Observer {
 	public static boolean RIGHT_TO_LEFT = false;
 	private ArrayList<ArenaPanel> myArenaPanels = new ArrayList<ArenaPanel>();
 	private Controller myController;
-
+	private ResourceManager resources;
+		
 	//Declare components
 	JPanel myPanel;
 	JButton button;
@@ -56,6 +58,9 @@ public class TurtleGUI implements Observer {
 	 * @param c - the Controller for the new GUI
 	 */
 	public TurtleGUI(Controller c){
+		resources = ResourceManager.getInstance();
+		resources.addResourcesFromFile("view","slogo.view.resources");
+		
 		myController = c;
 		createAndShowGUI();
 	} 
@@ -78,7 +83,7 @@ public class TurtleGUI implements Observer {
 	 */
 	private void createAndShowGUI() {
 		//Create and set up the window.
-		entireFrame = new JFrame("I like turtles.");
+		entireFrame = new JFrame(resources.getString("title"));
 		entireFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		JPanel basePanel = ViewHelper.makeNewPanel();
 		entireFrame.getContentPane().add(basePanel);
@@ -107,10 +112,9 @@ public class TurtleGUI implements Observer {
 
 		//Creates space to the left of PANE
 		myPanel=ViewHelper.makeNewPanel();
-		myPanel.add(ViewHelper.makeNewPanel(), BorderLayout.PAGE_START);
-		myPanel.add(ViewHelper.makeNewPanel(), BorderLayout.CENTER);
 		pane.add(ViewHelper.makeNewPanel(), BorderLayout.LINE_START);
-
+		myPanel=ViewHelper.makeNewPanel();
+		pane.add(ViewHelper.makeNewPanel(), BorderLayout.LINE_END);
 
 		//Creates the textbox & button, adds spaces where necessary
 		myPanel = ViewHelper.makeNewPanel();
