@@ -18,6 +18,7 @@ import slogo.model.arena.TurtleException;
 import slogo.model.arena.turtle.Turtle;
 import slogo.util.drawables2D.Line;
 import slogo.util.interfaces.ICartesian2D;
+import slogo.util.interfaces.IDraw2D;
 
 
 public class TurtleTestPanel extends JPanel
@@ -45,15 +46,8 @@ public class TurtleTestPanel extends JPanel
         myImage.getGraphics().setColor(Color.white);
         myImage.getGraphics().fillRect(0, 0, (int)this.getPreferredSize().getWidth(), (int)this.getPreferredSize().getHeight());
         for (Turtle turtle: myArena.getTurtleMap().values()){
-            drawLines(turtle.getLinesToDraw(0)); //for now draws all lines each time
-            try
-            {
-                turtle.draw((Graphics2D) myImage.getGraphics());
-            }
-            catch (IOException e)
-            {
-                e.printStackTrace();
-            }
+            drawLines(turtle.getDrawablesToDraw()); //for now draws all lines each time
+            turtle.draw((Graphics2D) myImage.getGraphics());
         }
               
         ((Graphics2D)g).drawImage(myImage, null, 0, 0);
@@ -63,12 +57,12 @@ public class TurtleTestPanel extends JPanel
 
 
     /**
-     * @param lines
+     * @param list
      */
-    private void drawLines (List<ICartesian2D> lines)
+    private void drawLines (List<IDraw2D> list)
     {
-        for (ICartesian2D line: lines){
-            line.draw(myImage.createGraphics(), this.getPreferredSize());
+        for (IDraw2D line: list){
+            line.draw(myImage.createGraphics());
         }
     }
     
