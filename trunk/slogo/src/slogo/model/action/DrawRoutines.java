@@ -11,10 +11,10 @@ import slogo.util.drawables2D.Line;
  */
 public interface DrawRoutines
 {
-    void drawLine (Line line);
+    void drawLine (Action action, Line line);
 
 
-    void walk (Point2D from, Point2D to);
+    void walk (Action action, Point2D from, Point2D to);
 
 
     /**
@@ -22,14 +22,14 @@ public interface DrawRoutines
      * 
      * @param degrees new heading
      */
-    void rotate (int degrees);
+    void rotate (Action action, int degrees);
 
 
-    void disguise (File imageFile);
+    void disguise (Action action, File imageFile);
 
 
-    void show ();
+    void show (Action action);
 
 
-    void hide ();
+    void hide (Action action);
 }

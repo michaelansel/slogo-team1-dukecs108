@@ -14,9 +14,11 @@ import java.util.Map.Entry;
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
+import slogo.model.action.Action;
 import slogo.model.arena.Arena;
 import slogo.model.arena.turtle.Turtle;
 import slogo.util.interfaces.IDraw2D;
+import slogo.view.SwingDraw;
 
 /**
  * Draws an Arena Object. This implementation currently draws all
@@ -30,7 +32,7 @@ public class ArenaDraw extends JPanel{
 	private Graphics2D graphics;
 	public static Dimension myDimension=new Dimension(400, 400);
 	public static Point2D ORIGIN = new Point2D.Double(myDimension.getWidth()/2,myDimension.getHeight()/2);
-	private Map<Integer, Turtle> myTurtleMap;
+    private Arena myArena;
 
 	//Notice: While not implemented, we would have liked to draw this stuff on two separate levels, to
 	//Allow for good animation without redrawing lines to our animable one every time. As it stands
@@ -46,7 +48,7 @@ public class ArenaDraw extends JPanel{
 	 * called when you instantiate the class. Sets everything up.
 	 */
 	public ArenaDraw(Arena a){
-		myTurtleMap=a.getTurtleMap();
+		myArena = a;
 		setVisible(true);
 		
 		//turtlePanel=new TurtleLevel();
@@ -59,40 +61,39 @@ public class ArenaDraw extends JPanel{
 	 * called when the panel needs to be redrawn
 	 */
 	public void paintComponent(Graphics g) {
-		System.out.println("[Drawing]");
-		graphics = (Graphics2D)g;
-		clear(graphics);
+        System.out.println("[Drawing]");
+        graphics = (Graphics2D) g;
+        clear(graphics);
 
-		if(myTurtleMap != null){
-			for (Entry<Integer, Turtle> entry: myTurtleMap.entrySet()){
-				Turtle curren=entry.getValue();
-				
-				//Load Turtle Image and action list
-				BufferedImage img = null;
-				try {
-					img = ImageIO.read(curren.getImage());
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-				List<IDraw2D> actionSet=curren.getAllDrawables();
+        SwingDraw swingDraw = new SwingDraw(graphics);
+        for (Action action : myArena.getActions())
+            action.draw(swingDraw);
 
-				//Draw Actions
-				for (IDraw2D action: actionSet){
-					action.draw(graphics);
-				}
-				 
-				//Draw Turtle at correct position. Notice this is after for loop- so we can draw and
-				//delete turtle as many times as we need to during animation, if/when added.
-                AffineTransform aTransform = new AffineTransform();
-                aTransform.translate((int) curren.getPosition().getX(), (int) curren.getPosition().getY());
-                aTransform.rotate( -((curren.getPosition().getHeading())*Math.PI / 180.0)+Math.PI/2);
-                aTransform.translate(-img.getWidth() / 2.0, -img.getHeight() / 2.0);
-                
-				graphics.drawImage(img, aTransform, null);
-			}
-		}
-		System.out.println("[/Drawing]");
-	}
+        for (Entry<Integer, Turtle> entry : myArena.getTurtleMap().entrySet())
+        {
+            Turtle curren = entry.getValue();
+            
+            //Load Turtle Image and action list
+            BufferedImage img = null;
+            try {
+                img = ImageIO.read(curren.getImage());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            //Draw Turtle at correct position. Notice this is after for loop- so we can draw and
+            //delete turtle as many times as we need to during animation, if/when added.
+            AffineTransform aTransform = new AffineTransform();
+            aTransform.translate((int) curren.getPosition().getX(),
+                                 (int) curren.getPosition().getY());
+            aTransform.rotate(-((curren.getPosition().getHeading()) * Math.PI / 180.0) +
+                              Math.PI / 2);
+            aTransform.translate(-img.getWidth() / 2.0, -img.getHeight() / 2.0);
+
+            graphics.drawImage(img, aTransform, null);
+        }
+        System.out.println("[/Drawing]");
+    }
 	
 	/**
 	 * clears the panel

@@ -1,61 +1,92 @@
 package slogo.view;
 
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
+import slogo.model.action.Action;
 import slogo.model.action.DrawRoutines;
+import slogo.model.arena.turtle.Turtle;
+import slogo.util.Position;
 import slogo.util.drawables2D.Line;
 
 
 public class SwingDraw implements DrawRoutines
 {
-    private BufferedImage myImage;
+    public class TurtleGhost
+    {
+        public Position position = new Position();
+        public File image = Turtle.DEFAULT_IMAGE;
+        public boolean visible = true;
+    }
+
+    private Graphics2D myGraphics;
+    private Map<Integer, TurtleGhost> myGhosts;
 
 
     public SwingDraw (BufferedImage image)
     {
-        myImage = image;
+        this(image.createGraphics());
+    }
+
+
+    public SwingDraw (Graphics2D g)
+    {
+        myGraphics = g;
+        myGhosts = new HashMap<Integer, TurtleGhost>();
     }
 
 
     @Override
-    public void drawLine (Line line)
+    public void drawLine (Action action, Line line)
     {
-        line.draw(myImage.createGraphics());
+        line.draw(myGraphics);
+        getGhost(action.getTurtleID()).position.setLocation(line.getP2());
+    }
+
+
+    private TurtleGhost getGhost (int turtleID)
+    {
+        if (!myGhosts.containsKey(turtleID)) myGhosts.put(turtleID,
+                                                          new TurtleGhost());
+        return myGhosts.get(turtleID);
     }
 
 
     @Override
-    public void walk (Point2D from, Point2D to)
+    public void walk (Action action, Point2D from, Point2D to)
     {
-        // TODO SwingDraw.walk
+        getGhost(action.getTurtleID()).position.setLocation(to);
     }
 
 
     @Override
-    public void rotate (int degrees)
+    public void rotate (Action action, int degrees)
     {
-        // TODO SwingDraw.rotate
+        getGhost(action.getTurtleID()).position.setHeadingTo(degrees);
     }
 
 
     @Override
-    public void disguise (File imageFile)
+    public void disguise (Action action, File imageFile)
     {
-        // TODO SwingDraw.disguise
+        getGhost(action.getTurtleID()).image = imageFile;
     }
 
 
     @Override
-    public void show ()
+    public void show (Action action)
     {
-        // TODO SwingDraw.show
+        getGhost(action.getTurtleID()).visible = true;
     }
 
 
     @Override
-    public void hide ()
+    public void hide (Action action)
     {
-        // TODO SwingDraw.hide
+        getGhost(action.getTurtleID()).visible = false;
     }
 }

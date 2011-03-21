@@ -18,6 +18,6 @@ public class Disguise extends BasicAction
     @Override
     public void draw (DrawRoutines howToDraw)
     {
-        howToDraw.disguise(myImageFile);
+        howToDraw.disguise(this, myImageFile);
     }
 }

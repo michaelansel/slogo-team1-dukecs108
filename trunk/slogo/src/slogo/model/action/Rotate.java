@@ -14,6 +14,6 @@ public class Rotate extends BasicAction
     @Override
     public void draw (DrawRoutines howToDraw)
     {
-        howToDraw.rotate(myDegrees);
+        howToDraw.rotate(this, myDegrees);
     }
 }
