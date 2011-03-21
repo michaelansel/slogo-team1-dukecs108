@@ -73,6 +73,8 @@ public class ArenaDraw extends JPanel{
         {
             Turtle curren = entry.getValue();
             
+            if(!curren.isVisible()) continue;
+            
             //Load Turtle Image and action list
             BufferedImage img = null;
             try {
