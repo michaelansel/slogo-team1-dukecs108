@@ -33,7 +33,11 @@ public class ArenaTest extends TestCase
     @Test
     public final void testClone ()
     {
-        fail("Not yet implemented"); // TODO Test Arena.clone()
+        Arena clone = arena.clone();
+        assertNotSame(arena, clone);
+        assertEquals(arena.getSelectedTurtles(), clone.getSelectedTurtles());
+        assertEquals(arena.getTurtleMap().values(), clone.getTurtleMap().values());
+        // TODO further verification of Arena.clone
     }
 
 

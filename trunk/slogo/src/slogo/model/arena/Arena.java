@@ -54,6 +54,7 @@ public class Arena extends Observable implements Cloneable, Observer
         myHistory = new ArrayList<String>();
         mySelectedTurtles = new ArrayList<Turtle>();
         myUserCommands = new HashMap<String, Expression>();
+        myActions = new ArrayList<Action>();
         myNextTurtleID = 0;
         addTurtle(turtle);
     }
@@ -88,8 +89,10 @@ public class Arena extends Observable implements Cloneable, Observer
     }
 
 
-    private int addTurtle (int id, Turtle turtle)
+    public int addTurtle (int id, Turtle turtle)
     {
+        if (turtle == null) throw new IllegalArgumentException("Cannot add a null Turtle!");
+
         myTurtles.put(id, turtle);
         turtle.addObserver(this);
 
@@ -111,8 +114,6 @@ public class Arena extends Observable implements Cloneable, Observer
      */
     public int addTurtle (Turtle turtle)
     {
-        if (turtle == null) throw new IllegalArgumentException("Cannot add a null Turtle!");
-
         int newTurtleID = myNextTurtleID;
         myNextTurtleID++;
 
