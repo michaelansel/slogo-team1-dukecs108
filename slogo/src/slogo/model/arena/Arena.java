@@ -264,6 +264,12 @@ public class Arena extends Observable implements Cloneable, Observer
     }
 
 
+    public Map<String, Expression> getUserCommands ()
+    {
+        return new HashMap<String, Expression>(myUserCommands);
+    }
+
+
     /**
      * Retrieve the named variable's value
      * 
