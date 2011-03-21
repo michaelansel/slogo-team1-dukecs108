@@ -9,6 +9,7 @@ public class Heading extends ArtistQuality
 
     public Heading (double head)
     {
+        super(Heading.class);
         myHeading = head;
     }
 
@@ -17,11 +18,11 @@ public class Heading extends ArtistQuality
         super();
     }
 
-    @Override
-    public int compareTo (ArtistQuality o) throws ModelException
-    {
-        return Double.compare(myHeading, ((Heading) o).getHeading());
-    }
+//    @Override
+//    public int compareTo (ArtistQuality o) throws ModelException
+//    {
+//        return Double.compare(myHeading, ((Heading) o).getHeading());
+//    }
 
     public double getHeading ()
     {
@@ -40,6 +41,12 @@ public class Heading extends ArtistQuality
     boolean equals (ArtistQuality aq) throws ModelException
     {
         return myHeading == ((Heading) aq).getHeading();
+    }
+
+    public void setHeadingTo (int degrees)
+    {
+        myHeading = degrees;
+        
     }
 
     
