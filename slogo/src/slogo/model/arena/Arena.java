@@ -2,10 +2,13 @@ package slogo.model.arena;
 
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Observable;
+import java.util.Observer;
+import slogo.model.action.Action;
 import slogo.model.arena.turtle.Turtle;
 import slogo.model.expression.Expression;
 import slogo.view.gui.panel.subpanels.ArenaDraw;
@@ -19,7 +22,7 @@ import slogo.view.gui.panel.subpanels.ArenaDraw;
  * @author Julian Genkins
  * @author Michael Ansel
  */
-public class Arena extends Observable implements Cloneable
+public class Arena extends Observable implements Cloneable, Observer
 {
     private List<String> myHistory;
     private List<Turtle> mySelectedTurtles;
@@ -27,6 +30,7 @@ public class Arena extends Observable implements Cloneable
     private Map<String, Expression> myUserCommands;
     private Map<String, Expression> myVariables;
     private int myNextTurtleID;
+    private List<Action> myActions;
 
 
     /**
@@ -87,6 +91,7 @@ public class Arena extends Observable implements Cloneable
     private int addTurtle (int id, Turtle turtle)
     {
         myTurtles.put(id, turtle);
+        turtle.addObserver(this);
 
         // Observable.setChanged()
         setChanged();
@@ -167,8 +172,12 @@ public class Arena extends Observable implements Cloneable
         int retval = 0;
         for (Turtle turtle : new ArrayList<Turtle>(getSelectedTurtles()))
             retval = expression.evaluate(this, turtle);
-        setChanged();
         return retval;
+    }
+    
+    public List<Action> getActions()
+    {
+        return Collections.unmodifiableList(new ArrayList<Action>(myActions));
     }
 
 
@@ -344,6 +353,18 @@ public class Arena extends Observable implements Cloneable
     public void setVariable (String variableName, Expression variableValue)
     {
         myVariables.put(variableName, variableValue);
+    }
+
+
+    @Override
+    public void update (Observable turtle, Object o)
+    {
+        Action action = (Action) o;
+        for (Map.Entry<Integer, Turtle> entry : myTurtles.entrySet())
+            if (entry.getValue() == turtle) action.setTurtleID(entry.getKey());
+        myActions.add(action);
+        setChanged();
+        notifyObservers();
     }
 
 }

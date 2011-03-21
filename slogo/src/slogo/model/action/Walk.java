@@ -1,11 +1,10 @@
 package slogo.model.action;
 
 import java.awt.geom.Point2D;
-import slogo.util.Position;
 import slogo.util.drawables2D.Line;
 
 
-public class Walk implements Action
+public class Walk extends BasicAction
 {
     private Point2D myTo;
     private Point2D myFrom;

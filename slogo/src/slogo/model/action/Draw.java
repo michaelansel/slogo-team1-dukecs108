@@ -1,12 +1,10 @@
 package slogo.model.action;
 
-import slogo.util.Position;
 import slogo.util.drawables2D.Line;
 
 
-public class Draw implements Action
+public class Draw extends BasicAction
 {
-
 
     private Line myLine;
 

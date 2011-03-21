@@ -5,11 +5,15 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-
+import java.util.Observable;
 import javax.imageio.ImageIO;
-
+import slogo.model.action.Action;
+import slogo.model.action.Draw;
+import slogo.model.action.Hide;
+import slogo.model.action.Rotate;
+import slogo.model.action.Show;
+import slogo.model.action.Walk;
 import slogo.model.arena.TurtleException;
 import slogo.model.arena.turtle.qualities.behavior.BehaviorDecorator;
 import slogo.model.arena.turtle.qualities.behavior.DefaultBehavior;
@@ -21,7 +25,6 @@ import slogo.util.Position;
 import slogo.util.drawables2D.Line;
 import slogo.util.drawtools.DrawTool;
 import slogo.util.drawtools.Pen2D;
-import slogo.util.interfaces.ICartesian2D;
 import slogo.util.interfaces.IDraw2D;
 import slogo.util.interfaces.IMorph;
 import slogo.view.gui.panel.subpanels.ArenaDraw;
@@ -32,7 +35,7 @@ import slogo.view.gui.panel.subpanels.ArenaDraw;
  * @author Julian Genkins
  *
  */
-public class Turtle implements IMorph, IDraw2D, ITurtle 
+public class Turtle extends Observable implements IMorph, IDraw2D, ITurtle 
 {
     public static final File DEFAULT_IMAGE = new File("src/images/directedTurtle.png"); 
     private static final int ICON_HEIGHT = 20;
@@ -258,14 +261,24 @@ public class Turtle implements IMorph, IDraw2D, ITurtle
      * @see slogo.model.arena.turtle.IMorph#move(slogo.util.drawables2D.Line)
      */
     @Override
-    public int move (Line line){
-        myDrawables.addAll(myMode.applyMode(Arrays.asList(new IDraw2D[]{line})));
-        myPosition.setLocation(((Line)myDrawables.get(myDrawables.size()-1)).getP2());
-        return (int) Math.round(((ICartesian2D)myDrawables.get(myDrawables.size()-1)).length());
+    public int move (Line line)
+    {
+        myPosition.setLocation(line.getP2());
+        if (getPen().isDown())
+            notifyAction(new Draw(line));
+        else
+            notifyAction(new Walk(line));
+        return (int) Math.round(line.length());
     }
 
     
 
+
+    private void notifyAction (Action action)
+    {
+        setChanged();
+        notifyObservers(action);
+    }
 
     /* (non-Javadoc)
      * @see slogo.model.arena.turtle.IMorph#rotate(double)
@@ -274,6 +287,7 @@ public class Turtle implements IMorph, IDraw2D, ITurtle
     public int rotate (double dAngle)
     {
         myPosition.changeHeadingBy(dAngle);
+        notifyAction(new Rotate((int) Math.round(myPosition.getHeading())));
 
         return (int) Math.abs(dAngle);
     }
@@ -285,7 +299,6 @@ public class Turtle implements IMorph, IDraw2D, ITurtle
     @Override
     public int setHeading (double heading)
     {
-
         return this.rotate(heading - myPosition.getHeading());
     }
 
@@ -324,14 +337,14 @@ public class Turtle implements IMorph, IDraw2D, ITurtle
 
     @Override
     public boolean hideTurtle(){
-        
+        notifyAction(new Hide());
         return this.setVisibility(false); 
         
     }
     
     @Override
     public boolean showTurtle(){
-        
+        notifyAction(new Show());
         return this.setVisibility(true); 
         
     }
@@ -340,6 +353,8 @@ public class Turtle implements IMorph, IDraw2D, ITurtle
     public boolean setVisibility (boolean b)
     {
         amVisible = b;
+        if(b) notifyAction(new Show());
+        else notifyAction(new Hide());
         return this.isVisible();
     }
 

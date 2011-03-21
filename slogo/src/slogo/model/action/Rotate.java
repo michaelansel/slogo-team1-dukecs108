@@ -1,6 +1,6 @@
 package slogo.model.action;
 
-public class Rotate implements Action
+public class Rotate extends BasicAction
 {
     private int myDegrees;
 

@@ -1,11 +1,9 @@
 package slogo.model.action;
 
 import java.io.File;
-import slogo.util.Position;
-import slogo.util.drawables2D.Line;
 
 
-public class Disguise implements Action
+public class Disguise extends BasicAction
 {
 
     private File myImageFile;
