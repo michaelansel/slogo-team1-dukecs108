@@ -248,7 +248,7 @@ public class TurtleGUI implements Observer {
 		menuItem.addActionListener(
 				new ActionListener(){  
 					public void actionPerformed (ActionEvent evt){ 
-						borderLeft.updateHistory(getActiveArena().getHistory());
+						borderLeft.updateHistory(getActiveArena().getHistoryEntries());
 						entireFrame.pack();
 
 					}

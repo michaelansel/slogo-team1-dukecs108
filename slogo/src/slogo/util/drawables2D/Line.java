@@ -92,7 +92,6 @@ public class Line extends Line2D.Double implements Comparable, ICartesian2D, IDr
 	 public Line(DrawTool pen, Point2D start, Point2D end){
 	    super(start, end);
 	    myTool = (DrawTool2D) pen;
-	    System.out.println("Adding line: "+start+", "+end);
 	  
 	 }
 
