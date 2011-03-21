@@ -2,6 +2,7 @@ package slogo.view.components;
 
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
+import java.awt.image.BufferedImage;
 import java.io.File;
 
 import javax.swing.JPanel;
@@ -12,7 +13,7 @@ public class ImageSelectPanel extends JPanel implements IFileHolder{
 
 	private static final long serialVersionUID = 1L;
 	private File activeImageFile= Turtle.DEFAULT_IMAGE;
-	private ActiveImagePanel imgPanel=new ActiveImagePanel(this);
+	private ActiveImagePanel imgPanel=new ActiveImagePanel();
 	
 
 	public ImageSelectPanel() {
@@ -39,8 +40,8 @@ public class ImageSelectPanel extends JPanel implements IFileHolder{
 	    }
 	}
  
-	public File getFile() {
-		return activeImageFile;
+	public BufferedImage getResizedImage() {
+		return imgPanel.getResizedImage();
 	}
 
 	public void setFile(File f) {

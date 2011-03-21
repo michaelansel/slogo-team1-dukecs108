@@ -22,14 +22,13 @@ import slogo.model.arena.turtle.Turtle;
 
 public class ActiveImagePanel extends JPanel implements ActionListener{
 	private static final long serialVersionUID = 1L;
-	private IFileHolder parent;
 	private JFileChooser fc = new JFileChooser();
 	private JLabel imageDisplay=new JLabel();
+	private BufferedImage myResizedImage;
 
 
 
-	public ActiveImagePanel(IFileHolder i){        
-		parent=i;
+	public ActiveImagePanel(){
 		setLayout(new BorderLayout(8,8));
 		add(new HeaderLabel("Image: "), BorderLayout.PAGE_START);
 		JPanel j = new JPanel(new BorderLayout(8,8));
@@ -57,7 +56,6 @@ public class ActiveImagePanel extends JPanel implements ActionListener{
         		File f = fc.getSelectedFile();
     			try {
     				setDisplay(f);
-    				parent.setFile(f);
     				repaint();
 				} catch (IOException e1) {
 					JOptionPane.showMessageDialog(this,
@@ -72,6 +70,7 @@ public class ActiveImagePanel extends JPanel implements ActionListener{
 	public void setDisplay(File f) throws IOException{
 		BufferedImage i = ImageIO.read(f);
 		BufferedImage image = resizeBufferedImage(50, 50, i);
+		myResizedImage=image;
 		remove(imageDisplay);
 		imageDisplay=new JLabel(new ImageIcon(image));
 		imageDisplay.setBorder(LineBorder.createGrayLineBorder());
@@ -79,6 +78,10 @@ public class ActiveImagePanel extends JPanel implements ActionListener{
 		add(imageDisplay, BorderLayout.CENTER);
 		doLayout();
 	} 
+	
+	public BufferedImage getResizedImage(){
+		return myResizedImage;
+	}
 	
 	public void setActiveImage(File f){
 			try {

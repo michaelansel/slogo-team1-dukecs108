@@ -6,8 +6,11 @@ import java.awt.Color;
 import java.awt.Container;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -38,13 +41,14 @@ public class PopupEditTurtle extends Container{
 
 	//State Variables
 	private String name="";
-	private File file=Turtle.DEFAULT_IMAGE;
+	private BufferedImage myBufferedImage;
 	private Pen2D pen=new Pen2D(new BasicStroke(), Color.BLACK);
 	private Arena arena;
 	private LabeledTextBox textBox;
 	private ImageSelectPanel imageSelect;
 	private PathSelectPanel pathSelect;
 	private JFrame myOwner;
+	private Controller controller;
 	private Turtle myTurtle;
 	private int myTurtleID;
 
@@ -55,7 +59,7 @@ public class PopupEditTurtle extends Container{
 	 * @param a - the Arena we want to link our AddTurtle menu to.
 	 * @param frame - the frame you want to add this container to.
 	 */
-	public PopupEditTurtle(Arena a, Turtle t, int turtleID, JFrame frame){
+	public PopupEditTurtle(Arena a, Turtle t, int turtleID, JFrame frame, Controller c){
 		setLayout(new BorderLayout(8,8));
 		//setPreferredSize(new Dimension(200,200));
 
@@ -64,6 +68,7 @@ public class PopupEditTurtle extends Container{
 		textBox=new LabeledTextBox("Name:");
 		imageSelect=new ImageSelectPanel();
 		pathSelect=new PathSelectPanel();
+		controller=c;
 		myTurtle=t;
 		myTurtleID=turtleID;
 
@@ -85,8 +90,8 @@ public class PopupEditTurtle extends Container{
 	 * panel.
 	 * @param a - the Arena we want to link our AddTurtle menu to.
 	 */
-	public PopupEditTurtle(Arena a, Turtle t, int turtleID){
-		this(a, t, turtleID, new JFrame());
+	public PopupEditTurtle(Arena a, Turtle t, int turtleID, Controller c){
+		this(a, t, turtleID, new JFrame(), c);
 	}
 
 	//Helpers
@@ -147,8 +152,8 @@ public class PopupEditTurtle extends Container{
 	 * Runs when AcceptButton is activated
 	 */
 	private int editTurtle(){ 
-		name = textBox.getText(); 
-		file = imageSelect.getFile();
+		name = textBox.getText();
+		File file=controller.createTempImage(imageSelect.getResizedImage());
 		pen = pathSelect.getPen();
 		if(name!=null){
 			myTurtle.rename(name);
