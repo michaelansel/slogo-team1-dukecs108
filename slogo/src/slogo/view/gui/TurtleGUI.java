@@ -1,6 +1,7 @@
 package slogo.view.gui;
 
 import java.awt.BorderLayout;  
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -28,6 +29,10 @@ import slogo.model.arena.Arena;
 import slogo.view.ViewHelper;
 import slogo.view.components.PopupAddTurtle;
 import slogo.view.gui.panel.ArenaPanel;
+import slogo.view.gui.panel.BorderBottomPanel;
+import slogo.view.gui.panel.BorderLeftPanel;
+import slogo.view.gui.panel.BorderRightPanel;
+import slogo.view.resources.PanelFactory;
 import slogo.model.parser.SlogoParser;
 import util.parser.ParserException;
 import util.parser.ParserResult;
@@ -41,13 +46,18 @@ public class TurtleGUI implements Observer {
 	private ArrayList<ArenaPanel> myArenaPanels = new ArrayList<ArenaPanel>();
 	private Controller myController;
 	private ResourceManager resources;
-		
+	
 	//Declare components
 	JPanel myPanel;
-	JButton button;
-	JTextField textbox;
 	JList turtleList;
+	public JTextField textbox;
+	public JButton button;
+	
 	JTabbedPane display;
+	BorderBottomPanel borderBottom;
+	BorderLeftPanel borderLeft;
+	BorderRightPanel borderRight;
+	
 	JScrollPane myScroll;
 	JFrame entireFrame;
 	TurtleGUI me= this;
@@ -85,89 +95,44 @@ public class TurtleGUI implements Observer {
 		//Create and set up the window.
 		entireFrame = new JFrame(resources.getString("title"));
 		entireFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
 		JPanel basePanel = ViewHelper.makeNewPanel();
 		entireFrame.getContentPane().add(basePanel);
-		addComponentsToPane(basePanel);
+		
+		addMenu(basePanel);
+		addPanels(basePanel);
+		
 		entireFrame.pack();
 		entireFrame.setVisible(true);
 	}
-
-	/**
-	 * Adds the components to our pane
-	 * @param pane the pane we want to add components to
-	 */
-	public void addComponentsToPane(JPanel pane) {
+	public void addMenu(JPanel pane)
+	{
 		//Calls the menu to be created
 		//Adds it at the top of the display
 		myPanel = ViewHelper.makeNewPanel();
 		myPanel.add(createMenu());
 		pane.add(myPanel, BorderLayout.PAGE_START);
-
-
-		//Creates a new JTabbedPane.
-		display = new JTabbedPane();
-		display.setPreferredSize(new Dimension(600,400));
-		pane.add(display, BorderLayout.CENTER);
-
-
-		//Creates space to the left of PANE
-		myPanel=ViewHelper.makeNewPanel();
-		pane.add(ViewHelper.makeNewPanel(), BorderLayout.LINE_START);
-		myPanel=ViewHelper.makeNewPanel();
-		pane.add(ViewHelper.makeNewPanel(), BorderLayout.LINE_END);
-
-		//Creates the textbox & button, adds spaces where necessary
-		myPanel = ViewHelper.makeNewPanel();
+	}
+	/**
+	 * Adds the components to our pane
+	 * @param pane the pane we want to add components to
+	 */
+	public void addPanels(JPanel pane) {
+		resources.addResourcesFromFile("panel","slogo.view.resources");
+		
+		//Messy, but the reflection required here is messier.
+		display = (JTabbedPane) PanelFactory.createPanel("display");
+			pane.add(display,PanelFactory.getBorderLayout("displayPosition"));
+		borderLeft = (BorderLeftPanel) PanelFactory.createPanel("borderLeft");
+			pane.add(borderLeft,PanelFactory.getBorderLayout("borderLeftPosition"));
+		borderRight = (BorderRightPanel) PanelFactory.createPanel("borderRight");
+			pane.add(borderRight,PanelFactory.getBorderLayout("borderRightPosition"));
+		borderBottom = (BorderBottomPanel) PanelFactory.createPanel("borderBottom");
+			pane.add(borderBottom,PanelFactory.getBorderLayout("borderBottomPosition"));
 		textbox = makeInput();
-		button= makeButton();
-		//Textbox added here
-		JPanel borderPanel = ViewHelper.makeNewPanel();
-		borderPanel.add(ViewHelper.makeNewPanel(), BorderLayout.PAGE_END);
-		borderPanel.add(ViewHelper.makeNewPanel(), BorderLayout.LINE_START);
-		borderPanel.add(textbox, BorderLayout.CENTER);
-		myPanel.add(borderPanel, BorderLayout.CENTER);
-		//Button added here
-		borderPanel=ViewHelper.makeNewPanel();
-		borderPanel.add(ViewHelper.makeNewPanel(), BorderLayout.PAGE_END);
-		borderPanel.add(ViewHelper.makeNewPanel(), BorderLayout.LINE_END);
-		borderPanel.add(button, BorderLayout.CENTER);
-		myPanel.add(borderPanel, BorderLayout.LINE_END);
-		//whole thing added to pane
-		pane.add(myPanel, BorderLayout.PAGE_END);
-	}
-
-	/**
-	 * Creates a textfield that evaluates on ENTER.
-	 */
-	private JTextField makeInput ()
-	{
-		JTextField result = new JTextField();
-		result.addActionListener(
-				new ActionListener(){ 
-					public void actionPerformed (ActionEvent evt){
-						evaluateInput();
-					}
-				});
-		result.setMinimumSize(new Dimension(40, 40));
-		result.setPreferredSize(new Dimension(40, 40));
-		return result;
-	}
-
-	/**
-	 * Creates "Evaluate!" button that evaluates on LEFTCLICK.
-	 */
-	private JButton makeButton(){ 
-		JButton result = new javax.swing.JButton("Go!");
-
-		result.addActionListener(
-				new ActionListener(){ 
-					public void actionPerformed (ActionEvent evt){
-						evaluateInput();
-					}
-				});
-		result.setMinimumSize(new Dimension(80, 40));
-		result.setPreferredSize(new Dimension(80, 40));
-		return result;
+		button = makeButton();
+		borderBottom.text.setText(textbox);
+		borderBottom.button.setButton(button);
 	}
 
 	/**
@@ -289,6 +254,39 @@ public class TurtleGUI implements Observer {
 			//No, so we need to add a new ArenaPanel
 			addArenaPanel(a);
 		}
+	}
+	/**
+	 * Creates a textfield that evaluates on ENTER.
+	 */
+	public JTextField makeInput ()
+	{
+		JTextField result = new JTextField();
+		result.addActionListener(
+				new ActionListener(){ 
+					public void actionPerformed (ActionEvent evt){
+						evaluateInput();
+					}
+				});
+		result.setMinimumSize(new Dimension(40, 40));
+		result.setPreferredSize(new Dimension(40, 40));
+		return result;
+	}
+
+	/**
+	 * Creates "Evaluate!" button that evaluates on LEFTCLICK.
+	 */
+	public JButton makeButton(){ 
+		JButton result = new javax.swing.JButton("Go!");
+
+		result.addActionListener(
+				new ActionListener(){ 
+					public void actionPerformed (ActionEvent evt){
+						evaluateInput();
+					}
+				});
+		result.setMinimumSize(new Dimension(80, 40));
+		result.setPreferredSize(new Dimension(80, 40));
+		return result;
 	}
 
 	/** 
