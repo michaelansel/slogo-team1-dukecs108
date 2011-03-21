@@ -48,6 +48,8 @@ public class SlogoParser
             // TODO Either ResourceBundle or final,static array
             parserFactory.setHandler("ArithmeticExpression",
                                      Arithmetic.getParserResultHandler());
+            parserFactory.setHandler("Assignment",
+                                     Variable.getParserResultHandler());
             parserFactory.setHandler("BooleanExpression",
                                      slogo.model.expression.binary.Boolean.getParserResultHandler());
             parserFactory.setHandler("Constant",
