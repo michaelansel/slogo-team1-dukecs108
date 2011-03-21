@@ -18,6 +18,7 @@ import slogo.model.action.Action;
 import slogo.model.arena.Arena;
 import slogo.model.arena.turtle.Turtle;
 import slogo.util.interfaces.IDraw2D;
+import slogo.view.AnimatedSwingDraw;
 import slogo.view.SwingDraw;
 
 /**
@@ -33,6 +34,8 @@ public class ArenaDraw extends JPanel{
 	public static Dimension myDimension=new Dimension(400, 400);
 	public static Point2D ORIGIN = new Point2D.Double(myDimension.getWidth()/2,myDimension.getHeight()/2);
     private Arena myArena;
+    private boolean myIsBusy;
+    private int myLastActionID;
 
 	//Notice: While not implemented, we would have liked to draw this stuff on two separate levels, to
 	//Allow for good animation without redrawing lines to our animable one every time. As it stands
@@ -50,7 +53,7 @@ public class ArenaDraw extends JPanel{
 	public ArenaDraw(Arena a){
 		myArena = a;
 		setVisible(true);
-		
+		myLastActionID=0;
 		//turtlePanel=new TurtleLevel();
 		//linePanel=new LinesLevel(myDimension);
 		//add(turtlePanel);
@@ -61,13 +64,23 @@ public class ArenaDraw extends JPanel{
 	 * called when the panel needs to be redrawn
 	 */
 	public void paintComponent(Graphics g) {
+		if (!myIsBusy){
+			myIsBusy=true;
         System.out.println("[Drawing]");
         graphics = (Graphics2D) g;
         clear(graphics);
-
-        SwingDraw swingDraw = new SwingDraw(graphics);
-        for (Action action : myArena.getActions())
+        if(myLastActionID>myArena.getActions().size()){
+        	myLastActionID=0;
+        }
+        SwingDraw state=new SwingDraw(graphics);
+        for (Action action : myArena.getActions().subList(0, myLastActionID)){
+            action.draw(state);
+        }
+        AnimatedSwingDraw swingDraw = new AnimatedSwingDraw(this, 20);
+        for (Action action : myArena.getActions().subList(myLastActionID, myArena.getActions().size())){
             action.draw(swingDraw);
+        }
+        myLastActionID=myArena.getActions().size();
 
         for (Entry<Integer, Turtle> entry : myArena.getTurtleMap().entrySet())
         {
@@ -95,6 +108,8 @@ public class ArenaDraw extends JPanel{
             graphics.drawImage(img, aTransform, null);
         }
         System.out.println("[/Drawing]");
+			myIsBusy=false;
+		}
     }
 	
 	/**
