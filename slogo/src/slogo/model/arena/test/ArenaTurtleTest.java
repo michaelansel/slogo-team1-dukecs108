@@ -37,7 +37,9 @@ public class ArenaTurtleTest extends TestCase
     @Test
     public final void testAddFirstTurtle ()
     {
-        arena.removeTurtle(arena.getTurtleMap().keySet().toArray(new Integer[]{})[0]);
+        arena.removeTurtle(arena.getTurtleMap()
+                                .keySet()
+                                .toArray(new Integer[] {})[0]);
         assertTrue(arena.getTurtleMap().isEmpty());
         int id = arena.addTurtle();
         // The first Turtle should be automatically selected
@@ -53,7 +55,9 @@ public class ArenaTurtleTest extends TestCase
     @Test
     public final void testAddMoreTurtles ()
     {
-        arena.removeTurtle(arena.getTurtleMap().keySet().toArray(new Integer[]{})[0]);
+        arena.removeTurtle(arena.getTurtleMap()
+                                .keySet()
+                                .toArray(new Integer[] {})[0]);
         assertTrue(arena.getTurtleMap().isEmpty());
         int firstID = arena.addTurtle();
 
@@ -74,18 +78,20 @@ public class ArenaTurtleTest extends TestCase
     @Test
     public final void testAddTurtleObject ()
     {
-        arena.removeTurtle(arena.getTurtleMap().keySet().toArray(new Integer[]{})[0]);
+        arena.removeTurtle(arena.getTurtleMap()
+                                .keySet()
+                                .toArray(new Integer[] {})[0]);
         assertTrue(arena.getTurtleMap().isEmpty());
-        
+
         Turtle firstTurtle = new Turtle();
         int firstID = arena.addTurtle(firstTurtle);
-        
+
         Turtle nextTurtle = new Turtle();
         int nextID = arena.addTurtle(nextTurtle);
-        
+
         List<Turtle> expected = Arrays.asList(new Turtle[] { firstTurtle });
         assertEquals(expected, arena.getSelectedTurtles());
-        
+
         assertSame(firstTurtle, arena.getTurtle(firstID));
         assertSame(nextTurtle, arena.getTurtle(nextID));
     }
@@ -119,8 +125,18 @@ public class ArenaTurtleTest extends TestCase
     @Test
     public final void testSelectTurtles ()
     {
-        // TODO test Turtle selection
-        fail("Not yet implemented"); // TODO
+        Turtle turtleA = arena.getSelectedTurtles().get(0);
+        Turtle turtleB = arena.getTurtle(arena.addTurtle());
+        int turtleCID = arena.addTurtle();
+
+        arena.selectTurtles(turtleA, turtleB);
+        List<Turtle> expected =
+            Arrays.asList(new Turtle[] { turtleA, turtleB });
+        assertEquals(expected, arena.getSelectedTurtles());
+
+        arena.selectTurtles(turtleCID);
+        expected = Arrays.asList(new Turtle[] { arena.getTurtle(turtleCID) });
+        assertEquals(expected, arena.getSelectedTurtles());
     }
 
 
@@ -130,7 +146,9 @@ public class ArenaTurtleTest extends TestCase
     @Test
     public final void testGetTurtle ()
     {
-        fail("Not yet implemented"); // TODO
+        int turtleID = (Integer) arena.getTurtleMap().keySet().toArray()[0];
+        assertEquals(arena.getSelectedTurtles().get(0),
+                     arena.getTurtle(turtleID));
     }
 
 
@@ -140,7 +158,9 @@ public class ArenaTurtleTest extends TestCase
     @Test
     public final void testRemoveTurtle ()
     {
-        fail("Not yet implemented"); // TODO
+        int turtleID = (Integer) arena.getTurtleMap().keySet().toArray()[0];
+        assertTrue(arena.removeTurtle(turtleID));
+        assertFalse(arena.removeTurtle(turtleID));
     }
 
 }
