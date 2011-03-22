@@ -66,19 +66,32 @@ public class ArenaDraw extends JPanel{
 	public void paintComponent(Graphics g) {
 		if (!myIsBusy){
 			myIsBusy=true;
-        System.out.println("[Drawing]");
+//        System.out.println("[Drawing]");
         graphics = (Graphics2D) g;
         clear(graphics);
         if(myLastActionID>myArena.getActions().size()){
         	myLastActionID=0;
         }
-        SwingDraw state=new SwingDraw(graphics);
+        BufferedImage stateImage=new BufferedImage(400,400,BufferedImage.TYPE_INT_ARGB);
+        
+        Graphics2D stateGraphics= (Graphics2D) stateImage.getGraphics();
+        SwingDraw state=new SwingDraw(stateGraphics);
         for (Action action : myArena.getActions().subList(0, myLastActionID)){
             action.draw(state);
         }
-        AnimatedSwingDraw swingDraw = new AnimatedSwingDraw(this, 20);
+        graphics.drawImage(stateImage, 0, 0, null);
+        
+        //TODO: get image, rather than default
+        BufferedImage defaultImg = null;
+        try {
+            defaultImg = ImageIO.read(Turtle.DEFAULT_IMAGE);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        AnimatedSwingDraw swingDraw = new AnimatedSwingDraw(this, 20, defaultImg, stateImage);
         for (Action action : myArena.getActions().subList(myLastActionID, myArena.getActions().size())){
             action.draw(swingDraw);
+            action.draw(state);
         }
         myLastActionID=myArena.getActions().size();
 
@@ -107,7 +120,7 @@ public class ArenaDraw extends JPanel{
 
             graphics.drawImage(img, aTransform, null);
         }
-        System.out.println("[/Drawing]");
+//        System.out.println("[/Drawing]");
 			myIsBusy=false;
 		}
     }
@@ -116,7 +129,7 @@ public class ArenaDraw extends JPanel{
 	 * clears the panel
 	 * @param g
 	 */
-	private void clear(Graphics g){
+	public void clear(Graphics g){
 		super.paintComponent(g);
 	}
 	

@@ -54,8 +54,8 @@ public class ArenaPanel extends JPanel{
 	public void addComponents(){
 		removeAll();
 		this.setLayout(new BorderLayout(8,8));
-		this.add(new ArenaDraw(myArena), BorderLayout.CENTER);
 		this.add(makeList(), BorderLayout.LINE_END);
+		this.add(new ArenaDraw(myArena), BorderLayout.CENTER);
 		repaint();
 	}
 	
