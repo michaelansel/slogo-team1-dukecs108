@@ -26,8 +26,10 @@ import javax.swing.KeyStroke;
 
 import slogo.controller.Controller;
 import slogo.model.arena.Arena;
+import slogo.model.arena.turtle.Turtle;
 import slogo.view.ViewHelper;
 import slogo.view.components.PopupAddTurtle;
+import slogo.view.components.PopupEditTurtle;
 import slogo.view.gui.panel.ArenaPanel;
 import slogo.view.gui.panel.BorderBottomPanel;
 import slogo.view.gui.panel.BorderLeftPanel;
@@ -223,6 +225,16 @@ public class TurtleGUI implements Observer {
 					}
 				});
 		variableMenu.add(menuItem);
+		
+		menuItem = new JMenuItem("Edit Turtle",
+				new ImageIcon("src/images/edit_icon.gif"));  
+		menuItem.addActionListener(
+				new ActionListener(){ 
+					public void actionPerformed (ActionEvent evt){
+						editTurtle();
+					}
+				});
+		variableMenu.add(menuItem);
 
 		menuItem = new JMenuItem("Remove Turtle",
 				new ImageIcon("src/images/del_icon.png"));
@@ -384,6 +396,41 @@ public class TurtleGUI implements Observer {
 		popup.setVisible(true);
 		popup.repaint();
 	}
+	
+	/**
+	 * Creates a new generic turtle in the active Arena
+	 */
+	public void editTurtle() { 
+		Arena a = getActiveArena();
+		
+		String s = (String)JOptionPane.showInputDialog(
+				new JFrame(),
+				"Enter the [ID #] of the turtle you want to edit",
+				"Edit Turtle",
+				JOptionPane.PLAIN_MESSAGE,
+				null,
+				null,
+				"0");
+		//If a string was returned, say so.
+		if ((s != null) && (s.length() > 0)) {
+			int ID = Integer.parseInt(s);
+			Turtle t = a.getTurtle(ID);
+			if (t==null)
+				JOptionPane.showMessageDialog(new JFrame(),
+					    "No turtle exists with that ID in the current Arena." +
+					    " Make sure you are using the turtle's ID and not its name.",
+					    "ERROR!",
+					    JOptionPane.ERROR_MESSAGE);
+			else{
+				JFrame popup = new JFrame("Edit Turtle");
+				popup.setContentPane(new PopupEditTurtle(a, t, ID, popup, myController));
+				popup.pack();
+				popup.setVisible(true);
+				popup.repaint();
+			}
+				
+		}
+	}
 
 	/**
 	 * Remove the active turtle from the active Arena
@@ -411,8 +458,6 @@ public class TurtleGUI implements Observer {
 					    JOptionPane.ERROR_MESSAGE);
 				
 		}
-
-		drawAndRepaint(a);
 	}
 	public void connectToArena(){
 		//Popup, ask for user input
